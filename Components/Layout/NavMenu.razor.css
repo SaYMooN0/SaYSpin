@@ -1,0 +1,43 @@
+.nav-links-container {
+    height: 100vh;
+    position: sticky;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: calc(8px + 1vh);
+}
+
+.nav-link svg {
+    height: 40px;
+    width: 40px;
+    transition: height 0.3s, width 0.3s;
+    box-sizing: border-box;
+    padding: 4px;
+    border-radius: 26%;
+    background: radial-gradient(circle at 10% 20%, rgb(59, 149, 237) 0%, rgb(7, 91, 173) 90%);
+    box-shadow: 0 3px 8px rgba(66, 48, 102, 0.2);
+}
+
+.nav-links-container .icon-fill path{
+    fill: #f4f5e4;
+}
+
+.nav-links-container .icon-stroke path {
+    stroke: #f4f5e4;
+}
+
+@media (min-width: 800px) {
+    .nav-links-container svg {
+        height: 48px;
+        width: 48px;
+    }
+}
+
+@media (min-width: 1280px) {
+    .nav-link svg {
+        height: 56px;
+        width: 56px;
+    }
+}

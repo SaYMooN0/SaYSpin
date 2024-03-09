@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using SaYSpin.src.singletons;
 
 namespace SaYSpin
 {
@@ -17,10 +18,11 @@ namespace SaYSpin
             builder.Services.AddMauiBlazorWebView();
 
 #if DEBUG
-    		builder.Services.AddBlazorWebViewDeveloperTools();
-    		builder.Logging.AddDebug();
+            builder.Services.AddBlazorWebViewDeveloperTools();
+            builder.Logging.AddDebug();
 #endif
-
+            MainGameController gameController = new();
+            builder.Services.AddSingleton<MainGameController>();
             return builder.Build();
         }
     }

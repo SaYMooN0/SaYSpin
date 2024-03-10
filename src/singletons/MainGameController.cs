@@ -1,8 +1,15 @@
-﻿namespace SaYSpin.src.singletons
+﻿using SaYSpin.src.gameplay_parts;
+
+namespace SaYSpin.src.singletons
 {
     public class MainGameController
     {
-        public MainGameController() { }
-        public string message =>"dfjkdfh";
+        public SlotMachine SlotMachine { get; init; }
+        public Inventory Inventory { get; init; }
+        public MainGameController()
+        {
+            SlotMachine = new();
+            Inventory = new();
+        }
     }
 }

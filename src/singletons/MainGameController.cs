@@ -1,4 +1,5 @@
 ﻿using SaYSpin.src.gameplay_parts;
+using SaYSpin.src.gameplay_parts.inventory_related;
 
 namespace SaYSpin.src.singletons
 {
@@ -8,8 +9,18 @@ namespace SaYSpin.src.singletons
         public Inventory Inventory { get; init; }
         public MainGameController()
         {
-            SlotMachine = new();
-            Inventory = new();
+            OrdinaryTileItem t1 = new("i:1", "1.png", 1);
+            OrdinaryTileItem t2 = new("i:2", "2.png", 2);
+            OrdinaryTileItem t3 = new("i:3", "3.png", 3);
+
+            Inventory = new([t1, t2, t3]);
+            SlotMachine = new(Inventory.TileItems, 3, 3);
+
+
+
+            TileItemsPicker itemPicker = new(SlotMachine.TotalSlots);
+            itemPicker.PickItemsFrom(Inventory.TileItems);
+            SlotMachine.UpdateItems(itemPicker);
         }
     }
 }

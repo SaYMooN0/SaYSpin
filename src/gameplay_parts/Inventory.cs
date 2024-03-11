@@ -5,11 +5,11 @@ namespace SaYSpin.src.gameplay_parts
 {
     public class Inventory
     {
-        public Inventory()
+        public Inventory(List<BaseTileItem> startingItems)
         {
             Tokens = new();
             Relics = new();
-            TileItems = new();
+            TileItems = startingItems;
         }
 
         public TokensCollection Tokens { get; init; }

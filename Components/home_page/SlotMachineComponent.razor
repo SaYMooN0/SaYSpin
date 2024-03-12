@@ -1,0 +1,27 @@
+@code {
+    [Parameter]
+    public SlotMachine slotMachine { get; set; }
+
+    private IEnumerable<BaseTileItem?> allItems;
+
+    protected override void OnParametersSet()
+    {
+        allItems = slotMachine?.SingleDimensionTileItems() ?? Enumerable.Empty<BaseTileItem?>();
+    }
+}
+
+<div class="slot-machine">
+    @if (allItems is not null)
+    {
+        @foreach (BaseTileItem? item in allItems)
+        {
+            <h1>@item</h1>
+
+            <TileItemComponent tileItem="@item" />
+        }
+    }
+    else
+    {
+        <h2>allItems is null</h2>
+    }
+</div>

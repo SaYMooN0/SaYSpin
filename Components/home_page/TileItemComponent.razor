@@ -1,0 +1,7 @@
+﻿@code {
+    [Parameter]
+    public BaseTileItem? tileItem { get; set; }
+}
+<div class="slot">
+    @(tileItem is null ? "null" : tileItem.ToString())
+</div>

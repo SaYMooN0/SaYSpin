@@ -1,5 +1,18 @@
 ﻿@page "/"
+@inject MainGameController gameController
 
-<div>
+<div class="home-page-container">
+    <SlotMachineComponent SlotMachine="@gameController.SlotMachine" />
 
+    <button @onclick="CallUpdateItems">Spin</button>
 </div>
+
+@code {
+
+    private void CallUpdateItems()
+    {
+        TileItemsPicker itemsPicker = new(gameController.SlotMachine.TotalSlots);
+        itemsPicker.PickItemsFrom(gameController.Inventory.TileItems);
+        gameController.SlotMachine.UpdateItems(itemsPicker);
+    }
+}

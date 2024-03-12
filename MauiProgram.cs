@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+﻿
 using SaYSpin.src.singletons;
 
 namespace SaYSpin
@@ -19,8 +19,9 @@ namespace SaYSpin
 
 #if DEBUG
             builder.Services.AddBlazorWebViewDeveloperTools();
-            builder.Logging.AddDebug();
 #endif
+
+            src.Logger.Init();
             MainGameController gameController = new();
             builder.Services.AddSingleton<MainGameController>();
             return builder.Build();

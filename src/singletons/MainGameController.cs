@@ -15,12 +15,18 @@ namespace SaYSpin.src.singletons
 
             Inventory = new([t1, t2, t3]);
             SlotMachine = new(Inventory.TileItems, 3, 3);
-
+            Logger.Log(SlotMachine);
 
 
             TileItemsPicker itemPicker = new(SlotMachine.TotalSlots);
             itemPicker.PickItemsFrom(Inventory.TileItems);
             SlotMachine.UpdateItems(itemPicker);
+            Logger.Log(SlotMachine);
+
+            itemPicker = new(SlotMachine.TotalSlots);
+            itemPicker.PickItemsFrom(Inventory.TileItems);
+            SlotMachine.UpdateItems(itemPicker);
+            Logger.Log(SlotMachine);
         }
     }
 }

@@ -6,14 +6,14 @@ namespace SaYSpin.src.gameplay_parts
 {
     public class SlotMachine
     {
-        public int RowsCount => SlotItems.GetLength(0);
-        public int ColumnsCount => SlotItems.GetLength(1);
-        public int TotalSlots => SlotItems.Length;
-        public BaseTileItem?[,] SlotItems { get; private set; }
+        public int RowsCount => TileItems.GetLength(0);
+        public int ColumnsCount => TileItems.GetLength(1);
+        public int TotalSlots => TileItems.Length;
+        public BaseTileItem?[,] TileItems { get; private set; }
 
         public SlotMachine(List<BaseTileItem> startingTiles, int rowsCount = 3, int columnsCount = 3)
         {
-            SlotItems = new BaseTileItem?[rowsCount, columnsCount];
+            TileItems = new BaseTileItem?[rowsCount, columnsCount];
             UpdateItems(startingTiles);
         }
 
@@ -27,22 +27,22 @@ namespace SaYSpin.src.gameplay_parts
                                       .OrderBy(x => rand.Next())
                                       .ToList();
 
-            SlotItems = new BaseTileItem?[RowsCount, ColumnsCount];
+            TileItems = new BaseTileItem?[RowsCount, ColumnsCount];
 
             for (int i = 0; i < newItems.Count; i++)
             {
                 int pos = positions[i];
                 int row = pos / ColumnsCount;
                 int col = pos % ColumnsCount;
-                SlotItems[row, col] = newItems[i];
+                TileItems[row, col] = newItems[i];
             }
         }
 
         public void IncreaseRowsCount()
         {
             var newSlotItems = new BaseTileItem?[RowsCount + 1, ColumnsCount];
-            Array.Copy(SlotItems, 0, newSlotItems, 0, SlotItems.Length);
-            SlotItems = newSlotItems;
+            Array.Copy(TileItems, 0, newSlotItems, 0, TileItems.Length);
+            TileItems = newSlotItems;
         }
 
         public void IncreaseColumnsCount()
@@ -52,45 +52,56 @@ namespace SaYSpin.src.gameplay_parts
             {
                 for (int column = 0; column < ColumnsCount; column++)
                 {
-                    newSlotItems[row, column] = SlotItems[row, column];
+                    newSlotItems[row, column] = TileItems[row, column];
                 }
             }
-            SlotItems = newSlotItems;
+            TileItems = newSlotItems;
         }
-
+        public IEnumerable<BaseTileItem?> SingleDimensionTileItems()
+        {
+            for (int row = 0; row < TileItems.GetLength(0); row++)
+            {
+                for (int col = 0; col < TileItems.GetLength(1); col++)
+                {
+                    yield return TileItems[row, col];
+                }
+            }
+        }
         public override string ToString()
         {
             StringBuilder sB = new StringBuilder();
 
             int emptyCount = 0;
             int filledCount = 0;
+            int maxItemLength = TileItems.Cast<BaseTileItem?>()
+                                         .Where(item => item is not null)
+                                         .Max(item => item?.ToString().Length ?? 0)+ ColumnsCount;
 
-            int maxStringLength = SlotItems.Cast<BaseTileItem?>()
-                                           .Where(item => item is not null)
-                                           .Max(item => item.ToString().Length);
-
-            string formatString = $"{{0, -{maxStringLength + 2}}}";
+            string formatString = $"{{0, -{maxItemLength}}}";
+            int totalLineLength = (maxItemLength + 1) * ColumnsCount;
 
             for (int i = 0; i < RowsCount; i++)
             {
                 for (int j = 0; j < ColumnsCount; j++)
                 {
-                    if (SlotItems[i, j] is null)
+                    if (TileItems[i, j] is null)
                     {
                         emptyCount++;
-                        sB.AppendFormat(formatString, "null");
+                        sB.AppendFormat(formatString, "|null");
                     }
                     else
                     {
                         filledCount++;
-                        sB.AppendFormat(formatString, $"\"{SlotItems[i, j]}\"");
+                        sB.AppendFormat(formatString, $"|{TileItems[i, j]}");
                     }
                 }
-                sB.AppendLine();
+                sB.Append("|\n").AppendLine(string.Concat(Enumerable.Repeat("-", totalLineLength)));
             }
 
-            sB.AppendLine($"Rows: {RowsCount}   Columns: {ColumnsCount}     Empty: {emptyCount}   Filled: {filledCount}");
+            sB.AppendLine($"Rows: {RowsCount}\tColumns: {ColumnsCount}\tEmpty: {emptyCount}\tFilled: {filledCount}");
             return sB.ToString();
         }
+       
+
     }
 }

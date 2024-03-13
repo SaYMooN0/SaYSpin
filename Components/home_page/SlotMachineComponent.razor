@@ -8,20 +8,27 @@
     {
         allItems = slotMachine?.SingleDimensionTileItems() ?? Enumerable.Empty<BaseTileItem?>();
     }
+    private string CalcGridStyle() =>
+        $"grid-template-columns: repeat({slotMachine.ColumnsCount}, 1fr); grid-template-rows: repeat({slotMachine.RowsCount}, 1fr);";
+    private string CalcTileItemsWidth()
+    {
+        int maxGridPart = Math.Max(slotMachine.ColumnsCount, slotMachine.RowsCount);
+        return $"calc(25px + {18 / maxGridPart}vw + {10 / maxGridPart}vh - 2px * {maxGridPart})";
+    }
+
+        
 }
 
-<div class="slot-machine">
+<div class="slot-machine" style="@CalcGridStyle()">
     @if (allItems is not null)
     {
         @foreach (BaseTileItem? item in allItems)
         {
-            <h1>@item</h1>
-
-            <TileItemComponent tileItem="@item" />
+            <TileItemComponent tileItem="@item" tileWidth="@CalcTileItemsWidth()" />
         }
     }
     else
     {
-        <h2>allItems is null</h2>
+        <h2>allItems are null</h2>
     }
 </div>

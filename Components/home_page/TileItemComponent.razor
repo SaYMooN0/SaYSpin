@@ -1,7 +1,13 @@
 ﻿@code {
     [Parameter]
     public BaseTileItem? tileItem { get; set; }
+    [Parameter]
+    public string tileWidth{ get; set; }
 }
-<div class="slot">
-    @(tileItem is null ? "null" : tileItem.ToString())
+<div class="machine-tile-item" style="width: @(tileWidth)">
+    @if (tileItem is not null)
+    {
+        <img src="@ResourcePathsHelper.TileItemPath(tileItem.Image)" onerror="this.src='@ResourcePathsHelper.DefaultTileItem';" alt="tile item image">
+    }
+
 </div>

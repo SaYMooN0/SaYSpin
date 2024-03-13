@@ -14,7 +14,7 @@ namespace SaYSpin.src.singletons
             OrdinaryTileItem t3 = new("i:3", "3.png", 3);
 
             Inventory = new([t1, t2, t3]);
-            SlotMachine = new(Inventory.TileItems, 3, 3);
+            SlotMachine = new(Inventory.TileItems, 4, 5);
             Logger.Log(SlotMachine);
 
 

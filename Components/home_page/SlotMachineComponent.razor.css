@@ -1,2 +1,6 @@
 .slot-machine {
+    width: auto;
+    height: auto;
+    background-color: aliceblue;
+    display: grid;
 }

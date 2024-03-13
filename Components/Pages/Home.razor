@@ -2,9 +2,12 @@
 @inject MainGameController gameController
 
 <div class="home-page-container">
-    <SlotMachineComponent SlotMachine="@gameController.SlotMachine" />
-
-    <button @onclick="CallUpdateItems">Spin</button>
+    <div class="home-central">
+        <SlotMachineComponent SlotMachine="@gameController.SlotMachine" />
+        <StageProgressBar Current="0" Needed="100" />
+        <button @onclick="CallUpdateItems" class="spin-button">Spin</button>
+    </div>
+    <InventoryComponent />
 </div>
 
 @code {

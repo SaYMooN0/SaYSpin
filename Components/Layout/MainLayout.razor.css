@@ -3,6 +3,6 @@
     width: 100vw;
     box-sizing: border-box;
     display: grid;
-    grid-template-columns: 1fr calc(40px + 2vw);
+    grid-template-columns: calc(40px + 2vw) 1fr;
     background: radial-gradient(circle at 0.7% 1%, rgb(215, 248, 247) 0%, rgb(102, 188, 239) 100.2%);
 }

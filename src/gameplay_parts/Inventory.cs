@@ -5,10 +5,10 @@ namespace SaYSpin.src.gameplay_parts
 {
     public class Inventory
     {
-        public Inventory(List<BaseTileItem> startingItems)
+        public Inventory(List<BaseTileItem> startingItems, List<BaseRelic>? startingRelics)
         {
             Tokens = new();
-            Relics = new();
+            Relics = startingRelics is null? new List<BaseRelic>() : startingRelics;
             TileItems = startingItems;
         }
 

@@ -1,10 +1,27 @@
 ﻿@inherits LayoutComponentBase
+@inject AppMainController mainController
 
-<div class="main-container">
-    <div class="sidebar">
-        <NavMenu />
+
+@if (mainController.IsGameRunning())
+{
+    <div class="main-container">
+        <div class="sidebar">
+            <GameNavMenu />
+        </div>
+        <div class="page-content">
+            @Body
+        </div>
     </div>
-    <div class="page-content">
-        @Body
-    </div>
-</div>
+}
+else
+{
+    <button @onclick="StartNewGame" id="start-new-game-button">Start new game</button>
+}
+
+
+@code {
+    private void StartNewGame()
+    {
+        mainController.StartNewGame();
+    }
+}

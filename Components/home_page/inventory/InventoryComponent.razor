@@ -1,0 +1,27 @@
+﻿<div class="inventory">
+    <div class="inventory-border"></div>
+    <div class="inventory-content">
+
+        <div class="inventory-top-div">
+            <label>Diamonds: @diamondsCount</label>
+        </div>
+      
+        Tokens:
+
+
+        @* with sorting *@
+        Relics:
+
+        Tile items:
+
+        <button>Delete item</button>
+    </div>
+
+</div>
+
+@code {
+    [Parameter]
+    public int diamondsCount { get; set; }
+    [Parameter]
+    public Inventory inventory { get; set; }
+}

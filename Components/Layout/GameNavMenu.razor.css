@@ -16,11 +16,11 @@
     box-sizing: border-box;
     padding: 4px;
     border-radius: 26%;
-    background: radial-gradient(circle at 10% 20%, rgb(59, 149, 237) 0%, rgb(7, 91, 173) 90%);
-    box-shadow: 0 3px 8px rgba(66, 48, 102, 0.2);
+    background-image: linear-gradient(to right bottom, #769aff, #6d95ff, #6490ff, #598bff, #4e86ff, #4780ff, #417bff, #3a75ff, #3d6cff, #4562ff, #4e57ff, #594aff);
+    box-shadow: 3px 3px 12px rgba(156, 158, 202, 0.4);
 }
 
-.nav-links-container .icon-fill path{
+.nav-links-container .icon-fill path {
     fill: #f4f5e4;
 }
 

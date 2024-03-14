@@ -1,5 +1,4 @@
-﻿
-using SaYSpin.src.singletons;
+﻿using SaYSpin.src.singletons;
 
 namespace SaYSpin
 {
@@ -22,8 +21,9 @@ namespace SaYSpin
 #endif
 
             src.Logger.Init();
-            MainGameController gameController = new();
-            builder.Services.AddSingleton<MainGameController>();
+
+            AppMainController mainController = new();
+            builder.Services.AddSingleton<AppMainController>(provider => mainController);
             return builder.Build();
         }
     }

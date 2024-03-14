@@ -65,4 +65,8 @@
         <PackageReference Include="OneOf" Version="3.0.263" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="wwwroot\resources\images\inventory\tokens\" />
+    </ItemGroup>
+
 </Project>

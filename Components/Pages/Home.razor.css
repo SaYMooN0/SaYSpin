@@ -3,7 +3,7 @@
     width: 100%;
     height: 100%;
     display: grid;
-    grid-template-columns: calc(46vw + 140px) 1fr;
+    grid-template-columns: calc(2vh + 52vw - 80px) 1fr;
 }
 
 .home-central {

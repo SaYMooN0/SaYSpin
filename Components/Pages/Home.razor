@@ -1,13 +1,21 @@
 ﻿@page "/"
-@inject MainGameController gameController
+@inject AppMainController mainAppController
 
+@code {
+    public GameplayController gameController;
+
+    protected override void OnInitialized()
+    {
+        gameController = mainAppController.Game;
+    }
+}
 <div class="home-page-container">
     <div class="home-central">
         <SlotMachineComponent SlotMachine="@gameController.SlotMachine" />
         <StageProgressBar Current="0" Needed="100" />
         <button @onclick="CallUpdateItems" class="spin-button">Spin</button>
     </div>
-    <InventoryComponent />
+    <InventoryComponent diamondsCount="gameController.DiamondsCount" inventory="gameController.Inventory" />
 </div>
 
 @code {

@@ -1,6 +1,14 @@
 ﻿body {
     margin: 0;
 }
+
+.unselectable {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 #blazor-error-ui {
     background: lightyellow;
     bottom: 0;

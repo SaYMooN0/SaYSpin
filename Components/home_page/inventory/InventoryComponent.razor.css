@@ -1,0 +1,9 @@
+.inventory {
+    background: linear-gradient(to right bottom, #fdf9ff, #faf7fe, #f6f4fd, #f1f2fb, #edf0fa, #eaf0fa, #e8f0fa, #e5f0f9, #e5f2f9, #e5f4f9, #e7f6f8, #e9f8f7);
+    display:grid;
+    grid-template-columns:calc(0.8vw + 6px) 1fr;
+}
+.inventory-border {
+    background-image: linear-gradient(to right, #8faeff, #8bb5ff, #8abcff, #8ac2ff, #8cc8ff, #89c7ff, #85c5ff, #82c4ff, #79bbff, #72b2ff, #6da9ff, #6c9ffd);
+    background-image: linear-gradient(to right, #84a6ff, #87aeff, #8bb7ff, #91beff, #99c6ff, #97c5ff, #96c5ff, #94c4ff, #88bbff, #7eb2ff, #74a9fe, #6c9ffd);
+}

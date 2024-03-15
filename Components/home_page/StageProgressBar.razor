@@ -1,0 +1,20 @@
+﻿<div class="progress-bar-container unselectable">
+    <div class="stage">Stage @CurrentStage</div>
+    <div class="progress-bar">
+        <div class="progress" style="width:@ProgressPercentage%"></div>
+    </div>
+    <div class="coins">
+        <span class="current-coins">@CurrentCoins</span>/<span class="needed-coins">@CoinsNeeded</span>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int CoinsNeeded { get; set; }
+    [Parameter]
+    public int CurrentCoins { get; set; } = 0;
+    [Parameter]
+    public int CurrentStage { get; set; }
+
+    private double ProgressPercentage => (double)CurrentCoins / CoinsNeeded * 100;
+}

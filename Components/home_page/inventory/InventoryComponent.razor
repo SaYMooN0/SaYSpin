@@ -3,7 +3,7 @@
     <div class="inventory-content">
 
         <div class="inventory-top-div">
-            <label>Diamonds: @diamondsCount</label>
+            <label>Diamonds: @inventory.DiamondsCount <img src="/resources/images/inventory/diamond.png" /> </label>
         </div>
       
         Tokens:
@@ -20,8 +20,6 @@
 </div>
 
 @code {
-    [Parameter]
-    public int diamondsCount { get; set; }
     [Parameter]
     public Inventory inventory { get; set; }
 }

@@ -7,20 +7,43 @@
 }
 
 .home-central {
+    width: 100%;
     display: grid;
-    grid-template-rows: 1fr 60px 80px;
-    justify-content: center;
+    grid-template-rows: 1fr auto auto;
+    gap: 20px;
+    justify-items: center;
     align-items: center;
     transition: all 0.4s ease;
 }
 
 .spin-button {
-    padding: 10px 20px;
-    transition: all 0.2s ease;
+    padding: 8px 20px;
+    width: 210px;
+    border-radius: 16px;
+    font-size: 32px;
+    font-weight: bold;
+    color: white;
+    font-family: Arial;
+    margin: 30px 0 40px 0;
+    background-image: linear-gradient(to right bottom, #68ff68, #5fff61, #56ff59, #4bfe51, #3ffe48, #37fc42, #2ffb3b, #24f934, #20f62e, #1bf227, #15ef20, #0eec17);
+    border: none;
+    cursor: pointer;
+    transition: all 0.1s ease;
 }
 
-@media (min-height: 800px) {
-    .home-central {
-        grid-template-rows: 1fr 90px 140px;
+    .spin-button:hover {
+        background-image: linear-gradient(to right bottom, #31ff4a, #30fd44, #2ffb3d, #2ef937, #2df72f, #2af42a, #28f225, #25ef1f, #1feb1b, #17e816, #0ee411, #00e10b);
+        transform:translateY(4px);
+    }
+
+@media (max-width: 700px) {
+    .home-page-container {
+        grid-template-columns: calc(20vw + 180px) 1fr;
+    }
+
+    .spin-button {
+        width: 200px;
+        border-radius: 12px;
+        font-size: 28px;
     }
 }

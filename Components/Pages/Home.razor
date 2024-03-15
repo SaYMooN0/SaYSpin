@@ -12,10 +12,10 @@
 <div class="home-page-container">
     <div class="home-central">
         <SlotMachineComponent SlotMachine="@gameController.SlotMachine" />
-        <StageProgressBar Current="0" Needed="100" />
-        <button @onclick="CallUpdateItems" class="spin-button">Spin</button>
+        <StageProgressBar CurrentCoins="@gameController.CoinsCount" CoinsNeeded="@gameController.CoinsNeededToCompleteTheStage" CurrentStage="@gameController.CurrentStage" />
+        <button @onclick="CallUpdateItems" class="spin-button unselectable">Spin</button>
     </div>
-    <InventoryComponent diamondsCount="gameController.DiamondsCount" inventory="gameController.Inventory" />
+    <InventoryComponent inventory="gameController.Inventory" />
 </div>
 
 @code {

@@ -11,7 +11,7 @@ namespace SaYSpin.src.gameplay_parts
         public Inventory Inventory { get; private set; }
         public int CurrentStage { get; private set; }
         public int CoinsCount { get; private set; }
-        public int DiamondsCount { get; private set; }
+        public int CoinsNeededToCompleteTheStage{  get; private set; }    
         public GameplayController(ushort difficulty = 1, List<BaseTileItem>? startingTileItems = null, List<BaseRelic>? startingRelics = null)
         {
             _difficulty = difficulty;
@@ -30,7 +30,7 @@ namespace SaYSpin.src.gameplay_parts
 
             CurrentStage = 0;
             CoinsCount = 10;
-            DiamondsCount = 5;
+            CoinsNeededToCompleteTheStage = 100;
         }
 
 

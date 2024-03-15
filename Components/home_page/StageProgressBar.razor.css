@@ -1,0 +1,58 @@
+.progress-bar-container {
+    width: 340px;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    background-image: linear-gradient(to right bottom, #883ffb, #843efb, #7f3efb, #7b3dfb, #763dfb, #723cfb, #6d3cfa, #693bfa, #6539f9, #6037f9, #5b36f8, #5634f8);
+    padding: 16px 12px;
+    border-radius: 10px;
+    color: white;
+    font-family: 'Arial', sans-serif;
+    gap: 16px;
+    font-size: 16px;
+}
+
+.progress-bar {
+    flex: 2;
+    height: calc(0.6vh + 16px);
+    background-image: radial-gradient(circle, #d5eef2, #dbf0f6, #e0f1f9, #e6f3fb, #ecf5fd, #ecf5fc, #ecf6fb, #ecf6fa, #eaf5f5, #eaf3ef, #ecf0ea, #eeede7);
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+.progress {
+    background-image: linear-gradient(to right bottom, #ffe437, #fee230, #fcdf29, #fbdd21, #fada17, #f9d811, #f9d509, #f8d300, #f8d100, #f7cf00, #f7cd00, #f6cb00);
+    border-radius: 2px;
+    height: 100%;
+    transition: width 0.5s ease;
+}
+
+.coins {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.current-coins {
+    font-weight: bold;
+}
+
+.needed-coins {
+    opacity: 0.8;
+}
+@media (max-width: 900px) {
+    .progress-bar-container {
+        width: 280px;
+        gap: 14px;
+        font-size: 14px;
+    }
+}
+@media (min-width: 1300px) {
+    .progress-bar-container {
+        width: 500px;
+        gap: 18px;
+        font-size: 18px;
+    }
+}

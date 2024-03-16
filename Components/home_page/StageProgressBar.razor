@@ -1,7 +1,9 @@
-﻿<div class="progress-bar-container unselectable">
+﻿@using System.Globalization
+
+<div class="progress-bar-container unselectable">
     <div class="stage">Stage @CurrentStage</div>
     <div class="progress-bar">
-        <div class="progress" style="width:@ProgressPercentage%"></div>
+        <div class="progress" style="width:@ProgressPercentage.ToString(CultureInfo.InvariantCulture)%"></div>
     </div>
     <div class="coins">
         <span class="current-coins">@CurrentCoins</span>/<span class="needed-coins">@CoinsNeeded</span>
@@ -16,5 +18,5 @@
     [Parameter]
     public int CurrentStage { get; set; }
 
-    private double ProgressPercentage => (double)CurrentCoins / CoinsNeeded * 100;
+    private double ProgressPercentage =>Math.Round((double)CurrentCoins / CoinsNeeded * 100, 2);
 }

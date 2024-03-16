@@ -37,6 +37,19 @@ namespace SaYSpin.src.gameplay_parts
                 TileItems[row, col] = newItems[i];
             }
         }
+        public int CalculateCoinValue()
+        {
+            int coinValue = 0;
+            foreach (var item in TileItems)
+            {
+                if (item is not null)
+                {
+                    coinValue += item.CoinValue;
+                }
+            }
+
+            return coinValue;
+        }
 
         public void IncreaseRowsCount()
         {
@@ -75,7 +88,7 @@ namespace SaYSpin.src.gameplay_parts
             int filledCount = 0;
             int maxItemLength = TileItems.Cast<BaseTileItem?>()
                                          .Where(item => item is not null)
-                                         .Max(item => item?.ToString().Length ?? 0)+ ColumnsCount;
+                                         .Max(item => item?.ToString().Length ?? 0) + ColumnsCount;
 
             string formatString = $"{{0, -{maxItemLength}}}";
             int totalLineLength = (maxItemLength + 1) * ColumnsCount;
@@ -101,7 +114,7 @@ namespace SaYSpin.src.gameplay_parts
             sB.AppendLine($"Rows: {RowsCount}\tColumns: {ColumnsCount}\tEmpty: {emptyCount}\tFilled: {filledCount}");
             return sB.ToString();
         }
-       
+
 
     }
 }

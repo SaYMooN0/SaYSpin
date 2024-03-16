@@ -9,7 +9,7 @@ namespace SaYSpin.src.gameplay_parts.inventory_related
         {
             Id= id;
             Image= image;
-            CoinValue= coinValue;
+            CoinValue = coinValue;
         }
     }
 }

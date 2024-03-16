@@ -1,8 +1,8 @@
 .progress-bar-container {
-    width: 340px;
     transition: all 0.2s ease;
     box-sizing: border-box;
-    display: flex;
+    display: grid;
+    grid-template-columns: 66px 260px 66px;
     align-items: center;
     background-image: linear-gradient(to right bottom, #883ffb, #843efb, #7f3efb, #7b3dfb, #763dfb, #723cfb, #6d3cfa, #693bfa, #6539f9, #6037f9, #5b36f8, #5634f8);
     padding: 16px 12px;
@@ -14,7 +14,6 @@
 }
 
 .progress-bar {
-    flex: 2;
     height: calc(0.6vh + 16px);
     background-image: radial-gradient(circle, #d5eef2, #dbf0f6, #e0f1f9, #e6f3fb, #ecf5fd, #ecf5fc, #ecf6fb, #ecf6fa, #eaf5f5, #eaf3ef, #ecf0ea, #eeede7);
     border-radius: 10px;
@@ -42,17 +41,17 @@
 .needed-coins {
     opacity: 0.8;
 }
-@media (max-width: 900px) {
+@media (max-width: 960px) {
     .progress-bar-container {
-        width: 280px;
-        gap: 14px;
+        grid-template-columns: 56px 180px 56px;
+        gap: 6px;
         font-size: 14px;
     }
 }
 @media (min-width: 1300px) {
     .progress-bar-container {
-        width: 500px;
-        gap: 18px;
+        grid-template-columns: 80px 370px 80px;
+        gap: 14px;
         font-size: 18px;
     }
 }

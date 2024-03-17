@@ -16,5 +16,9 @@ namespace SaYSpin.src.gameplay_parts
         public TokensCollection Tokens { get; init; }
         public List<BaseRelic> Relics { get; init; }
         public List<BaseTileItem> TileItems { get; init; }
+        public void AddTileItem(BaseTileItem item) =>
+            TileItems.Add(item);
+        public void AddRelic(BaseRelic relic) =>
+            Relics.Add(relic);
     }
 }

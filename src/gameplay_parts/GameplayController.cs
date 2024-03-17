@@ -17,9 +17,9 @@ namespace SaYSpin.src.gameplay_parts
         {
             _difficulty = difficulty;
 
-            OrdinaryTileItem t1 = new("i:1", "1.png", 1);
-            OrdinaryTileItem t2 = new("i:2", "2.png", 2);
-            OrdinaryTileItem t3 = new("i:3", "3.png", 3);
+            OrdinaryTileItem t1 = new("i:1", "1.png",Rarity.Common, 1);
+            OrdinaryTileItem t2 = new("i:2", "2.png", Rarity.Common, 2);
+            OrdinaryTileItem t3 = new("i:3", "3.png", Rarity.Common, 3);
 
             if (startingTileItems is null)
                 startingTileItems = [t1, t2, t3];
@@ -50,7 +50,7 @@ namespace SaYSpin.src.gameplay_parts
             SpinsLeft = 7;
             CoinsCount = CalculateStageStartingCoins();
             CoinsNeededToCompleteTheStage = CalculateCoinsNeededForStage(CurrentStage);
-            NewStageStarted?.Invoke(CurrentStage);
+            OnNewStageStarted?.Invoke(CurrentStage);
 
         }
         public void SpinSlotMachine()
@@ -66,10 +66,8 @@ namespace SaYSpin.src.gameplay_parts
         public bool CoinsEnoughToCompleteTheStage() =>
             CoinsCount >= CoinsNeededToCompleteTheStage;
 
-        public event StageStartedDelegate NewStageStarted;
+        public event StageStartedDelegate OnNewStageStarted;
         public delegate void StageStartedDelegate(int newStageNumber);
-
-
 
     }
 }

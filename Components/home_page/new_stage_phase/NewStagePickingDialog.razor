@@ -1,0 +1,53 @@
+﻿@inject IJSRuntime JSRuntime
+<dialog id="newStagePickingDialog">
+    <label class="stageNumber">@stageNumber</label>
+    @if (_pickingStageTileItem)
+    {
+        @foreach (BaseTileItem itemToPick in ItemsToPick)
+        {
+            @* on pick add to inventory and change state of _pickingStageTileItem*@
+        }
+        @* refresh buttoon*@
+    }
+    else
+    {
+        @foreach (BaseRelic relicToPick in RelicsToPick)
+        {
+            @* on pick add to inventory and close*@
+        }
+        @* refresh buttoon*@
+    }
+    <button @onclick="CloseDialog">Close</button> @* will be deleted *@
+</dialog>
+
+@code {
+    [Parameter]
+    public GameplayController gameController { get; set; }
+
+    protected override void OnInitialized()
+    {
+        ItemsToPick = new();
+        RelicsToPick = new();
+    }
+    private int stageNumber = 0;
+    private bool _pickingStageTileItem = true;
+    private List<BaseTileItem> ItemsToPick{ get; set; }
+    private List<BaseRelic> RelicsToPick { get; set; }
+
+    public async Task OpenPickingDialog(int newStageNumber)
+    {
+        stageNumber = newStageNumber;
+        await JSRuntime.InvokeVoidAsync("blazorDialogFunctions.openDialog", "newStagePickingDialog");
+    }
+
+    private async Task CloseDialog() =>
+        await JSRuntime.InvokeVoidAsync("blazorDialogFunctions.closeDialog", "newStagePickingDialog");
+}
+
+@code {
+    //show
+    //hide
+
+
+    //choose->add to inventory
+}

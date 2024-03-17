@@ -3,10 +3,12 @@
 
 @code {
     public GameplayController gameController;
-
+    private NewStagePickingDialog newStagePickingDialog;
     protected override void OnInitialized()
     {
         gameController = mainAppController.Game;
+        gameController.OnNewStageStarted += (newStageNumber) => newStagePickingDialog.OpenPickingDialog(newStageNumber);
+
     }
 }
 <div class="home-page-container">
@@ -16,7 +18,7 @@
         {
             <div class="container-for-complete-stage">
                 <StageProgressBar CurrentCoins="@gameController.CoinsCount" CoinsNeeded="@gameController.CoinsNeededToCompleteTheStage" CurrentStage="@gameController.CurrentStage" />
-                <button @onclick="CompleteStage">Complete The Stage</button>
+                <button @onclick="CompleteStage">Finish stage</button>
             </div>
         }
         else
@@ -42,6 +44,7 @@
     </div>
     <InventoryComponent inventory="gameController.Inventory" />
 </div>
+<NewStagePickingDialog @ref="newStagePickingDialog" gameController="@gameController" />
 
 @code {
 

@@ -6,25 +6,16 @@ namespace SaYSpin.src.gameplay_parts
     public class GameplayController
     {
 
-        private ushort _difficulty = 1;
+        private Difficulty _difficulty { get; init;}
         public SlotMachine SlotMachine { get; private set; }
         public Inventory Inventory { get; private set; }
         public short SpinsLeft { get; private set; }
         public int CurrentStage { get; private set; }
         public int CoinsCount { get; private set; }
         public int CoinsNeededToCompleteTheStage { get; private set; }
-        public GameplayController(ushort difficulty = 1, List<BaseTileItem>? startingTileItems = null, List<BaseRelic>? startingRelics = null)
+        public GameplayController(List<BaseTileItem> startingTileItems, List<BaseRelic> startingRelics, Difficulty difficulty )
         {
             _difficulty = difficulty;
-
-            OrdinaryTileItem t1 = new("i:1", "1.png",Rarity.Common, 1);
-            OrdinaryTileItem t2 = new("i:2", "2.png", Rarity.Common, 2);
-            OrdinaryTileItem t3 = new("i:3", "3.png", Rarity.Common, 3);
-
-            if (startingTileItems is null)
-                startingTileItems = [t1, t2, t3];
-            else
-                startingTileItems.AddRange([t1, t2, t3]);
 
             Inventory = new(startingTileItems, startingRelics);
             SlotMachine = new(Inventory.TileItems, 3, 3);
@@ -41,7 +32,7 @@ namespace SaYSpin.src.gameplay_parts
         private int CalculateCoinsNeededForStage(int stageToCalculateFor)
         {
             //will change according to bonuses
-            return (int)(Math.Pow(stageToCalculateFor, 1.8) * (_difficulty + 1) * 3.2) + 10;
+            return (int)(Math.Pow(stageToCalculateFor, 1.8) * (_difficulty.NeededCoinsMultiplier + 1) * 3.2) + 10;
         }
         public void StartNewStage()
         {

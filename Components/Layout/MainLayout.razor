@@ -15,13 +15,25 @@
 }
 else
 {
-    <button @onclick="StartNewGame" id="start-new-game-button">Start new game</button>
+    <div class="starting-screen">
+
+        <div class="starting-screen-buttons-container">
+            <NavLink class="starting-screen-button" href="run_preparing">
+                New run
+            </NavLink>
+            <button>Upgrades</button>
+            <button>Last Runs</button>
+            <button>Settings</button>
+            <button>Exit</button>
+        </div>
+    </div>
+
 }
 
 
 @code {
-    private void StartNewGame()
+    private void OpenNewRunDialog()
     {
-        mainController.StartNewGame();
+
     }
 }

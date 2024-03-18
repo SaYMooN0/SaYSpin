@@ -1,0 +1,28 @@
+﻿@page "/run_preparing"
+@layout Layout.EmptyLayout
+
+
+<label>Choose</label>
+@if (currentStageIsDifficlutyChoosing)
+{
+    <div class="choose-difficulty-container">
+
+        <div class="difficulties-container">
+
+        </div>
+        <div class="difficulty-info">
+
+        </div>
+    </div>
+}
+else
+{
+
+}
+@code {
+    private bool currentStageIsDifficlutyChoosing = true;
+    private void StartNewGame()
+    {
+        // mainController.StartNewGame();
+    }
+}

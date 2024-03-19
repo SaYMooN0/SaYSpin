@@ -1,5 +1,15 @@
-﻿body {
-    margin: 0;
+﻿@font-face {
+    font-family: 'Montserrat';
+    src: url('/resources/fonts/Montserrat-VariableFont_wght.ttf') format('truetype');
+}
+html {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+body {
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 .unselectable {

@@ -1,0 +1,17 @@
+.difficulty-choosing-div {
+    background-image: radial-gradient(circle, #effeff, #eefeff, #edfeff, #ebfdfe, #eafdfe, #eafdfe, #e9fcfe, #e9fcfe, #e9fcfe, #eafbff, #eafbff, #ebfaff);
+    height: 200px;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.12s ease;
+}
+    .difficulty-choosing-div:hover{
+        transform:scale(1.15);
+    }
+    .difficulty-choosing-div img {
+        height: 100px;
+        aspect-ratio: 1/1;
+    }

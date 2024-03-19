@@ -19,8 +19,12 @@ namespace SaYSpin.src.singletons
 
             AllRelicsCollection = [];
 
-            Difficulty normalDifficulty = new("normal", [], [], "normal.png", 1, 1, 1, 3, 1, 1);
-            PossibleDifficulties = [normalDifficulty];
+            Difficulty normalDifficulty = new("normal", [], [], "normal.png", 1, 1, 10, 3, 1, 1);
+            Difficulty hardDifficulty = new("hard",
+                ["Receive 1,2 x more rubies after run", "Receive 1,2 x more exp after run"],
+                ["More coins are needed to complete each stage", "Increased prices in the shop"],
+                "normal.png", 1.2, 1.2, 10, 3, 1.2, 1.2);
+            PossibleDifficulties = [normalDifficulty, hardDifficulty];
         }
 
         public GameplayController? Game { get; private set; }

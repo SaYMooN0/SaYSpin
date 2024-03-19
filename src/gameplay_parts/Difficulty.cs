@@ -37,5 +37,8 @@
 
         public double RubiesAfterRunMultiplier { get; init; }
         public double ExpAfterRunMultiplier { get; init; }
+
+        public string GetFullImagePath() =>
+            $"/resources/images/difficulties/{ImagePath}";
     }
 }

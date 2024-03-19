@@ -1,7 +1,15 @@
-﻿<h3>DifficultyChoosingComponent</h3>
-
+﻿
+<div @onmouseover="renderDifficultyInfo" @onmouseout="clearDifficultyInfo" class="difficulty-choosing-div" @onclick="onclickAction">
+    <img src="@difficulty.GetFullImagePath()" />
+    <label>@difficulty.Name</label>
+</div>
 @code {
     [Parameter]
-    public Difficulty difficulty{ get; set; }
-
+    public Difficulty difficulty { get; set; }
+    [Parameter]
+    public Action renderDifficultyInfo { get; set; }
+    [Parameter]
+    public Action clearDifficultyInfo { get; set; }
+    [Parameter]
+    public Action onclickAction { get; set; }
 }

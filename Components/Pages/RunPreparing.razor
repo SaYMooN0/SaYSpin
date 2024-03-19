@@ -1,26 +1,90 @@
 ﻿@page "/run_preparing"
 @layout Layout.EmptyLayout
+@inject AppMainController mainAppController
+@inject IJSRuntime js
 
 
-<label>Choose</label>
-@if (currentStageIsDifficlutyChoosing)
-{
-    <div class="choose-difficulty-container">
-
-        <div class="difficulties-container">
-
+<div class="run-preparing-page">
+    <NavLink href="">
+        <div class="cancel-button unselectable">
+            Cancel
         </div>
-        <div class="difficulty-info">
+    </NavLink>
+    <div class="content">
 
-        </div>
+        @if (currentStageIsDifficlutyChoosing)
+        {
+            <div class="choose-difficulty-container">
+                <label class="choose-difficulty-label">
+                    Difficulties:
+                </label>
+                <div class="difficulties-container">
+                    @foreach (var difficulty in mainAppController.PossibleDifficulties)
+                    {
+                        <DifficultyChoosingComponent difficulty="difficulty"
+                                                     renderDifficultyInfo="()=>SetDifficultyInfo(difficulty.Positives, difficulty.Negatives)"
+                                                     clearDifficultyInfo="ClearDifficultyInfo"
+                                                     onclickAction="()=>DifficultyChosen(difficulty)" />
+                    }
+                </div>
+                <div class="difficulty-info-container">
+                    <label class="difficulty-info-label">Difficulty info</label>
+                    <div class="difficulty-info">
+                        <div class="difficulty-negatives">
+                            @foreach (string negative in DifficultyInfoNegatives)
+                            {
+                                <p>
+                                    <span>-</span>
+                                    @negative
+                                </p>
+                            }
+                        </div>
+                        <div class="difficulty-positives">
+                            @foreach (string positive in DifficultyInfoPositives)
+                            {
+                                <p>
+                                    <span>+</span>
+                                    @positive
+                                </p>
+
+                            }
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        }
+        else
+        {
+            <div>
+                Choose starter pack
+            </div>
+        }
     </div>
-}
-else
-{
+</div>
 
-}
+
+
 @code {
+    private string[] DifficultyInfoPositives { get; set; } = [];
+    private string[] DifficultyInfoNegatives { get; set; } = [];
+    private Difficulty selectedDifficulty { get; set; }
     private bool currentStageIsDifficlutyChoosing = true;
+    private void SetDifficultyInfo(string[] positives, string[] negatives)
+    {
+        DifficultyInfoPositives = positives;
+        DifficultyInfoNegatives = negatives;
+        StateHasChanged();
+        js.InvokeVoidAsync("logToConsole", "1");
+    }
+    private void ClearDifficultyInfo() =>
+        SetDifficultyInfo(Array.Empty<string>(), Array.Empty<string>());
+
+    private void DifficultyChosen(Difficulty difficulty)
+    {
+        selectedDifficulty = difficulty;
+        currentStageIsDifficlutyChoosing = false;
+    }
     private void StartNewGame()
     {
         // mainController.StartNewGame();

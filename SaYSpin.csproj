@@ -75,6 +75,7 @@
     <ItemGroup>
       <Folder Include="wwwroot\resources\images\inventory\tokens\" />
       <Folder Include="wwwroot\resources\images\difficulties\" />
+      <Folder Include="wwwroot\resources\fonts\" />
     </ItemGroup>
 
 </Project>

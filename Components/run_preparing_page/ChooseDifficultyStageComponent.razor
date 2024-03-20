@@ -1,0 +1,57 @@
+@inject AppMainController mainAppController
+
+<div class="choose-difficulty-container">
+    <label class="choose-difficulty-label unselectable">
+        Difficulties:
+    </label>
+    <div class="difficulties-container">
+        @foreach (var difficulty in mainAppController.PossibleDifficulties)
+        {
+            <DifficultyCard difficulty="difficulty"
+                            renderDifficultyInfo="()=>SetDifficultyInfo(difficulty.Positives, difficulty.Negatives)"
+                            clearDifficultyInfo="ClearDifficultyInfo"
+                            onclickAction="()=>DifficultyChosen(difficulty)" />
+        }
+    </div>
+    <div class="difficulty-info-container">
+        <label class="difficulty-info-label unselectable">Difficulty info</label>
+        <div class="difficulty-info">
+            <div class="difficulty-negatives">
+                @foreach (string negative in DifficultyInfoNegatives)
+                {
+                    <p>
+                        <span>–</span>
+                        @negative
+                    </p>
+                }
+            </div>
+            <div class="difficulty-positives">
+                @foreach (string positive in DifficultyInfoPositives)
+                {
+                    <p>
+                        <span>+</span>
+                        @positive
+                    </p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public EventCallback<Difficulty> onDifficultyChosen { get; set; }
+    private string[] DifficultyInfoPositives { get; set; } = [];
+    private string[] DifficultyInfoNegatives { get; set; } = [];
+
+    private void DifficultyChosen(Difficulty difficulty) =>
+        onDifficultyChosen.InvokeAsync(difficulty);
+    private void SetDifficultyInfo(string[] positives, string[] negatives)
+    {
+        DifficultyInfoPositives = positives;
+        DifficultyInfoNegatives = negatives;
+        StateHasChanged();
+    }
+    private void ClearDifficultyInfo() =>
+        SetDifficultyInfo(Array.Empty<string>(), Array.Empty<string>());
+}

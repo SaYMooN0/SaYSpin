@@ -1,0 +1,13 @@
+﻿<div>
+    <label class="difficulty-label">selected difficulty: @selectedDifficultyName</label>
+    <label class="choose-starter-kit-label"> Choose your starter kit</label>
+    <div class="starter-kits">
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string selectedDifficultyName { get; set; }
+    [Parameter]
+    public IEnumerable<GameStarterKit> starterKits { get; set; } = [];
+}

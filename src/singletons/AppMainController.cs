@@ -37,10 +37,15 @@ namespace SaYSpin.src.singletons
         {
             Game = new(startingItems, startingRelics, difficulty);
         }
+        
         public void GameEnded()
         {
             Logger.Log("game ended");
             Game = null;
+        }
+        public List<GameStarterKit> GenerateStarterKits(Difficulty difficulty)
+        {
+            return new();
         }
     }
 }

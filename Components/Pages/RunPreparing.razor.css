@@ -35,100 +35,6 @@
     flex-direction: column;
 }
 
-    .run-preparing-page .content .choose-difficulty-label {
-        color: #FBFBFB;
-        font-weight: bold;
-        font-size: 36px;
-        font-family: 'Montserrat';
-        letter-spacing: 2px;
-    }
-
-.choose-difficulty-container {
-    display: flex;
-    height: 100%;
-    width: 100%;
-    justify-content: space-around;
-    align-items: center;
-    flex-direction: column;
-}
-
-.difficulties-container {
-    display: flex;
-    flex-direction: row;
-    gap:4vw;
-}
-
-.difficulty-info-container {
-    display: grid;
-    grid-template-rows: auto 1fr;
-}
-
-.difficulty-info-label {
-    justify-self: center;
-    background-image: radial-gradient(circle, #428bff, #4486ff, #4881ff, #4d7cff, #5277ff, #5274ff, #5371ff, #546eff, #4f6cff, #496bff, #4469ff, #3d68ff);
-    width: fit-content;
-    padding: 12px;
-    border-radius: 10px;
-    margin-bottom: -20px;
-    font-size: 20px;
-    z-index: 2;
-    color: #FBFBFB;
-    font-family: 'Montserrat';
-    font-weight: bold;
-}
-
-.difficulty-info {
-    height: calc(22vh + 100px);
-    width: 480px;
-    color: #FBFBFB;
-    border-radius: 18px;
-    padding: 10px;
-    box-sizing: border-box;
-    background-image: linear-gradient(to right bottom, #ffffff, #fdfdff, #fafaff, #f7f8ff, #f4f6ff, #f3f6ff, #f1f5ff, #f0f5ff, #f0f6ff, #f1f6ff, #f1f7ff, #f2f7ff);
-    font-family: 'Montserrat';
-    position: relative;
-    z-index: 1;
-    
-}
-
-    .difficulty-info::-webkit-scrollbar-track {
-        background-color: transparent;
-        border-radius: 10px;
-    }
-    .difficulty-info::-webkit-scrollbar {
-        width: 10px; 
-    }
-
-    .difficulty-info::-webkit-scrollbar-thumb {
-        background-color: #ECECEC; 
-        border-radius: 10px; 
-        border: 2px solid transparent; 
-        background-clip: padding-box; 
-    }
-    .difficulty-info div p {
-        margin: 5px 0;
-        align-items: center;
-        width: 100%;
-        font-size: 20px;
-        display: grid;
-        grid-template-columns: auto 1fr;
-        font-family: 'Montserrat';
-    }
-    .difficulty-info div span {
-        font-weight: bold;
-        margin-right: 5px;
-        font-size: 30px;
-        font-family: 'Montserrat';
-    }
-
-.difficulty-positives {
-    color: #32CD30
-}
-
-.difficulty-negatives {
-    color: #F31414
-}
-
 @media (max-width: 860px) {
     .cancel-button {
         bottom: 15px;
@@ -137,13 +43,6 @@
         font-size: 19px;
         border-radius: 6px;
     }
-
-
-    .difficulty-info {
-        width: 360px;
-        border-radius: 14px;
-        padding: 8px;
-    }
 }
 
 @media (min-width: 1100px) {
@@ -151,9 +50,5 @@
         bottom: 30px;
         right: 40px;
         font-size: 28px;
-    }
-
-    .difficulty-info {
-        width: 640px;
     }
 }

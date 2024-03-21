@@ -1,0 +1,12 @@
+﻿
+<div class="token-display">
+    @count (of @type type)
+</div>
+@* img and count *@
+@code {
+    [Parameter]
+    public TokenType type { get; set; }
+    [Parameter]
+    public int count { get; set; }
+
+}

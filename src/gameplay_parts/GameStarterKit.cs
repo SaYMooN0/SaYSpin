@@ -11,7 +11,7 @@ namespace SaYSpin.src.gameplay_parts
         int DiamondsCount)
     {
 
-        public TokensCollection RandomTokensCollection(int tokensCount)
+        static public TokensCollection RandomTokensCollection(int tokensCount)
         {
             TokensCollection tC = new();
             for (int i = 0; i < tokensCount; i++)

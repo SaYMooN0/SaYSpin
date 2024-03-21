@@ -1,2 +1,15 @@
 .starter-kit-card {
+    display: flex;
+    flex-direction: column;
+    background-color:dodgerblue;
+
+}
+.starter-kit-card:hover{
+    transform:scale(1.15);
+}
+
+.row-container {
+    display: flex;
+    flex-direction:row;
+    gap:10px;
 }

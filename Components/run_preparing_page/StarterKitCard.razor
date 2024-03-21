@@ -1,8 +1,27 @@
 ﻿
 <div class="starter-kit-card">
-    <h3>StarterKitCard</h3>
+    <div class="row-container">
+        @foreach (var i in starterKit.TileItems)
+        {
+            <InventoryItemWithRarityComponent itemToDisplay="@i" />
+        }
+    </div>
+    @* divider *@
+    <div class="row-container">
+        @foreach (var i in starterKit.Relics)
+        {
+            <InventoryItemWithRarityComponent itemToDisplay="@i" />
+        }
+    </div>
+    @* divider *@
+    <div class="row-container">
+        @foreach (var i in starterKit.TokensCollection.AvailableTokensAsTuples())
+        {
+            <TokenDisplayComponent type="@i.tokenType" count="@i.count" />
+        }
+    </div>
 </div>
 @code {
     [Parameter]
-    public GameStarterKit starterKit{ get; set; } 
+    public GameStarterKit starterKit { get; set; }
 }

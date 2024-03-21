@@ -2,6 +2,10 @@
     <label class="difficulty-label">selected difficulty: @selectedDifficultyName</label>
     <label class="choose-starter-kit-label"> Choose your starter kit</label>
     <div class="starter-kits">
+        @foreach (var sK in starterKits)
+        {
+            <StarterKitCard starterKit="@sK"/>
+        }
     </div>
 </div>
 

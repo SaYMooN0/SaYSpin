@@ -49,6 +49,13 @@ namespace SaYSpin.src.gameplay_parts.inventory_related
             var randomIndex = Randomizer.Int(tokenTypes.Length); 
             return (TokenType)tokenTypes.GetValue(randomIndex);
         }
+        public IEnumerable<(TokenType tokenType, int count)> AvailableTokensAsTuples()
+        {
+            foreach (var kvp in _tokens)
+            {
+                yield return (kvp.Key, kvp.Value);
+            }
+        }
     }
 
 }

@@ -5,8 +5,8 @@ namespace SaYSpin.src.gameplay_parts.inventory_related.relics
 {
     public class RelicWithCalculationEffect : BaseRelic
     {
-        public RelicWithCalculationEffect(string id, string name, string description, string image, Rarity rarity, CalculationEffect effect)
-            : base(id, name, description, image, rarity)
+        public RelicWithCalculationEffect(string id, string name, string description, Rarity rarity, CalculationEffect effect)
+            : base(id, name, description, rarity)
         {
         }
     }

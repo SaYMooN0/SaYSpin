@@ -6,16 +6,16 @@
             <InventoryItemWithRarityComponent itemToDisplay="@i" />
         }
     </div>
-    @* divider *@
+    <hr class="custom-divider">
     <div class="row-container">
         @foreach (var i in starterKit.Relics)
         {
             <InventoryItemWithRarityComponent itemToDisplay="@i" />
         }
     </div>
-    @* divider *@
-    <div class="row-container">
-        @foreach (var i in starterKit.TokensCollection.AvailableTokensAsTuples())
+    <hr class="custom-divider">
+    <div class="tokens-container">
+        @foreach (var i in starterKit.TokensCollection.TokensAsTuples())
         {
             <TokenDisplayComponent type="@i.tokenType" count="@i.count" />
         }

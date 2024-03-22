@@ -1,0 +1,9 @@
+﻿<div class="item-to-display">
+    <img src="@ResourcePathsHelper.ResourcesImages(itemToDisplay.Image)" />
+    <div style="box-shadow: 0px 0px calc(20px + 0.2vw + 0.4vh) calc(14px + 0.3vw + 0.5vh) @itemToDisplay.Rarity.ToHexColor();"></div>
+</div>
+
+@code {
+    [Parameter]
+    public BaseInventoryItem itemToDisplay { get; set; }
+}

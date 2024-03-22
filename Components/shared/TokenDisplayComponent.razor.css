@@ -1,0 +1,17 @@
+.token-display {
+    display: flex;
+    flex-direction: row;
+}
+    .token-display label {
+        height: 100%;
+        align-items: center;
+        display: flex;
+        font-family: 'Overload';
+        font-size: 26px;
+    }
+    .token-display img {
+        box-sizing:border-box;
+        padding:2px;
+        height:100%;
+        aspect-ratio:1/1;
+    }

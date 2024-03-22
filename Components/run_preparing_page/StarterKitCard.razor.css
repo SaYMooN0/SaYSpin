@@ -1,15 +1,75 @@
 .starter-kit-card {
+    width: 470px;
     display: flex;
     flex-direction: column;
-    background-color:dodgerblue;
-
+    background-color: #f2f2f2;
+    align-items: center;
+    cursor: pointer;
+    transition: all .12s ease;
 }
-.starter-kit-card:hover{
-    transform:scale(1.15);
+
+    .starter-kit-card:hover {
+        transform: scale(1.1);
+    }
+
+    .starter-kit-card .row-container {
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        height: 80px;
+        overflow-x: auto;
+    }
+
+    .starter-kit-card .tokens-container {
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        height: 50px;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .starter-kit-card .custom-divider {
+        border: 0;
+        border-radius: 20px;
+        height: 1px;
+        background: #cccccc;
+        margin: 10px 0;
+        width: 90%;
+    }
+
+@media (max-width: 1000px) {
+    .starter-kit-card {
+        width: 320px;
+    }
+
+        .starter-kit-card:hover {
+            transform: scale(1.05);
+        }
+
+        .starter-kit-card .row-container {
+            height: 60px;
+            gap: 14px;
+        }
+
+        .starter-kit-card .tokens-container {
+            height: 30px;
+            gap: 14px;
+        }
 }
 
-.row-container {
-    display: flex;
-    flex-direction:row;
-    gap:10px;
+@media (max-width: 700px) {
+    .starter-kit-card {
+        width: 260px;
+    }
+
+        .starter-kit-card .row-container {
+            height: 50px;
+            gap: 14px;
+        }
+
+        .starter-kit-card .tokens-container {
+            height: 22px;
+            gap: 14px;
+        }
 }

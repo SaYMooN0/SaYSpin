@@ -2,6 +2,10 @@
     font-family: 'Montserrat';
     src: url('/resources/fonts/Montserrat-VariableFont_wght.ttf') format('truetype');
 }
+@font-face {
+    font-family: 'Overload';
+    src: url('/resources/fonts/OverloadBurn.ttf') format('truetype');
+}
 html {
     margin: 0 !important;
     padding: 0 !important;

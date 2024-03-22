@@ -13,19 +13,9 @@ namespace SaYSpin.src.singletons
         public AppMainController()
         {
 
-            OrdinaryTileItem appleTileItem = new("apple", "Apple", "apple.png", Rarity.Common, 1, ["fruit"]);
-            OrdinaryTileItem orangeTileItem = new("orange", "Orange", "orange.png", Rarity.Common, 1, ["fruit"]);
-            OrdinaryTileItem dragonFruitTileItem = new("dragon_fruit", "Dragon Fruit", "dragon_fruit.png", Rarity.Rare, 3, ["fruit"]);
+            AllTileItemsCollection = InitTileItems();
 
-            OrdinaryTileItem t1 = new("1", "medal 1", "1.png", Rarity.Common, 1, null);
-            OrdinaryTileItem t2 = new("2", "medal 2", "2.png", Rarity.Common, 2, null);
-            OrdinaryTileItem t3 = new("3", "medal 3", "3.png", Rarity.Common, 3, null);
-            OrdinaryTileItem t4 = new("4", "medal 3", "3.png", Rarity.Common, 4, null);
-            OrdinaryTileItem t5 = new("5", "medal 3", "3.png", Rarity.Rare, 5, null);
-
-            AllTileItemsCollection = [appleTileItem, orangeTileItem, t1, t2, t3, t4, t5];
-
-            RelicWithCalculationEffect fruitBasket = new("fruit_basket", "Fruit Basket", "All fruits receive +1", "fruit_basket.png", Rarity.Common,
+            RelicWithCalculationEffect fruitBasket = new("fruit_basket", "Fruit Basket", "All fruits receive +1", Rarity.Common,
                 new TagCalculationEffect(i => i.CoinValue + 1, i => i.HasTag("fruit")));
             AllRelicsCollection = [fruitBasket];
 
@@ -35,6 +25,22 @@ namespace SaYSpin.src.singletons
                 ["More coins are needed to complete each stage", "Increased prices in the shop"],
                 "normal.png", 1.2, 1.2, 10, 3, 1.2, 1.2);
             PossibleDifficulties = [normalDifficulty, hardDifficulty];
+        }
+
+        private BaseTileItem[] InitTileItems()
+        {
+
+            OrdinaryTileItem appleTileItem = new("apple", "Apple", Rarity.Common, 1, ["fruit"]);
+            OrdinaryTileItem orangeTileItem = new("orange", "Orange", Rarity.Common, 1, ["fruit"]);
+            OrdinaryTileItem dragonFruitTileItem = new("dragon_fruit", "dragon_fruit.png", Rarity.Rare, 3, ["fruit"]);
+
+            OrdinaryTileItem t1 = new("1", "medal 1", Rarity.Common, 1, null);
+            OrdinaryTileItem t2 = new("2", "medal 2", Rarity.Common, 2, null);
+            OrdinaryTileItem t3 = new("3", "medal 3", Rarity.Common, 3, null);
+            OrdinaryTileItem t4 = new("4", "medal 3", Rarity.Common, 4, null);
+            OrdinaryTileItem t5 = new("5", "medal 3", Rarity.Rare, 5, null);
+
+            return [appleTileItem, orangeTileItem, dragonFruitTileItem, t1, t2, t3, t4, t5];
         }
 
         public GameplayController? Game { get; private set; }
@@ -55,15 +61,26 @@ namespace SaYSpin.src.singletons
         }
         public List<GameStarterKit> GenerateStarterKits(Difficulty difficulty)
         {
-            //temporary implementation
-            var commonItems = AllTileItemsCollection.Where(i => i.Rarity == Rarity.Common).ToList();
-            var rareItems = AllTileItemsCollection.Where(i => i.Rarity == Rarity.Common).ToList();
+            List<GameStarterKit> kits = new();
+            var commonItems = AllTileItemsCollection.Where(i => i.Rarity == Rarity.Common).OrderBy(x => Guid.NewGuid()).ToList();
+            var rareItems = AllTileItemsCollection.Where(i => i.Rarity == Rarity.Rare).OrderBy(x => Guid.NewGuid()).ToArray();
 
-            List<BaseTileItem> gItems = commonItems[1..4];
-            gItems.Add(rareItems[0]);
+            var relics = AllRelicsCollection.Where(r => r.Rarity <= Rarity.Rare).OrderBy(x => Guid.NewGuid()).ToArray();
 
-            GameStarterKit g = new(gItems, [AllRelicsCollection[0]], GameStarterKit.RandomTokensCollection(2),0,10 );
-            return [g];
+            var totalKits = 4;
+            int commonItemsPerKit = 3;
+
+            for (int i = 0; i < totalKits; i++)
+            {
+                var itemsForKit = commonItems.Skip(i * commonItemsPerKit).Take(commonItemsPerKit).ToList();
+                itemsForKit.Add(rareItems[i % rareItems.Length]);
+
+                kits.Add(new GameStarterKit(itemsForKit, [relics[i % relics.Length]],
+                    GameStarterKit.RandomTokensCollection(difficulty.StartingTokensCount), difficulty.StartingDiamondsCount));
+            }
+
+            return kits;
         }
     }
 }
+

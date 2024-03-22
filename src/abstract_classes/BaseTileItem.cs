@@ -4,8 +4,8 @@ namespace SaYSpin.src.abstract_classes
 {
     public abstract class BaseTileItem : BaseInventoryItem
     {
-        protected BaseTileItem(string id, string name, string description, string image, Rarity rarity, int coinValue, string[] tags)
-            : base(id, name, description, image, rarity)
+        protected BaseTileItem(string id, string name, string description, Rarity rarity, int coinValue, string[] tags)
+            : base(id, name, description, rarity)
         {
             Tags = tags;
             CoinValue = coinValue;

@@ -1,5 +1,5 @@
 ﻿using SaYSpin.src.abstract_classes;
-using SaYSpin.src.gameplay_parts.inventory_related;
+using SaYSpin.src.gameplay_parts.inventory_related.tokens;
 
 namespace SaYSpin.src.gameplay_parts
 {
@@ -7,7 +7,6 @@ namespace SaYSpin.src.gameplay_parts
         List<BaseTileItem> TileItems,
         List<BaseRelic> Relics,
         TokensCollection TokensCollection,
-        int CoinsCount,
         int DiamondsCount)
     {
 

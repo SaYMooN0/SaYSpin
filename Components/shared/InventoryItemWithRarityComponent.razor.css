@@ -1,0 +1,24 @@
+.item-to-display {
+    height: 100%;
+    aspect-ratio:1/1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+    .item-to-display div {
+        position: absolute;
+        height: 2px;
+        width: 2px;
+        border-radius: 10px;
+        border:none;
+    }
+
+    .item-to-display img {
+        box-sizing:border-box;
+        padding:4px;
+        z-index: 1;
+        height: 100%;
+        width: 100%;
+    }

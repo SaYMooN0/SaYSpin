@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SaYSpin.src.gameplay_parts.inventory_related
+namespace SaYSpin.src.gameplay_parts.inventory_related.tokens
 {
     public class TokensCollection
     {
@@ -19,16 +19,6 @@ namespace SaYSpin.src.gameplay_parts.inventory_related
             _tokens[TokenType.NewStageRelicChoiceRefresh] = newStageRelicChoiceRefreshTokensCount;
             _tokens[TokenType.NewStageItemChoiceRefresh] = newStageItemChoiceRefreshTokensCount;
         }
-
-        public enum TokenType
-        {
-            AddSpin,
-            FreeShopRefresh,
-            TileItemRemoval,
-            NewStageRelicChoiceRefresh,
-            NewStageItemChoiceRefresh
-        }
-
         public int GetTokenCount(TokenType tokenType) => _tokens[tokenType];
 
         public bool TryUseToken(TokenType tokenType)
@@ -41,15 +31,15 @@ namespace SaYSpin.src.gameplay_parts.inventory_related
             return false;
         }
 
-        public void AddToken(TokenType tokenType)=>
+        public void AddToken(TokenType tokenType) =>
             _tokens[tokenType]++;
         static public TokenType GetRandomTokenType()
         {
-            var tokenTypes = Enum.GetValues(typeof(TokenType)); 
-            var randomIndex = Randomizer.Int(tokenTypes.Length); 
+            var tokenTypes = Enum.GetValues(typeof(TokenType));
+            var randomIndex = Randomizer.Int(tokenTypes.Length);
             return (TokenType)tokenTypes.GetValue(randomIndex);
         }
-        public IEnumerable<(TokenType tokenType, int count)> AvailableTokensAsTuples()
+        public IEnumerable<(TokenType tokenType, int count)> TokensAsTuples()
         {
             foreach (var kvp in _tokens)
             {

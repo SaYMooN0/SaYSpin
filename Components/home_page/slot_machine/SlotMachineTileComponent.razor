@@ -7,7 +7,7 @@
 <div class="machine-tile-item" style="width: @(tileWidth)">
     @if (tileItem is not null)
     {
-        <img src="@ResourcePathsHelper.TileItemPath(tileItem.Image)" onerror="this.src='@ResourcePathsHelper.DefaultTileItem';" alt="tile item image">
+        <img src="@ResourcePathsHelper.ResourcesImages(tileItem.Image)" onerror="this.src='@ResourcePathsHelper.DefaultTileItem';" alt="tile item image">
     }
 
 </div>

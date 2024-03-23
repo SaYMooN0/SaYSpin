@@ -1,0 +1,10 @@
+﻿@page "/run_info"
+@inject AppMainController mainAppController
+<button @onclick="OpenFinishRunDialog">Finish run</button>
+@code {
+    private void OpenFinishRunDialog()
+    {
+        //show dialog but for now
+        mainAppController.FinishGame();
+    }
+}

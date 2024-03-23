@@ -30,17 +30,18 @@ namespace SaYSpin.src.singletons
         private BaseTileItem[] InitTileItems()
         {
 
-            OrdinaryTileItem appleTileItem = new("apple", "Apple", Rarity.Common, 1, ["fruit"]);
-            OrdinaryTileItem orangeTileItem = new("orange", "Orange", Rarity.Common, 1, ["fruit"]);
-            OrdinaryTileItem dragonFruitTileItem = new("dragon_fruit", "dragon_fruit.png", Rarity.Rare, 3, ["fruit"]);
-
             OrdinaryTileItem t1 = new("1", "medal 1", Rarity.Common, 1, null);
             OrdinaryTileItem t2 = new("2", "medal 2", Rarity.Common, 2, null);
             OrdinaryTileItem t3 = new("3", "medal 3", Rarity.Common, 3, null);
-            OrdinaryTileItem t4 = new("4", "medal 3", Rarity.Common, 4, null);
-            OrdinaryTileItem t5 = new("5", "medal 3", Rarity.Rare, 5, null);
 
-            return [appleTileItem, orangeTileItem, dragonFruitTileItem, t1, t2, t3, t4, t5];
+            return [
+                new OrdinaryTileItem ("apple", "Apple", Rarity.Common, 3, ["fruit"]),
+                new OrdinaryTileItem ("banana", "Banana", Rarity.Common, 3, ["fruit"]),
+                new OrdinaryTileItem ("dragon_fruit", "Dragon Fruit", Rarity.Rare, 7, ["fruit"]),
+                new OrdinaryTileItem ("golden_apple", "Golden Apple", Rarity.Epic, 17, ["fruit"]),
+                new OrdinaryTileItem ("orange", "Orange", Rarity.Common, 3, ["fruit"]),
+                new OrdinaryTileItem ("pineapple", "Pineapple", Rarity.Rare, 5, ["fruit"]),
+                t1, t2, t3];
         }
 
         public GameplayController? Game { get; private set; }
@@ -49,12 +50,12 @@ namespace SaYSpin.src.singletons
         public Difficulty[] PossibleDifficulties { get; init; }
 
         public bool IsGameRunning() => Game is not null;
-        public void StartNewGame(List<BaseTileItem> startingItems, List<BaseRelic> startingRelics, Difficulty difficulty)
+        public void StartNewGame(GameStarterKit gameStarterKit, Difficulty difficulty)
         {
-            Game = new(startingItems, startingRelics, difficulty);
+            Game = new(gameStarterKit, difficulty);
         }
 
-        public void GameEnded()
+        public void FinishGame()
         {
             Logger.Log("game ended");
             Game = null;

@@ -2,6 +2,6 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
-    gap:calc(4vw + 7vh - 20px);
+    gap:calc(4vw + 7vh - 30px);
     align-items:center;
 }

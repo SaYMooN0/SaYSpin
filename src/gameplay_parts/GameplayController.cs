@@ -13,11 +13,11 @@ namespace SaYSpin.src.gameplay_parts
         public int CurrentStage { get; private set; }
         public int CoinsCount { get; private set; }
         public int CoinsNeededToCompleteTheStage { get; private set; }
-        public GameplayController(List<BaseTileItem> startingTileItems, List<BaseRelic> startingRelics, Difficulty difficulty )
+        public GameplayController(GameStarterKit starterKit, Difficulty difficulty )
         {
             _difficulty = difficulty;
 
-            Inventory = new(startingTileItems, startingRelics);
+            Inventory = new(starterKit.TileItems, starterKit.Relics, starterKit.TokensCollection, starterKit.DiamondsCount);
             SlotMachine = new(Inventory.TileItems, 3, 3);
 
             CurrentStage = 0;

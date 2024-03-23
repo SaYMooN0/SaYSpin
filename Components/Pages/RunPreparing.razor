@@ -1,7 +1,6 @@
 ﻿@page "/run_preparing"
 @layout Layout.EmptyLayout
 @inject AppMainController mainAppController
-@inject IJSRuntime js
 
 <div class="run-preparing-page">
     <NavLink href="">
@@ -16,7 +15,7 @@
         }
         else
         {
-            <ChooseStarterKitStageComponent selectedDifficultyName="@selectedDifficulty.Name" starterKits="mainAppController.GenerateStarterKits(selectedDifficulty)" />
+            <ChooseStarterKitStageComponent selectedDifficulty="@selectedDifficulty" starterKits="mainAppController.GenerateStarterKits(selectedDifficulty)" />
         }
     </div>
 </div>

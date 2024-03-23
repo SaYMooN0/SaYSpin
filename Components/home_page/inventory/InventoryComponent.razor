@@ -1,18 +1,34 @@
 ﻿<div class="inventory">
-    <div class="inventory-border"></div>
+    <hr class="inventory-border" />
     <div class="inventory-content">
 
         <div class="inventory-top-div">
-            <label>Diamonds: @inventory.DiamondsCount <img src="/resources/images/inventory/diamond.png" /> </label>
+            @foreach (var i in inventory.Tokens.TokensAsTuples())
+            {
+                <TokenDisplayComponent type="@i.tokenType" count="@i.count" />
+            }
+            <DiamondsCountDisplayComponent count="@inventory.DiamondsCount" />
         </div>
-      
-        Tokens:
-
-
         @* with sorting *@
-        Relics:
 
-        Tile items:
+        <label class="inventory-label">Relics</label>
+        <div class="inventory-items-container">
+            @foreach (var i in relics)
+            {
+                <div>
+                    <InventoryItemWithRarityComponent itemToDisplay="i" />
+                </div>
+            }
+        </div>
+        <label class="inventory-label">Tile Items</label>
+        <div class="inventory-items-container">
+            @foreach (var i in tileItems)
+            {
+                <div>
+                    <InventoryItemWithRarityComponent itemToDisplay="i" />
+                </div>
+            }
+        </div>
 
         <button>Delete item</button>
     </div>
@@ -22,4 +38,13 @@
 @code {
     [Parameter]
     public Inventory inventory { get; set; }
+
+    private IEnumerable<BaseTileItem> tileItems;
+    private IEnumerable<BaseRelic> relics;
+
+    protected override void OnParametersSet()
+    {
+        tileItems = inventory.TileItems;
+        relics = inventory.Relics;
+    }
 }

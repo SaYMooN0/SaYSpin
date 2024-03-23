@@ -1,5 +1,5 @@
 ﻿
-<div class="starter-kit-card">
+<div class="starter-kit-card" @onclick="onclickAction">
     <div class="row-container">
         @foreach (var i in starterKit.TileItems)
         {
@@ -17,11 +17,16 @@
     <div class="tokens-container">
         @foreach (var i in starterKit.TokensCollection.TokensAsTuples())
         {
-            <TokenDisplayComponent type="@i.tokenType" count="@i.count" />
+            @if (i.count > 0)
+            {
+                <TokenDisplayComponent type="@i.tokenType" count="@i.count" />
+            }
         }
     </div>
 </div>
 @code {
     [Parameter]
     public GameStarterKit starterKit { get; set; }
+    [Parameter]
+    public EventCallback onclickAction { get; set; }
 }

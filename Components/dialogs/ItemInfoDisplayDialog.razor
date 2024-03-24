@@ -1,0 +1,44 @@
+﻿@inject IJSRuntime JSRuntime
+@inject ShowItemInfoDialogService DialogService
+
+<dialog id="itemInfoDisplayDialog">
+    @if (item is not null)
+    {
+        <label>@item.Name</label>
+        <p>
+            @System.Text.Json.JsonSerializer.Serialize(item);
+        </p>
+        //image
+        //rarity
+        //description
+
+    }
+    else
+    {
+        <label>Error (item is null)</label>
+    }
+    <button @onclick="Close">X</button>
+
+</dialog>
+
+@code {
+    private BaseInventoryItem item { get; set; }
+    public async Task Open(BaseInventoryItem itemToDisplay)
+    {
+        this.item = itemToDisplay;
+        StateHasChanged();
+        await JSRuntime.InvokeVoidAsync("blazorDialogFunctions.openDialog", "itemInfoDisplayDialog");
+    }
+
+    private async Task Close() =>
+        await JSRuntime.InvokeVoidAsync("blazorDialogFunctions.closeDialog", "itemInfoDisplayDialog");
+    protected override void OnInitialized()
+    {
+        DialogService.OnShow += Open;
+    }
+
+    public void Dispose()
+    {
+        DialogService.OnShow -= Open;
+    }
+}

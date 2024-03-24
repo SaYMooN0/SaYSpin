@@ -5,15 +5,9 @@
     background-color: #f2f2f2;
     align-items: center;
     cursor: pointer;
-    transition: all .16s ease;
-    padding:8px;
-    border-radius:20px;
+    padding: 8px;
+    border-radius: 20px;
 }
-
-    .starter-kit-card:hover {
-        transform: scale(1.08);
-    }
-
     .starter-kit-card .row-container {
         display: flex;
         flex-direction: row;
@@ -40,15 +34,25 @@
         width: 90%;
     }
 
+
+.choose-starter-kit-button {
+    margin-top: 6px;
+    background-image: radial-gradient(circle, #f4cf22, #f3d323, #f1d724, #f0db25, #eedf27, #eedf27, #edde28, #edde28, #eeda27, #efd526, #efd126, #f0cd26);
+    border-radius: 1000px;
+    border: none;
+    padding: 10px 20px;
+    transition: all .16s ease;
+}
+
+
+    .choose-starter-kit-button:hover {
+        transform: scale(1.05);
+    }
+
 @media (max-width: 1200px) {
     .starter-kit-card {
         width: 320px;
     }
-
-        .starter-kit-card:hover {
-            transform: scale(1.05);
-        }
-
         .starter-kit-card .row-container {
             height: 60px;
             gap: 14px;

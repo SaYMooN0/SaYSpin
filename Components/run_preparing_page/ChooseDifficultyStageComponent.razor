@@ -1,11 +1,11 @@
-@inject AppMainController mainAppController
+@inject AllGameController allGameController
 
 <div class="choose-difficulty-container">
     <label class="choose-difficulty-label unselectable">
         Difficulties:
     </label>
     <div class="difficulties-container">
-        @foreach (var difficulty in mainAppController.PossibleDifficulties)
+        @foreach (var difficulty in allGameController.PossibleDifficulties)
         {
             <DifficultyCard difficulty="difficulty"
                             renderDifficultyInfo="()=>SetDifficultyInfo(difficulty.Positives, difficulty.Negatives)"

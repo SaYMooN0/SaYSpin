@@ -1,4 +1,6 @@
-﻿<div class="item-to-display unselectable">
+﻿@inject ShowItemInfoDialogService showItemInfoDialog
+
+<div class="item-to-display unselectable" @onclick="ShowItemInfo">
     <img src="@ResourcePathsHelper.ResourcesImages(itemToDisplay.Image)" />
     <div style="box-shadow: 0px 0px calc(14px + 0.26vw + 0.4vh) calc(10px + 0.25vw + 0.35vh) @itemToDisplay.Rarity.ToHexColor(); background:@itemToDisplay.Rarity.ToHexColor()"></div>
 </div>
@@ -6,4 +8,8 @@
 @code {
     [Parameter]
     public BaseInventoryItem itemToDisplay { get; set; }
+    private async void ShowItemInfo()
+    {
+        await showItemInfoDialog.ShowDialog(itemToDisplay);
+    }
 }

@@ -9,29 +9,37 @@
 }
 
 .inventory-top-div {
-    height: 70px;
+    height: 68px;
     display: flex;
     flex-direction: row;
     width: 100%;
     justify-content: end;
     padding: 4px;
+    gap:4px;
     box-sizing: border-box;
 }
 
 .inventory-items-container {
     width: 100%;
-    display:grid;
-    /*grid-template-columns:*/
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
     .inventory-items-container div {
-        aspect-ratio:1/1;
+        flex: 0 1 auto;
+        aspect-ratio: 1/1;
         height: 70px;
+        transition:all 0.2s ease;
     }
+
+        .inventory-items-container div:hover {
+            /*transform:scale(1.1);*/
+        }
 
 @media (max-width: 1100px) {
     .inventory-top-div {
-        height: 58px;
+        height: 56px;
     }
 }
 

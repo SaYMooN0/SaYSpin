@@ -3,7 +3,7 @@ using SaYSpin.src.gameplay_parts.inventory_related;
 
 namespace SaYSpin.src.gameplay_parts
 {
-    public class GameplayController
+    public class GameFlowController
     {
 
         private Difficulty _difficulty { get; init;}
@@ -13,7 +13,7 @@ namespace SaYSpin.src.gameplay_parts
         public int CurrentStage { get; private set; }
         public int CoinsCount { get; private set; }
         public int CoinsNeededToCompleteTheStage { get; private set; }
-        public GameplayController(GameStarterKit starterKit, Difficulty difficulty )
+        public GameFlowController(GameStarterKit starterKit, Difficulty difficulty )
         {
             _difficulty = difficulty;
 

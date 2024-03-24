@@ -1,5 +1,5 @@
 ﻿
-<div class="starter-kit-card" @onclick="onclickAction">
+<div class="starter-kit-card">
     <div class="row-container">
         @foreach (var i in starterKit.TileItems)
         {
@@ -23,6 +23,9 @@
             }
         }
     </div>
+    <button class="choose-starter-kit-button" @onclick="onclickAction">
+        Choose
+    </button>
 </div>
 @code {
     [Parameter]

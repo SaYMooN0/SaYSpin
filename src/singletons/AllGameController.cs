@@ -2,20 +2,19 @@
 using SaYSpin.src.coins_calculation_related.specific_calculation_effects;
 using SaYSpin.src.extension_classes;
 using SaYSpin.src.gameplay_parts;
-using SaYSpin.src.gameplay_parts.inventory_related;
 using SaYSpin.src.gameplay_parts.inventory_related.relics;
 using SaYSpin.src.gameplay_parts.inventory_related.tile_items;
 
 namespace SaYSpin.src.singletons
 {
-    public class AppMainController
+    public class AllGameController
     {
-        public AppMainController()
+        public AllGameController()
         {
 
             AllTileItemsCollection = InitTileItems();
 
-            RelicWithCalculationEffect fruitBasket = new("fruit_basket", "Fruit Basket", "All fruits receive +1", Rarity.Common,
+            RelicWithCalculationEffect fruitBasket = new("Fruit Basket", "All fruits receive +1", Rarity.Common,
                 new TagCalculationEffect(i => i.CoinValue + 1, i => i.HasTag("fruit")));
             AllRelicsCollection = [fruitBasket];
 
@@ -30,21 +29,25 @@ namespace SaYSpin.src.singletons
         private BaseTileItem[] InitTileItems()
         {
 
-            OrdinaryTileItem t1 = new("1", "medal 1", Rarity.Common, 1, null);
-            OrdinaryTileItem t2 = new("2", "medal 2", Rarity.Common, 2, null);
-            OrdinaryTileItem t3 = new("3", "medal 3", Rarity.Common, 3, null);
+            OrdinaryTileItem t1 = new("medal 1", Rarity.Common, 1, null);
+            OrdinaryTileItem t2 = new("medal 2", Rarity.Common, 2, null);
+            OrdinaryTileItem t3 = new("medal 3", Rarity.Common, 3, null);
 
             return [
-                new OrdinaryTileItem ("apple", "Apple", Rarity.Common, 3, ["fruit"]),
-                new OrdinaryTileItem ("banana", "Banana", Rarity.Common, 3, ["fruit"]),
-                new OrdinaryTileItem ("dragon_fruit", "Dragon Fruit", Rarity.Rare, 7, ["fruit"]),
-                new OrdinaryTileItem ("golden_apple", "Golden Apple", Rarity.Epic, 17, ["fruit"]),
-                new OrdinaryTileItem ("orange", "Orange", Rarity.Common, 3, ["fruit"]),
-                new OrdinaryTileItem ("pineapple", "Pineapple", Rarity.Rare, 5, ["fruit"]),
+                new OrdinaryTileItem ("Apple", Rarity.Common, 3, ["fruit"]),
+                new OrdinaryTileItem ("Banana", Rarity.Common, 3, ["fruit"]),
+                new OrdinaryTileItem ("Dragon Fruit", Rarity.Rare, 7, ["fruit"]),
+                new OrdinaryTileItem ("Golden Apple", Rarity.Epic, 17, ["fruit"]),
+                new OrdinaryTileItem ("Orange", Rarity.Common, 3, ["fruit"]),
+                new OrdinaryTileItem ("Pineapple", Rarity.Rare, 5, ["fruit"]),
+
+                new OrdinaryTileItem ("Candy", Rarity.Common, 3, ["sweet"]),
+                new OrdinaryTileItem ("Chocolate Bar", Rarity.Rare, 5, ["sweet"]),
+                new OrdinaryTileItem ("Lollipop", Rarity.Common, 3, ["sweet"]),
                 t1, t2, t3];
         }
 
-        public GameplayController? Game { get; private set; }
+        public GameFlowController? Game { get; private set; }
         public BaseTileItem[] AllTileItemsCollection { get; init; }
         public BaseRelic[] AllRelicsCollection { get; init; }
         public Difficulty[] PossibleDifficulties { get; init; }

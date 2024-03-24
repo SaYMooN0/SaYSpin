@@ -2,10 +2,11 @@
 
 namespace SaYSpin.src.gameplay_parts.inventory_related.tile_items
 {
-    public class OrdinaryTileItem : BaseTileItem
+    public class AbsorberTileItem : BaseTileItem
     {
-        public OrdinaryTileItem(string name, Rarity rarity, int coinValue, string[]? tags)
+        public AbsorberTileItem(string id, string name, Rarity rarity, int coinValue, string[]? tags)
             : base(name, $"Gives {coinValue} coins with each drop", rarity, coinValue, tags ?? Array.Empty<string>()) { }
+        public int Counter { get;private set; }
 
     }
 }

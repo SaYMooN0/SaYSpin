@@ -1,12 +1,12 @@
 ﻿@inherits LayoutComponentBase
-@inject AppMainController mainController
+@inject AllGameController allGameController
 
-
-@if (mainController.IsGameRunning())
+<ItemInfoDisplayDialog />
+@if (allGameController.IsGameRunning())
 {
     <div class="main-container">
         <div class="sidebar">
-            <GameNavMenu />
+            <GameNavLayout />
         </div>
         <div class="page-content">
             @Body
@@ -16,9 +16,8 @@
 else
 {
     <div class="starting-screen">
-
-        <div class="starting-screen-buttons-container">
-            <NavLink class="starting-screen-button" href="run_preparing">
+        <div class="starting-screen-links-container">
+            <NavLink class="starting-screen-link" href="run_preparing">
                 New run
             </NavLink>
             <button>Upgrades</button>
@@ -29,12 +28,4 @@ else
         </div>
     </div>
 
-}
-
-
-@code {
-    private void OpenNewRunDialog()
-    {
-
-    }
 }

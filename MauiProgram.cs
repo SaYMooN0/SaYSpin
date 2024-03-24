@@ -22,8 +22,10 @@ namespace SaYSpin
 
             src.Logger.Init();
 
-            AppMainController mainController = new();
-            builder.Services.AddSingleton<AppMainController>(provider => mainController);
+            AllGameController mainController = new();
+            builder.Services.AddSingleton(provider => mainController);
+            builder.Services.AddSingleton<ShowItemInfoDialogService>();
+
             return builder.Build();
         }
     }

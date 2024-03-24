@@ -30,7 +30,7 @@
             }
         </div>
 
-        <button>Delete item</button>
+        <button @onclick="DeleteItem">Delete item</button>
     </div>
 
 </div>
@@ -39,12 +39,16 @@
     [Parameter]
     public Inventory inventory { get; set; }
 
-    private IEnumerable<BaseTileItem> tileItems;
+    private List<BaseTileItem> tileItems;
     private IEnumerable<BaseRelic> relics;
 
     protected override void OnParametersSet()
     {
         tileItems = inventory.TileItems;
         relics = inventory.Relics;
+    }
+    private void DeleteItem()
+    {
+
     }
 }

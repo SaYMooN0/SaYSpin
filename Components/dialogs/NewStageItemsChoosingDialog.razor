@@ -1,4 +1,5 @@
 ﻿@inject IJSRuntime JSRuntime
+@inject AllGameController allGame
 <dialog id="newStagePickingDialog">
     <label class="stageNumber">@stageNumber</label>
     @if (_pickingStageTileItem)
@@ -21,8 +22,7 @@
 </dialog>
 
 @code {
-    [Parameter]
-    public GameplayController gameController { get; set; }
+
 
     protected override void OnInitialized()
     {
@@ -42,12 +42,4 @@
 
     private async Task CloseDialog() =>
         await JSRuntime.InvokeVoidAsync("blazorDialogFunctions.closeDialog", "newStagePickingDialog");
-}
-
-@code {
-    //show
-    //hide
-
-
-    //choose->add to inventory
 }

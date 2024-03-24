@@ -1,5 +1,5 @@
 ﻿@inject NavigationManager NavigationManager
-@inject AppMainController MainAppController
+@inject AllGameController allGameController
 <div>
     <label class="difficulty-label">selected difficulty: @selectedDifficulty.Name</label>
     <label class="choose-starter-kit-label"> Choose your starter kit</label>
@@ -18,7 +18,7 @@
     public IEnumerable<GameStarterKit> starterKits { get; set; } = [];
     private void kitSelected(GameStarterKit gameStarterKit)
     {
-        MainAppController.StartNewGame(gameStarterKit, selectedDifficulty);
+        allGameController.StartNewGame(gameStarterKit, selectedDifficulty);
         NavigationManager.NavigateTo("/");
     }
 }

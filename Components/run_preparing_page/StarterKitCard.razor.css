@@ -1,18 +1,19 @@
 .starter-kit-card {
-    width: 470px;
+    width: 500px;
     display: flex;
     flex-direction: column;
     background-color: #f2f2f2;
     align-items: center;
-    cursor: pointer;
     padding: 8px;
     border-radius: 20px;
+    transition-duration: 0.12s;
 }
+
     .starter-kit-card .row-container {
         display: flex;
         flex-direction: row;
         gap: 20px;
-        height: 80px;
+        height: 90px;
         overflow-x: auto;
     }
 
@@ -36,23 +37,41 @@
 
 
 .choose-starter-kit-button {
-    margin-top: 6px;
-    background-image: radial-gradient(circle, #f4cf22, #f3d323, #f1d724, #f0db25, #eedf27, #eedf27, #edde28, #edde28, #eeda27, #efd526, #efd126, #f0cd26);
-    border-radius: 1000px;
-    border: none;
+    margin:6px 0;
     padding: 10px 20px;
-    transition: all .16s ease;
+    border: 0;
+    box-shadow: #FFC524 0px 6px 0px 0px;
+    background-color: #FFD40C;
+    border-radius: 10px;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    font-family:'Montserrat';
+}
+
+    .choose-starter-kit-button:hover {
+        box-shadow: #FFC524 0px 2px 0px 0px;
+        transform: translateY(4px);
+    }
+
+
+@media (max-width: 1400px), (max-height: 820px) {
+    .starter-kit-card {
+        width: 440px;
+    }
+
+        .starter-kit-card .row-container {
+            height: 68px;
+        }
 }
 
 
-    .choose-starter-kit-button:hover {
-        transform: scale(1.05);
-    }
-
-@media (max-width: 1200px) {
+@media (max-width: 1200px), (max-height: 700px) {
     .starter-kit-card {
         width: 320px;
     }
+
         .starter-kit-card .row-container {
             height: 60px;
             gap: 14px;
@@ -64,7 +83,7 @@
         }
 }
 
-@media (max-width: 760px) {
+@media (max-width: 800px), (max-height: 600px) {
     .starter-kit-card {
         width: 260px;
     }

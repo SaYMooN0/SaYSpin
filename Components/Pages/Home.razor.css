@@ -16,24 +16,75 @@
     transition: all 0.4s ease;
 }
 
+.container-for-complete-stage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.finish-stage-button {
+    position: absolute;
+    margin-top: 70px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    background-color: dodgerblue;
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: width 0.3s ease;
+}
+
+    .finish-stage-button span {
+        position: relative;
+        opacity: 1;
+        transition: width 0.3s ease;
+    }
+
+    .finish-stage-button svg {
+        transition: transform 0.3s ease;
+        width: 20px;
+        height: 20px;
+        margin-left: 8px;
+        fill: white;
+        transition: width 0.3s ease;
+    }
+
+    .finish-stage-button:hover span {
+        display: none;
+        transform: translateX(-20px);
+    }
+
+
+.home-central .bottom-content {
+    margin: 50px 0 30px 0;
+    height: 60px;
+}
+
 .spin-button {
-    padding: 8px 20px;
+    height: 100%;
+    padding: 12px 0;
     width: 210px;
-    border-radius: 16px;
+    border: 0;
+    box-shadow: #13D626 0px 8px 0px 0px;
+    background-image: radial-gradient(circle, #65ff4d, #61fc46, #5df93f, #58f537, #54f22f, #50f129, #4cef23, #47ee1b, #41ee16, #3aed10, #33ed09, #2aec00);
+    border-radius: 10px;
+    color: white;
     font-size: 32px;
     font-weight: bold;
-    color: white;
-    font-family: Arial;
-    margin: 30px 0 40px 0;
-    background-image: linear-gradient(to right bottom, #68ff68, #5fff61, #56ff59, #4bfe51, #3ffe48, #37fc42, #2ffb3b, #24f934, #20f62e, #1bf227, #15ef20, #0eec17);
-    border: none;
+    letter-spacing: 2px;
+    font-family: 'Montserrat';
     cursor: pointer;
-    transition: all 0.1s ease;
 }
 
     .spin-button:hover {
-        background-image: linear-gradient(to right bottom, #31ff4a, #30fd44, #2ffb3d, #2ef937, #2df72f, #2af42a, #28f225, #25ef1f, #1feb1b, #17e816, #0ee411, #00e10b);
-        transform:translateY(4px);
+        box-shadow: #13D626 0px 4px 0px 0px;
+        transform: translateY(4px);
     }
 
 @media (max-width: 700px) {
@@ -46,4 +97,8 @@
         border-radius: 12px;
         font-size: 28px;
     }
+}
+
+.finish-stage-button {
+    padding: 10px;
 }

@@ -11,6 +11,7 @@
     }
     public static class RarityExtensions
     {
+
         public static string ToHexColor(this Rarity rarity) => rarity switch
         {
             Rarity.Common => "#B1C8F0", 

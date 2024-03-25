@@ -7,16 +7,9 @@ namespace SaYSpin.src.singletons
         public event Func<BaseInventoryItem, Task> OnShow;
         public async Task ShowDialog(BaseInventoryItem item)
         {
-            try
+            if (OnShow != null)
             {
-                if (OnShow != null)
-                {
-                    await OnShow(item);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Log(ex);
+                await OnShow(item);
             }
 
         }

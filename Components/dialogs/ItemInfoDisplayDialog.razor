@@ -1,24 +1,28 @@
 ﻿@inject IJSRuntime JSRuntime
 @inject ShowItemInfoDialogService DialogService
 
-<dialog id="itemInfoDisplayDialog">
-    @if (item is not null)
-    {
-        <label>@item.Name</label>
-        <p>
-            @System.Text.Json.JsonSerializer.Serialize(item);
-        </p>
-        //image
-        //rarity
-        //description
+<dialog id="itemInfoDisplayDialog" class="unselectable">
+    <div class="dialog-content">
+        @if (item is not null)
+        {
+            <label class="rarity-label" style="color:@item.Rarity.ToHexColor()">
+                ◆<span> @item.Rarity.ToString()</span>◆
+            </label>
+            <img class="item-img" src="@ResourcePathsHelper.ResourcesImages(item.Image)" style="filter: drop-shadow(0 0 12px @item.Rarity.ToHexColor());" />
 
-    }
-    else
-    {
-        <label>Error (item is null)</label>
-    }
-    <button @onclick="Close">X</button>
 
+
+
+            <label class="item-name">@item.Name</label>
+            <label class="description">@item.Description</label>
+
+        }
+        else
+        {
+            <label>Error (item is null)</label>
+        }
+        <button @onclick="Close" class="dialog-close-button">✖</button>
+    </div>
 </dialog>
 
 @code {
@@ -32,6 +36,7 @@
 
     private async Task Close() =>
         await JSRuntime.InvokeVoidAsync("blazorDialogFunctions.closeDialog", "itemInfoDisplayDialog");
+
     protected override void OnInitialized()
     {
         DialogService.OnShow += Open;

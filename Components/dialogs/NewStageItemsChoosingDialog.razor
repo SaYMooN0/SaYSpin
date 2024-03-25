@@ -1,5 +1,4 @@
 ﻿@inject IJSRuntime JSRuntime
-@inject AllGameController allGame
 <dialog id="newStagePickingDialog">
     <label class="stageNumber">@stageNumber</label>
     @if (_pickingStageTileItem)
@@ -20,7 +19,7 @@
     }
     <button @onclick="CloseDialog">Close</button> @* will be deleted *@
 </dialog>
-
+ 
 @code {
 
 

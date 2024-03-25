@@ -14,7 +14,7 @@ namespace SaYSpin.src.singletons
 
             AllTileItemsCollection = InitTileItems();
 
-            RelicWithCalculationEffect fruitBasket = new("Fruit Basket", "All fruits receive +1", Rarity.Common,
+            RelicWithCalculationEffect fruitBasket = new("Fruit Basket", "All fruits gives +1 coin", Rarity.Common,
                 new TagCalculationEffect(i => i.CoinValue + 1, i => i.HasTag("fruit")));
             AllRelicsCollection = [fruitBasket];
 

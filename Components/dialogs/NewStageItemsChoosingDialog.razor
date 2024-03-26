@@ -1,25 +1,27 @@
 ﻿@inject IJSRuntime JSRuntime
 <dialog id="newStagePickingDialog">
-    <label class="stageNumber">@stageNumber</label>
+    <label class="preparing-label">Prepare for stage @stageNumber</label>
     @if (_pickingStageTileItem)
     {
+        <label class="choose-label">Choose new item</label>
         @foreach (BaseTileItem itemToPick in ItemsToPick)
         {
             @* on pick add to inventory and change state of _pickingStageTileItem*@
         }
-        @* refresh buttoon*@
+        <button>Refresh items</button>
     }
     else
     {
+        <label class="choose-label">Choose new item</label>
         @foreach (BaseRelic relicToPick in RelicsToPick)
         {
             @* on pick add to inventory and close*@
         }
-        @* refresh buttoon*@
+        <button>Refresh relic</button>
     }
-    <button @onclick="CloseDialog">Close</button> @* will be deleted *@
+    <button @onclick="Close">Close</button> @* will be deleted *@
 </dialog>
- 
+
 @code {
 
 
@@ -30,15 +32,16 @@
     }
     private int stageNumber = 0;
     private bool _pickingStageTileItem = true;
-    private List<BaseTileItem> ItemsToPick{ get; set; }
+    private List<BaseTileItem> ItemsToPick { get; set; }
     private List<BaseRelic> RelicsToPick { get; set; }
 
-    public async Task OpenPickingDialog(int newStageNumber)
+    public async Task Open(int newStageNumber)
     {
         stageNumber = newStageNumber;
+        StateHasChanged();
         await JSRuntime.InvokeVoidAsync("blazorDialogFunctions.openDialog", "newStagePickingDialog");
     }
 
-    private async Task CloseDialog() =>
+    private async Task Close() =>
         await JSRuntime.InvokeVoidAsync("blazorDialogFunctions.closeDialog", "newStagePickingDialog");
 }

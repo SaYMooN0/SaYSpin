@@ -20,46 +20,29 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     position: relative;
+    transition: all 0.1s ease;
 }
 
-.finish-stage-button {
+.complete-stage-button {
     position: absolute;
-    margin-top: 70px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 200px;
-    background-color: dodgerblue;
-    color: white;
-    padding: 10px;
-    font-size: 16px;
+    bottom: -30px;
+    background-image: linear-gradient(to right bottom, #58f03f, #52f038, #4df030, #46f027, #3ff01c, #3bee15, #36ed0c, #31eb00, #2fe800, #2ce400, #2ae100, #27de00);
+    padding: 10px 22px;
     border: none;
-    border-radius: 5px;
+    border-radius: 100px;
+    color: white;
+    font-size: 18px;
+    font-family: montserrat;
+    font-weight: bold;
     cursor: pointer;
-    transition: width 0.3s ease;
+    transition: inherit
 }
 
-    .finish-stage-button span {
-        position: relative;
-        opacity: 1;
-        transition: width 0.3s ease;
+    .complete-stage-button:hover {
+        padding: 10px 32px;
     }
-
-    .finish-stage-button svg {
-        transition: transform 0.3s ease;
-        width: 20px;
-        height: 20px;
-        margin-left: 8px;
-        fill: white;
-        transition: width 0.3s ease;
-    }
-
-    .finish-stage-button:hover span {
-        display: none;
-        transform: translateX(-20px);
-    }
-
 
 .home-central .bottom-content {
     margin: 50px 0 30px 0;
@@ -87,16 +70,24 @@
         transform: translateY(4px);
     }
 
-@media (max-width: 700px) {
+@media (max-width: 1000px) {
     .home-page-container {
         grid-template-columns: calc(20vw + 180px) 1fr;
     }
 
     .spin-button {
-        width: 200px;
-        border-radius: 12px;
+        width: 160px;
         font-size: 28px;
     }
+    .complete-stage-button {
+        padding: 8px 18px;
+        bottom: -22px;
+        font-size: 14px;
+    }
+
+        .complete-stage-button:hover {
+            padding: 8px 28px;
+        }
 }
 
 .finish-stage-button {

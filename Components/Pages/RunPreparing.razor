@@ -15,18 +15,16 @@
         }
         else
         {
-            <ChooseStarterKitStageComponent selectedDifficulty="@selectedDifficulty" starterKits="allGameController.GenerateStarterKits(selectedDifficulty)" />
+            <ChooseStarterKitStageComponent game="allGameController.Game" />
         }
     </div>
 </div>
 
 @code {
     private bool currentStageIsDifficlutyChoosing = true;
-    private Difficulty selectedDifficulty { get; set; }
-
     private void DifficultyChosen(Difficulty difficulty)
     {
-        selectedDifficulty = difficulty;
+        allGameController.InitializeNewGame(difficulty);
         currentStageIsDifficlutyChoosing = false;
     }
 }

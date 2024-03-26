@@ -1,6 +1,6 @@
 ﻿using SaYSpin.src.abstract_classes;
 
-namespace SaYSpin.src.gameplay_parts.inventory_related
+namespace SaYSpin.src.gameplay_parts
 {
     public class TileItemsPicker
     {

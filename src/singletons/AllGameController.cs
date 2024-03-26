@@ -9,6 +9,10 @@ namespace SaYSpin.src.singletons
 {
     public class AllGameController
     {
+        public GameFlowController? Game { get; private set; }
+        public BaseTileItem[] AllTileItemsCollection { get; init; }
+        public BaseRelic[] AllRelicsCollection { get; init; }
+        public Difficulty[] PossibleDifficulties { get; init; }
         public AllGameController()
         {
 
@@ -46,45 +50,17 @@ namespace SaYSpin.src.singletons
                 new OrdinaryTileItem ("Lollipop", Rarity.Common, 3, ["sweet"]),
                 t1, t2, t3];
         }
-
-        public GameFlowController? Game { get; private set; }
-        public BaseTileItem[] AllTileItemsCollection { get; init; }
-        public BaseRelic[] AllRelicsCollection { get; init; }
-        public Difficulty[] PossibleDifficulties { get; init; }
-
         public bool IsGameRunning() => Game is not null;
-        public void StartNewGame(GameStarterKit gameStarterKit, Difficulty difficulty)
+        public void InitializeNewGame(Difficulty difficulty)
         {
-            Game = new(gameStarterKit, difficulty);
+            Game = new(difficulty, AllTileItemsCollection, AllRelicsCollection);
         }
-
         public void FinishGame()
         {
             Logger.Log("game ended");
             Game = null;
         }
-        public List<GameStarterKit> GenerateStarterKits(Difficulty difficulty)
-        {
-            List<GameStarterKit> kits = new();
-            var commonItems = AllTileItemsCollection.Where(i => i.Rarity == Rarity.Common).OrderBy(x => Guid.NewGuid()).ToList();
-            var rareItems = AllTileItemsCollection.Where(i => i.Rarity == Rarity.Rare).OrderBy(x => Guid.NewGuid()).ToArray();
-
-            var relics = AllRelicsCollection.Where(r => r.Rarity <= Rarity.Rare).OrderBy(x => Guid.NewGuid()).ToArray();
-
-            var totalKits = 4;
-            int commonItemsPerKit = 3;
-
-            for (int i = 0; i < totalKits; i++)
-            {
-                var itemsForKit = commonItems.Skip(i * commonItemsPerKit).Take(commonItemsPerKit).ToList();
-                itemsForKit.Add(rareItems[i % rareItems.Length]);
-
-                kits.Add(new GameStarterKit(itemsForKit, [relics[i % relics.Length]],
-                    GameStarterKit.RandomTokensCollection(difficulty.StartingTokensCount), difficulty.StartingDiamondsCount));
-            }
-
-            return kits;
-        }
+      
     }
 }
 

@@ -1,13 +1,13 @@
 ﻿using SaYSpin.src.abstract_classes;
 using SaYSpin.src.gameplay_parts.inventory_related.tokens;
 
-namespace SaYSpin.src.gameplay_parts
+namespace SaYSpin.src.gameplay_parts.inventory_related
 {
     public class Inventory
     {
-        public Inventory(List<BaseTileItem> startingItems, List<BaseRelic> startingRelics,TokensCollection tokens, int diamondsCount)
+        public Inventory(List<BaseTileItem> startingItems, List<BaseRelic> startingRelics, TokensCollection tokens, int diamondsCount)
         {
-            Tokens = tokens;    
+            Tokens = tokens;
             Relics = startingRelics;
             TileItems = startingItems;
             DiamondsCount = diamondsCount;

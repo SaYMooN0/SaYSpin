@@ -20,5 +20,10 @@ namespace SaYSpin.src.gameplay_parts.inventory_related
             TileItems.Add(item);
         public void AddRelic(BaseRelic relic) =>
             Relics.Add(relic);
+
+        public void IncreaseDiamonds(int value) =>
+            DiamondsCount += value;
+        public void DecreaseDiamonds(int value) =>
+            DiamondsCount -= value;
     }
 }

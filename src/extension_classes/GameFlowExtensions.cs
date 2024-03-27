@@ -1,4 +1,5 @@
-﻿using SaYSpin.src.gameplay_parts;
+﻿using SaYSpin.src.abstract_classes;
+using SaYSpin.src.gameplay_parts;
 using SaYSpin.src.gameplay_parts.inventory_related;
 
 namespace SaYSpin.src.extension_classes
@@ -34,6 +35,16 @@ namespace SaYSpin.src.extension_classes
                 * (game.Difficulty.NeededCoinsMultiplier + 1) * 3.2
                 * game.Inventory.CoinsNeededToCompleteTheStageCoefficient()
             ) + 10;
+        }
+        public static BaseTileItem[] GenerateTileItemsForNewStageChoosing(this GameFlowController game)
+        {
+            return game.TileItems.OrderBy(x => Guid.NewGuid()).Take(5).ToArray();
+            //will be changed
+        }
+        public static BaseRelic[] GenerateRelicsForNewStageChoosing(this GameFlowController game)
+        {
+            return game.Relics.OrderBy(x => Guid.NewGuid()).Take(5).ToArray();
+            //will be changed
         }
     }
 }

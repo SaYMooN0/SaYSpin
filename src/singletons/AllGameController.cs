@@ -41,13 +41,19 @@ namespace SaYSpin.src.singletons
                 new OrdinaryTileItem ("Apple", Rarity.Common, 3, ["fruit"]),
                 new OrdinaryTileItem ("Banana", Rarity.Common, 3, ["fruit"]),
                 new OrdinaryTileItem ("Dragon Fruit", Rarity.Rare, 7, ["fruit"]),
-                new OrdinaryTileItem ("Golden Apple", Rarity.Epic, 17, ["fruit"]),
+                new OrdinaryTileItem ("Golden Apple", Rarity.Epic, 17, ["fruit","gold" ]),
                 new OrdinaryTileItem ("Orange", Rarity.Common, 3, ["fruit"]),
                 new OrdinaryTileItem ("Pineapple", Rarity.Rare, 5, ["fruit"]),
 
                 new OrdinaryTileItem ("Candy", Rarity.Common, 3, ["sweet"]),
                 new OrdinaryTileItem ("Chocolate Bar", Rarity.Rare, 5, ["sweet"]),
                 new OrdinaryTileItem ("Lollipop", Rarity.Common, 3, ["sweet"]),
+                new OrdinaryTileItem ("Sweet Tooth", Rarity.Epic, 1, ["sweet"]),//AbsorberTileItem
+                
+                new OrdinaryTileItem ("Pirate", Rarity.Legendary, 7, ["person"]), //AbsorberTileItem
+                new OrdinaryTileItem ("Chest", Rarity.Rare, 1, [ "chest"]),
+                new OrdinaryTileItem ("Golden Chest", Rarity.Epic, 3, ["chest", "gold"]),
+                new OrdinaryTileItem ("Gold Bar", Rarity.Rare, 20, ["gold"]),
                 t1, t2, t3];
         }
         public bool IsGameRunning() => Game is not null;
@@ -60,7 +66,7 @@ namespace SaYSpin.src.singletons
             Logger.Log("game ended");
             Game = null;
         }
-      
+
     }
 }
 

@@ -1,6 +1,84 @@
 #stageCompletedDialog {
+    border: none;
+    outline: none;
+    border-radius: 26px;
+    padding: 20px 50px;
+    background-image: linear-gradient(to right bottom, #1b75ff, #2073ff, #2471ff, #296eff, #2d6cff, #346bfe, #3a6bfd, #3f6afc, #466afa, #4c6bf8, #526bf6, #576cf4);
 }
+
+    #stageCompletedDialog .completed-label {
+        text-align: center;
+        font-family: Montserrat;
+        font-size: 22px;
+        color: white;
+        margin-bottom: 40px;
+        font-weight: bolder;
+    }
+
+    #stageCompletedDialog .dialog-content {
+        height: 100%;
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        justify-content: center;
+    }
+
     #stageCompletedDialog .results-container {
+        margin-bottom: 80px;
         display: flex;
         flex-direction: column;
+        gap: 14px;
     }
+
+        #stageCompletedDialog .results-container label {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            gap: 60px;
+            font-family: Montserrat;
+            font-size: 15px;
+            color: white;
+            opacity: 0.86;
+            border-bottom: 1px solid #A5E4FF;
+            padding-bottom: 2px;
+        }
+
+        #stageCompletedDialog .results-container span {
+            font-weight: bolder;
+        }
+
+        #stageCompletedDialog .results-container .diamonds-to-add {
+            opacity: 0.95;
+            border-bottom: 3px solid #FAFEFF;
+            border-radius: 3px;
+            padding-bottom: 6px;
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+        #stageCompletedDialog .results-container .total-diamonds {
+            opacity: 1;
+            font-size: 23px;
+            font-weight: bolder;
+            border: none;
+        }
+
+    #stageCompletedDialog .claim-rewards-button {
+        background-image: radial-gradient(circle, #ffce20, #ffd126, #ffd42b, #ffd630, #ffd935, #ffd935, #ffd935, #ffd935, #ffd630, #ffd42b, #ffd125, #ffce1f);
+        padding: 10px 22px;
+        width: fit-content;
+        justify-self: center;
+        color: white;
+        font-size: 18px;
+        font-family: Montserrat;
+        font-weight: bold;
+        letter-spacing: 1px;
+        border: none;
+        border-radius: 100px;
+        cursor: pointer;
+        transition: all 0.1s ease-in;
+    }
+
+        #stageCompletedDialog .claim-rewards-button:hover {
+            background-image: radial-gradient(circle, #ffcd1b, #ffcd1b, #ffcd1b, #ffcd1a, #ffcd1a, #fecc19, #fecc18, #fdcb17, #fcca16, #fac915, #f9c713, #f8c612);
+            transform: scale(1.08);
+        }

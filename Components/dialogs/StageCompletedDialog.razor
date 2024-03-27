@@ -1,49 +1,51 @@
 ﻿@inject IJSRuntime JSRuntime
 <dialog id="stageCompletedDialog">
-    @if (result is not null)
-    {
-        <label class="completed-label">Stage #@result.StageCompletedNumber completed</label>
-        <div class="results-container">
-            <label>
-                Coins needed:
-                <span>@result.CoinsNeeded</span>
-            </label>
-            <label>
-                Coins received:
-                <span>@result.CoinsRecieved</span>
-            </label>
-            <label>
-                Extra coins:
-                <span>@result.ExtraCoins</span>
-            </label>
-            <label class="diamonds-to-add">
-                Diamonds for extra coins:
-                <span>@result.DiamondsForExtraCoins</span>
-            </label>
-            <label>
-                Spins left:
-                <span>@result.SpinsLeft</span>
-            </label>
-            <label class="diamonds-to-add">
-                Diamonds for extra spins:
-                <span>@result.DiamondsForExtraSpins</span>
-            </label>
-            <label class="total-diamonds">
-                Total diamonds:
-                <span>@result.TotalDiamondsToAdd</span>
-            </label>
-        </div>
-        <button @onclick="NextStage">Next Stage</button>
-    }
-    else
-    {
-        <p>Res is null</p>
-    }
+    <div class="dialog-content">
+        @if (result is not null)
+        {
+            <label class="completed-label unselectable">Stage #@result.StageCompletedNumber completed</label>
+            <div class="results-container unselectable">
+                <label>
+                    Coins needed:
+                    <span>@result.CoinsNeeded</span>
+                </label>
+                <label>
+                    Coins received:
+                    <span>@result.CoinsRecieved</span>
+                </label>
+                <label>
+                    Extra coins:
+                    <span>@result.ExtraCoins</span>
+                </label>
+                <label class="diamonds-to-add">
+                    Diamonds for extra coins:
+                    <span>@result.DiamondsForExtraCoins</span>
+                </label>
+                <label>
+                    Spins left:
+                    <span>@result.SpinsLeft</span>
+                </label>
+                <label class="diamonds-to-add">
+                    Diamonds for extra spins:
+                    <span>@result.DiamondsForExtraSpins</span>
+                </label>
+                <label class="total-diamonds">
+                    Total diamonds:
+                    <span>@result.TotalDiamondsToAdd</span>
+                </label>
+            </div>
+            <button class="claim-rewards-button unselectable" @onclick="NextStage">Claim Rewards</button>
+        }
+        else
+        {
+            <p>Res is null</p>
+        }
+    </div>
 </dialog>
 
 @code {
     [Parameter]
-    public Action StartNewStage { get; set; }
+    public Action<int> StartNewStage { get; set; }
     private StageCompletionResult result { get; set; }
     public async Task Open(StageCompletionResult result)
     {
@@ -54,7 +56,7 @@
     private async Task NextStage()
     {
         await JSRuntime.InvokeVoidAsync("blazorDialogFunctions.closeDialog", "stageCompletedDialog");
-        StartNewStage();
+        StartNewStage(result.TotalDiamondsToAdd);
     }
 
 }

@@ -69,7 +69,7 @@ namespace SaYSpin.src.gameplay_parts
         }
         public bool CoinsEnoughToCompleteTheStage() =>
             CoinsCount >= CoinsNeededToCompleteTheStage;
-
+       
         public event StageStartedDelegate OnNewStageStarted;
         public delegate void StageStartedDelegate(int newStageNumber);
 

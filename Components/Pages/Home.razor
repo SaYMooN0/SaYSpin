@@ -9,7 +9,7 @@
     protected override void OnInitialized()
     {
         gameFlowController = allGameController.Game;
-        gameFlowController.OnNewStageStarted += (newStageNumber) => newStageDialog.Open(newStageNumber);
+        gameFlowController.OnNewStageStarted += (newStageNumber) => newStageDialog.Open(newStageNumber, gameFlowController.GenerateTileItemsForNewStageChoosing(), gameFlowController.GenerateRelicsForNewStageChoosing());
 
     }
 }
@@ -20,7 +20,7 @@
         {
             <div class="container-for-complete-stage">
                 <StageProgressBar CurrentCoins="@gameFlowController.CoinsCount" CoinsNeeded="@gameFlowController.CoinsNeededToCompleteTheStage" CurrentStage="@gameFlowController.CurrentStage" />
-                <button @onclick="CompleteStage" class="complete-stage-button ">
+                <button @onclick="CompleteStageButtonPressed" class="complete-stage-button ">
                     Complete Stage
                 </button>
             </div>
@@ -52,7 +52,7 @@
     <InventoryComponent inventory="gameFlowController.Inventory" />
 </div>
 <NewStageItemsChoosingDialog @ref="newStageDialog" />
-<StageCompletedDialog @ref="stageCompletedDialog" StartNewStage="()=>{gameFlowController.StartNewStage();StateHasChanged();  }" />
+<StageCompletedDialog @ref="stageCompletedDialog" StartNewStage="FinishStageAndStartNew" />
 
 @code {
 
@@ -72,9 +72,15 @@
 
         }
     }
-    private async void CompleteStage()
+    private async void CompleteStageButtonPressed()
     {
         var stageRes = gameFlowController.CompleteStage();
         await stageCompletedDialog.Open(stageRes);
+    }
+    private void FinishStageAndStartNew(int diamondsCount)
+    {
+        gameFlowController.Inventory.IncreaseDiamonds(diamondsCount);
+        gameFlowController.StartNewStage(); 
+        StateHasChanged();
     }
 }

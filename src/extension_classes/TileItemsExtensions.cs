@@ -8,5 +8,7 @@ namespace SaYSpin.src.extension_classes
         {
             return tileItem.Tags.Contains(tag);
         }
+        public static bool IsConsumableByPirate(this BaseTileItem tileItem) =>
+            tileItem.Tags.Any(t => t == "gold" || t == "chest");
     }
 }

@@ -6,7 +6,10 @@
         <label class="choose-label">Choose new item</label>
         @foreach (BaseTileItem itemToPick in ItemsToPick)
         {
-            @* on pick add to inventory and change state of _pickingStageTileItem*@
+            <div>
+                <InventoryItemWithRarityComponent itemToDisplay="itemToPick"/>
+                <button>Choose</button>
+            </div>
         }
         <button>Refresh items</button>
     }
@@ -15,7 +18,10 @@
         <label class="choose-label">Choose new item</label>
         @foreach (BaseRelic relicToPick in RelicsToPick)
         {
-            @* on pick add to inventory and close*@
+            <div>
+                <InventoryItemWithRarityComponent itemToDisplay="relicToPick" />
+                <button>Choose</button>
+            </div>
         }
         <button>Refresh relic</button>
     }
@@ -23,20 +29,16 @@
 </dialog>
 
 @code {
-
-
-    protected override void OnInitialized()
-    {
-        ItemsToPick = new();
-        RelicsToPick = new();
-    }
     private int stageNumber = 0;
     private bool _pickingStageTileItem = true;
-    private List<BaseTileItem> ItemsToPick { get; set; }
-    private List<BaseRelic> RelicsToPick { get; set; }
 
-    public async Task Open(int newStageNumber)
+    private BaseTileItem[] ItemsToPick { get; set; } = [];
+    private BaseRelic[] RelicsToPick { get; set; } = [];
+
+    public async Task Open(int newStageNumber, BaseTileItem[] itemsToChooseFrom, BaseRelic[] reicsToChooseFrom)
     {
+        ItemsToPick = itemsToChooseFrom;
+        RelicsToPick = reicsToChooseFrom;
         stageNumber = newStageNumber;
         StateHasChanged();
         await JSRuntime.InvokeVoidAsync("blazorDialogFunctions.openDialog", "newStagePickingDialog");

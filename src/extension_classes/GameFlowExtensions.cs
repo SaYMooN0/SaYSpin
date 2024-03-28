@@ -33,11 +33,12 @@ namespace SaYSpin.src.extension_classes
             return (int)(
                 Math.Pow(stageToCalculateFor * 0.9, 1.8)
                 * (game.Difficulty.NeededCoinsMultiplier + 1) * 3.2
-                * game.Inventory.CoinsNeededToCompleteTheStageCoefficient()
+                * game.CoinsNeededToCompleteTheStageCoefficient()
             ) + 10;
         }
         public static BaseTileItem[] GenerateTileItemsForNewStageChoosing(this GameFlowController game)
         {
+
             return game.TileItems.OrderBy(x => Guid.NewGuid()).Take(5).ToArray();
             //will be changed
         }

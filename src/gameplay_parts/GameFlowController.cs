@@ -16,8 +16,10 @@ namespace SaYSpin.src.gameplay_parts
         public int CurrentStage { get; private set; }
         public int CoinsCount { get; private set; }
         public int CoinsNeededToCompleteTheStage { get; private set; }
-        public GameFlowController(Difficulty difficulty, IEnumerable<BaseTileItem> accessibleTileItems, IEnumerable<BaseRelic> accessibleRelics)
+        public BasicStats BasicStats { get; init; }
+        public GameFlowController(BasicStats stats, Difficulty difficulty, IEnumerable<BaseTileItem> accessibleTileItems, IEnumerable<BaseRelic> accessibleRelics)
         {
+            BasicStats = stats;
             Difficulty = difficulty;
             TileItems = accessibleTileItems.ToHashSet();
             Relics = accessibleRelics.ToHashSet();
@@ -34,7 +36,7 @@ namespace SaYSpin.src.gameplay_parts
         public StageCompletionResult CompleteStage()
         {
             int extraCoins = CoinsCount - CoinsNeededToCompleteTheStage;
-            int diamondsFromCoins = (int)(extraCoins / (CurrentStage + 4) * 1.4 * Inventory.CoinsToDiamondsCoefficient());
+            int diamondsFromCoins = (int)(extraCoins / (CurrentStage + 4) * 1.4 * this.CoinsToDiamondsCoefficient());
             int diamondsFromSpins = (int)((CurrentStage + 4) / 4.5 * SpinsLeft);
 
 
@@ -52,7 +54,7 @@ namespace SaYSpin.src.gameplay_parts
         {
             CurrentStage += 1;
             SpinsLeft = 7;
-            CoinsCount = Inventory.StartingCoins();
+            CoinsCount = 0;
             CoinsNeededToCompleteTheStage = this.CalculateCoinsNeededForStage(CurrentStage);
             OnNewStageStarted?.Invoke(CurrentStage);
 
@@ -69,7 +71,7 @@ namespace SaYSpin.src.gameplay_parts
         }
         public bool CoinsEnoughToCompleteTheStage() =>
             CoinsCount >= CoinsNeededToCompleteTheStage;
-       
+
         public event StageStartedDelegate OnNewStageStarted;
         public delegate void StageStartedDelegate(int newStageNumber);
 

@@ -33,6 +33,10 @@ namespace SaYSpin.src.coins_calculation_related
     public enum CalculationEffectApplicationArea
     {
         Self,
+        Square3,
+        Square5,
+        HorizontalLine,
+        VerticalLine,
         AllTiles
     }
 }

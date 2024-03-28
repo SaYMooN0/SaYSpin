@@ -43,7 +43,8 @@ namespace SaYSpin.src.gameplay_parts
             {
                 if (item is not null)
                 {
-                    coinValue += item.CoinValue;
+                    coinValue += item.CalculateIncome([]);
+                    //ienum<bonus>
                 }
             }
 

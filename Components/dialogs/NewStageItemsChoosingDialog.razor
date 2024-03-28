@@ -1,49 +1,96 @@
 ﻿@inject IJSRuntime JSRuntime
 <dialog id="newStagePickingDialog">
-    <label class="preparing-label">Prepare for stage @stageNumber</label>
+    <label class="preparing-label">Prepare for stage @StageNumber</label>
     @if (_pickingStageTileItem)
     {
         <label class="choose-label">Choose new item</label>
-        @foreach (BaseTileItem itemToPick in ItemsToPick)
-        {
-            <div>
-                <InventoryItemWithRarityComponent itemToDisplay="itemToPick"/>
-                <button>Choose</button>
-            </div>
-        }
-        <button>Refresh items</button>
+        <div class="options-container">
+            @foreach (BaseTileItem tileItem in TileItemsToPick)
+            {
+                <NewStageItemChoosingCard item="tileItem" OnChosen="ItemChosen" />
+            }
+        </div>
+        <button class="skip-button" @onclick="()=>{_pickingStageTileItem=false;}">
+            Skip
+        </button>
+        <button @onclick="RefreshTileItems" class="refresh-button">
+            Refresh
+        </button>
     }
     else
     {
         <label class="choose-label">Choose new item</label>
-        @foreach (BaseRelic relicToPick in RelicsToPick)
-        {
-            <div>
-                <InventoryItemWithRarityComponent itemToDisplay="relicToPick" />
-                <button>Choose</button>
-            </div>
-        }
-        <button>Refresh relic</button>
+        <div class="options-container">
+            @foreach (BaseRelic relic in RelicsToPick)
+            {
+                <NewStageItemChoosingCard item="relic" OnChosen="ItemChosen" />
+            }
+        </div>
+        <button class="skip-button" @onclick="Close">
+            Skip
+        </button>
+        <button @onclick="RefreshTileItems" class="refresh-button">
+            Refresh
+        </button>
     }
-    <button @onclick="Close">Close</button> @* will be deleted *@
 </dialog>
 
 @code {
-    private int stageNumber = 0;
+    [Parameter]
+    public Action refreshInventory { get; set; }
+
+    [Parameter]
+    public GameFlowController game { get; set; }
+
     private bool _pickingStageTileItem = true;
 
-    private BaseTileItem[] ItemsToPick { get; set; } = [];
+    private int StageNumber = 0;
+    private BaseTileItem[] TileItemsToPick { get; set; } = [];
     private BaseRelic[] RelicsToPick { get; set; } = [];
 
-    public async Task Open(int newStageNumber, BaseTileItem[] itemsToChooseFrom, BaseRelic[] reicsToChooseFrom)
+    public async Task Open()
     {
-        ItemsToPick = itemsToChooseFrom;
-        RelicsToPick = reicsToChooseFrom;
-        stageNumber = newStageNumber;
+        _pickingStageTileItem = true;
+        RefreshTileItems();
+        RefreshRelics();
+        StageNumber = game.CurrentStage;
         StateHasChanged();
         await JSRuntime.InvokeVoidAsync("blazorDialogFunctions.openDialog", "newStagePickingDialog");
     }
 
-    private async Task Close() =>
+    private async Task Close()
+    {
         await JSRuntime.InvokeVoidAsync("blazorDialogFunctions.closeDialog", "newStagePickingDialog");
+    }
+
+
+    private void ItemChosen(BaseInventoryItem chosenItem)
+    {
+        if (chosenItem is BaseTileItem)
+        {
+            game.Inventory.AddTileItem(chosenItem as BaseTileItem);
+            _pickingStageTileItem = false;
+            refreshInventory();
+
+        }
+        else if (chosenItem is BaseRelic)
+        {
+            game.Inventory.AddRelic(chosenItem as BaseRelic);
+            refreshInventory();
+            Close();
+        }
+        else
+        {
+            throw new Exception("Invalid type of chose item");
+        }
+
+    }
+    private void RefreshTileItems()
+    {
+        TileItemsToPick = game.GenerateTileItemsForNewStageChoosing();
+    }
+    private void RefreshRelics()
+    {
+        RelicsToPick = game.GenerateRelicsForNewStageChoosing();
+    }
 }

@@ -1,0 +1,11 @@
+﻿<div class="item-choosing-card">
+    <InventoryItemWithRarityComponent itemToDisplay="item" />
+    <button @onclick="()=>OnChosen(item)">Choose</button>
+</div>
+
+@code {
+    [Parameter]
+    public BaseInventoryItem item { get; set; }
+    [Parameter]
+    public Action<BaseInventoryItem> OnChosen { get; set; }
+}

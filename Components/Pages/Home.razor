@@ -9,8 +9,7 @@
     protected override void OnInitialized()
     {
         gameFlowController = allGameController.Game;
-        gameFlowController.OnNewStageStarted += (newStageNumber) => newStageDialog.Open(newStageNumber, gameFlowController.GenerateTileItemsForNewStageChoosing(), gameFlowController.GenerateRelicsForNewStageChoosing());
-
+        gameFlowController.OnNewStageStarted += (newStageNumber) => newStageDialog.Open();
     }
 }
 <div class="home-page-container">
@@ -51,7 +50,7 @@
     </div>
     <InventoryComponent inventory="gameFlowController.Inventory" />
 </div>
-<NewStageItemsChoosingDialog @ref="newStageDialog" />
+<NewStageItemsChoosingDialog @ref="newStageDialog" game="gameFlowController" refreshInventory="StateHasChanged" />
 <StageCompletedDialog @ref="stageCompletedDialog" StartNewStage="FinishStageAndStartNew" />
 
 @code {
@@ -80,7 +79,7 @@
     private void FinishStageAndStartNew(int diamondsCount)
     {
         gameFlowController.Inventory.IncreaseDiamonds(diamondsCount);
-        gameFlowController.StartNewStage(); 
+        gameFlowController.StartNewStage();
         StateHasChanged();
     }
 }

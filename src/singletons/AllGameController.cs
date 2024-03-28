@@ -13,13 +13,15 @@ namespace SaYSpin.src.singletons
         public BaseTileItem[] AllTileItemsCollection { get; init; }
         public BaseRelic[] AllRelicsCollection { get; init; }
         public Difficulty[] PossibleDifficulties { get; init; }
+        private BasicStats _basicStats { get; set; }
         public AllGameController()
         {
+            _basicStats = LoadBasicStats();
 
             AllTileItemsCollection = InitTileItems();
 
             RelicWithCalculationEffect fruitBasket = new("Fruit Basket", "All fruits gives +1 coin", Rarity.Common,
-                new TagCalculationEffect(i => i.CoinValue + 1, i => i.HasTag("fruit")));
+                new TagCalculationEffect(i => i.InitialCoinValue + 1, i => i.HasTag("fruit")));
             AllRelicsCollection = [fruitBasket];
 
             Difficulty normalDifficulty = new("normal", [], [], "normal.png", 1, 1, 10, 3, 1, 1);
@@ -59,13 +61,19 @@ namespace SaYSpin.src.singletons
         public bool IsGameRunning() => Game is not null;
         public void InitializeNewGame(Difficulty difficulty)
         {
-            Game = new(difficulty, AllTileItemsCollection, AllRelicsCollection);
+            Game = new(_basicStats, difficulty, AllTileItemsCollection, AllRelicsCollection);
         }
         public void FinishGame()
         {
             Logger.Log("game ended");
             Game = null;
         }
+        private BasicStats LoadBasicStats()
+        {
+            //will be load from file
+            return BasicStats.Default();
+        }
+
 
     }
 }

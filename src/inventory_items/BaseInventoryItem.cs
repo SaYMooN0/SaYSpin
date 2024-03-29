@@ -1,7 +1,7 @@
 ﻿using SaYSpin.src.gameplay_parts;
 using System.Globalization;
 
-namespace SaYSpin.src.abstract_classes
+namespace SaYSpin.src.inventory_items
 {
     public abstract class BaseInventoryItem
     {

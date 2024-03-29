@@ -1,9 +1,10 @@
-﻿using SaYSpin.src.abstract_classes;
-using SaYSpin.src.coins_calculation_related.specific_calculation_effects;
+﻿using SaYSpin.src.enums;
 using SaYSpin.src.extension_classes;
 using SaYSpin.src.gameplay_parts;
-using SaYSpin.src.gameplay_parts.inventory_related.relics;
 using SaYSpin.src.gameplay_parts.inventory_related.tile_items;
+using SaYSpin.src.inventory_items.relics;
+using SaYSpin.src.inventory_items.tile_items;
+using SaYSpin.src.relic_effects;
 
 namespace SaYSpin.src.singletons
 {
@@ -11,7 +12,7 @@ namespace SaYSpin.src.singletons
     {
         public GameFlowController? Game { get; private set; }
         public BaseTileItem[] AllTileItemsCollection { get; init; }
-        public BaseRelic[] AllRelicsCollection { get; init; }
+        public Relic[] AllRelicsCollection { get; init; }
         public Difficulty[] PossibleDifficulties { get; init; }
         private BasicStats _basicStats { get; set; }
         public AllGameController()
@@ -20,9 +21,7 @@ namespace SaYSpin.src.singletons
 
             AllTileItemsCollection = InitTileItems();
 
-            RelicWithCalculationEffect fruitBasket = new("Fruit Basket", "All fruits gives +1 coin", Rarity.Common,
-                new TagCalculationEffect(i => i.InitialCoinValue + 1, i => i.HasTag("fruit")));
-            AllRelicsCollection = [fruitBasket];
+            AllRelicsCollection = InitRelics();
 
             Difficulty normalDifficulty = new("normal", [], [], "normal.png", 1, 1, 10, 3, 1, 1);
             Difficulty hardDifficulty = new("hard",
@@ -32,6 +31,24 @@ namespace SaYSpin.src.singletons
             PossibleDifficulties = [normalDifficulty, hardDifficulty];
         }
 
+        private Relic[] InitRelics()
+        {
+            var fruitBasket = new Relic("Fruit Basket", Rarity.Common, [
+                new CoinsCalculationEffect("All fruits gives +1 coin", ModifierType.Plus, 1,i => i.HasTag("fruit"), EffectApplicationArea.Self)
+                ]);
+
+            var treasureMap = new Relic("Treasure Map", Rarity.Rare, [
+                new AfterStageCompletedRelicEffect("After every stage completion receive a chest",
+                (stageNumber, game)=>
+                    game.Inventory.AddTileItem(game.TileItems.FirstOrDefault(i=>i.HasTag("chest")))
+                    )
+                ]);
+
+            return [
+                fruitBasket,
+                treasureMap
+                ];
+        }
         private BaseTileItem[] InitTileItems()
         {
 

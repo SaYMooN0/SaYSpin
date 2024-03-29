@@ -1,6 +1,7 @@
-﻿using SaYSpin.src.abstract_classes;
-using SaYSpin.src.gameplay_parts;
-using SaYSpin.src.gameplay_parts.inventory_related;
+﻿using SaYSpin.src.gameplay_parts;
+using SaYSpin.src.inventory_items.relics;
+using SaYSpin.src.inventory_items.tile_items;
+using SaYSpin.src.relic_effects;
 
 namespace SaYSpin.src.extension_classes
 {
@@ -42,10 +43,20 @@ namespace SaYSpin.src.extension_classes
             return game.TileItems.OrderBy(x => Guid.NewGuid()).Take(5).ToArray();
             //will be changed
         }
-        public static BaseRelic[] GenerateRelicsForNewStageChoosing(this GameFlowController game)
+        public static Relic[] GenerateRelicsForNewStageChoosing(this GameFlowController game)
         {
             return game.Relics.OrderBy(x => Guid.NewGuid()).Take(5).ToArray();
             //will be changed
+        }
+        public static void ExecuteAfterStageRelics(this GameFlowController game, int stageNumberCompleted)
+        {
+            foreach (Relic r in game.Inventory.Relics)
+            {
+                foreach (AfterStageCompletedRelicEffect rEffect in r.Effects.OfType<AfterStageCompletedRelicEffect>())
+                {
+                    rEffect.PerformAfterStageAction(stageNumberCompleted, game);
+                }
+            }
         }
     }
 }

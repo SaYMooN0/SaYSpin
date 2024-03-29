@@ -1,4 +1,8 @@
-﻿using SaYSpin.src.abstract_classes;
+﻿using SaYSpin.src.coins_calculation_related;
+using SaYSpin.src.enums;
+using SaYSpin.src.inventory_items.tile_items;
+using SaYSpin.src.relic_effects;
+using SaYSpin.src.secondary_classes;
 using System.Text;
 
 namespace SaYSpin.src.gameplay_parts
@@ -36,19 +40,65 @@ namespace SaYSpin.src.gameplay_parts
                 TileItems[row, col] = newItems[i];
             }
         }
-        public int CalculateCoinValue()
+        public int CalculateCoinValue(List<CoinsCalculationEffect> relicEffects)
         {
+
+            TileItemBonusesGrid bonuses = GatherCalculationBonuses(relicEffects);
             int coinValue = 0;
-            foreach (var item in TileItems)
+            for (int i = 0; i < TileItems.GetLength(0); i++)
             {
-                if (item is not null)
+                for (int j = 0; j < TileItems.GetLength(1); j++)
                 {
-                    coinValue += item.CalculateIncome([]);
-                    //ienum<bonus>
+                    var item = TileItems[i, j];
+                    if (item != null)
+                    {
+                        coinValue += item.CalculateIncome(
+                            bonuses.GetBonusesFor(i, j));
+                    }
                 }
             }
 
             return coinValue;
+        }
+        private TileItemBonusesGrid GatherCalculationBonuses(List<CoinsCalculationEffect> relicEffects)
+        {
+
+            TileItemBonusesGrid bonuses = new(TileItems.GetLength(0), TileItems.GetLength(1));
+
+            if (relicEffects is null || relicEffects.Count == 0)
+                return bonuses;
+
+
+            for (int i = 0; i < TileItems.GetLength(0); i++)
+            {
+                for (int j = 0; j < TileItems.GetLength(1); j++)
+                {
+                    var tileItem = TileItems[i, j];
+                    if (tileItem is null)
+                        continue;
+
+                    ApplyRelicEffectsToTileItemInGrid(relicEffects, bonuses, i, j, tileItem);
+                }
+            }
+
+            return bonuses;
+        }
+
+        private void ApplyRelicEffectsToTileItemInGrid(List<CoinsCalculationEffect> relicEffects, TileItemBonusesGrid bonuses, int i, int j, BaseTileItem tileItem)
+        {
+            foreach (var rEffect in relicEffects)
+            {
+                if (!rEffect.Condition(tileItem)) continue;
+
+                switch (rEffect.Area)
+                {
+                    case EffectApplicationArea.Self:
+                        bonuses.AddBonus(i, j, new TileItemIncomeBonus(rEffect.ModifierType, rEffect.ModificationValue));
+                        break;
+                    default:
+                        throw new NotImplementedException("EffectApplicationArea Unsupported type");
+                }
+            }
         }
 
         public void IncreaseRowsCount()

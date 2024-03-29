@@ -1,7 +1,7 @@
 ﻿using SaYSpin.src.coins_calculation_related;
 using SaYSpin.src.gameplay_parts;
 
-namespace SaYSpin.src.abstract_classes
+namespace SaYSpin.src.inventory_items.tile_items
 {
     public abstract class BaseTileItem : BaseInventoryItem
     {
@@ -15,7 +15,7 @@ namespace SaYSpin.src.abstract_classes
         public string[] Tags { get; init; }
         public int InitialCoinValue { get; init; }
         public override string ImageFolderPath => "tile_items";
-        public override string ToString() => 
+        public override string ToString() =>
             $"{{Id: {Id}, Rarity: {Rarity}, InitialCoinValue: {InitialCoinValue}}}";
 
         public abstract int CalculateIncome(IEnumerable<TileItemIncomeBonus> bonuses);

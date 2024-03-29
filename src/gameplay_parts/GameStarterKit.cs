@@ -1,11 +1,12 @@
-﻿using SaYSpin.src.abstract_classes;
-using SaYSpin.src.gameplay_parts.inventory_related.tokens;
+﻿using SaYSpin.src.gameplay_parts.inventory_related.tokens;
+using SaYSpin.src.inventory_items.relics;
+using SaYSpin.src.inventory_items.tile_items;
 
 namespace SaYSpin.src.gameplay_parts
 {
     public record class GameStarterKit(
         List<BaseTileItem> TileItems,
-        List<BaseRelic> Relics,
+        List<Relic> Relics,
         TokensCollection TokensCollection,
         int DiamondsCount)
     {

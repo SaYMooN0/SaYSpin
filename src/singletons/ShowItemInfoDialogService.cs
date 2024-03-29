@@ -1,4 +1,4 @@
-﻿using SaYSpin.src.abstract_classes;
+﻿using SaYSpin.src.inventory_items;
 
 namespace SaYSpin.src.singletons
 {

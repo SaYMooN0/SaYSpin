@@ -1,14 +1,16 @@
-﻿using SaYSpin.src.abstract_classes;
-using SaYSpin.src.gameplay_parts.inventory_related;
+﻿using SaYSpin.src.gameplay_parts.inventory_related;
 using SaYSpin.src.secondary_classes;
 using SaYSpin.src.extension_classes;
+using SaYSpin.src.inventory_items.tile_items;
+using SaYSpin.src.inventory_items.relics;
+using SaYSpin.src.relic_effects;
 
 namespace SaYSpin.src.gameplay_parts
 {
     public class GameFlowController
     {
         public HashSet<BaseTileItem> TileItems { get; init; }
-        public HashSet<BaseRelic> Relics { get; init; }
+        public HashSet<Relic> Relics { get; init; }
         public Difficulty Difficulty { get; init; }
         public SlotMachine SlotMachine { get; private set; }
         public Inventory Inventory { get; private set; }
@@ -17,7 +19,7 @@ namespace SaYSpin.src.gameplay_parts
         public int CoinsCount { get; private set; }
         public int CoinsNeededToCompleteTheStage { get; private set; }
         public BasicStats BasicStats { get; init; }
-        public GameFlowController(BasicStats stats, Difficulty difficulty, IEnumerable<BaseTileItem> accessibleTileItems, IEnumerable<BaseRelic> accessibleRelics)
+        public GameFlowController(BasicStats stats, Difficulty difficulty, IEnumerable<BaseTileItem> accessibleTileItems, IEnumerable<Relic> accessibleRelics)
         {
             BasicStats = stats;
             Difficulty = difficulty;
@@ -39,6 +41,7 @@ namespace SaYSpin.src.gameplay_parts
             int diamondsFromCoins = (int)(extraCoins / (CurrentStage + 4) * 1.4 * this.CoinsToDiamondsCoefficient());
             int diamondsFromSpins = (int)((CurrentStage + 4) / 4.5 * SpinsLeft);
 
+            this.ExecuteAfterStageRelics(CurrentStage);
 
             return new(
                 CurrentStage,
@@ -65,7 +68,12 @@ namespace SaYSpin.src.gameplay_parts
             itemsPicker.PickItemsFrom(Inventory.TileItems);
             SlotMachine.UpdateItems(itemsPicker);
 
-            int income = SlotMachine.CalculateCoinValue();
+            List<CoinsCalculationEffect> relicEffects = Inventory.Relics
+                .SelectMany(relic => relic.Effects.OfType<CoinsCalculationEffect>())
+                .ToList();
+
+
+            int income = SlotMachine.CalculateCoinValue(relicEffects);
             CoinsCount += income;
             SpinsLeft -= 1;
         }

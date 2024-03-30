@@ -5,7 +5,7 @@
     {
         <label class="choose-label">Choose new item</label>
         <div class="options-container">
-            @foreach (BaseTileItem tileItem in TileItemsToPick)
+            @foreach (TileItem tileItem in TileItemsToPick)
             {
                 <NewStageItemChoosingCard item="tileItem" OnChosen="ItemChosen" />
             }
@@ -45,7 +45,7 @@
     private bool _pickingStageTileItem = true;
 
     private int StageNumber = 0;
-    private BaseTileItem[] TileItemsToPick { get; set; } = [];
+    private TileItem[] TileItemsToPick { get; set; } = [];
     private Relic[] RelicsToPick { get; set; } = [];
 
     public async Task Open()
@@ -66,9 +66,9 @@
 
     private void ItemChosen(BaseInventoryItem chosenItem)
     {
-        if (chosenItem is BaseTileItem)
+        if (chosenItem is TileItem)
         {
-            game.Inventory.AddTileItem(chosenItem as BaseTileItem);
+            game.Inventory.AddTileItem(chosenItem as TileItem);
             _pickingStageTileItem = false;
             refreshInventory();
 

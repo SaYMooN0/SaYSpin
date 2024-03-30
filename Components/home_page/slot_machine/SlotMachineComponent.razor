@@ -2,11 +2,11 @@
     [Parameter]
     public SlotMachine slotMachine { get; set; }
 
-    private IEnumerable<BaseTileItem?> allItems;
+    private IEnumerable<TileItem?> allItems;
 
     protected override void OnParametersSet()
     {
-        allItems = slotMachine?.SingleDimensionTileItems() ?? Enumerable.Empty<BaseTileItem?>();
+        allItems = slotMachine?.SingleDimensionTileItems() ?? Enumerable.Empty<TileItem?>();
     }
     private string CalcGridStyle() =>
         $"grid-template-columns: repeat({slotMachine.ColumnsCount}, 1fr); grid-template-rows: repeat({slotMachine.RowsCount}, 1fr);";
@@ -22,7 +22,7 @@
 <div class="slot-machine unselectable" style="@CalcGridStyle()">
     @if (allItems is not null)
     {
-        @foreach (BaseTileItem? item in allItems)
+        @foreach (TileItem? item in allItems)
         {
             <SlotMachineTileComponent tileItem="@item" tileWidth="@CalcTileItemsWidth()" />
         }

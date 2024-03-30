@@ -6,7 +6,7 @@ namespace SaYSpin.src.gameplay_parts.inventory_related
 {
     public class Inventory
     {
-        public Inventory(List<BaseTileItem> startingItems, List<Relic> startingRelics, TokensCollection tokens, int diamondsCount)
+        public Inventory(List<TileItem> startingItems, List<Relic> startingRelics, TokensCollection tokens, int diamondsCount)
         {
             Tokens = tokens;
             Relics = startingRelics;
@@ -16,8 +16,8 @@ namespace SaYSpin.src.gameplay_parts.inventory_related
         public int DiamondsCount { get; private set; }
         public TokensCollection Tokens { get; init; }
         public List<Relic> Relics { get; init; }
-        public List<BaseTileItem> TileItems { get; init; }
-        public void AddTileItem(BaseTileItem item) =>
+        public List<TileItem> TileItems { get; init; }
+        public void AddTileItem(TileItem item) =>
             TileItems.Add(item);
         public void AddRelic(Relic relic) =>
             Relics.Add(relic);

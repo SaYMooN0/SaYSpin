@@ -1,7 +1,6 @@
 ﻿using SaYSpin.src.gameplay_parts;
-using SaYSpin.src.inventory_items.relics;
 
-namespace SaYSpin.src.relic_effects
+namespace SaYSpin.src.inventory_items.relics.relic_effects
 {
     public class AfterStageCompletedRelicEffect : BaseRelicEffect
     {

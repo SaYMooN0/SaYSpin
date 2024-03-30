@@ -5,7 +5,7 @@ using SaYSpin.src.inventory_items.tile_items;
 namespace SaYSpin.src.gameplay_parts
 {
     public record class GameStarterKit(
-        List<BaseTileItem> TileItems,
+        List<TileItem> TileItems,
         List<Relic> Relics,
         TokensCollection TokensCollection,
         int DiamondsCount)

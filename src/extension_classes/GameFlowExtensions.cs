@@ -1,12 +1,14 @@
 ﻿using SaYSpin.src.gameplay_parts;
 using SaYSpin.src.inventory_items.relics;
+using SaYSpin.src.inventory_items.relics.relic_effects;
 using SaYSpin.src.inventory_items.tile_items;
-using SaYSpin.src.relic_effects;
+using SaYSpin.src.inventory_items.tile_items.tile_item_effects;
 
 namespace SaYSpin.src.extension_classes
 {
     public static class GameFlowExtensions
     {
+
         public static List<GameStarterKit> GenerateStarterKits(this GameFlowController game)
         {
             List<GameStarterKit> kits = new();
@@ -37,7 +39,7 @@ namespace SaYSpin.src.extension_classes
                 * game.CoinsNeededToCompleteTheStageCoefficient()
             ) + 10;
         }
-        public static BaseTileItem[] GenerateTileItemsForNewStageChoosing(this GameFlowController game)
+        public static TileItem[] GenerateTileItemsForNewStageChoosing(this GameFlowController game)
         {
 
             return game.TileItems.OrderBy(x => Guid.NewGuid()).Take(5).ToArray();
@@ -48,13 +50,23 @@ namespace SaYSpin.src.extension_classes
             return game.Relics.OrderBy(x => Guid.NewGuid()).Take(5).ToArray();
             //will be changed
         }
-        public static void ExecuteAfterStageRelics(this GameFlowController game, int stageNumberCompleted)
+        public static void ExecuteAfterStageRelicEffects(this GameFlowController game, int stageNumberCompleted)
         {
             foreach (Relic r in game.Inventory.Relics)
             {
                 foreach (AfterStageCompletedRelicEffect rEffect in r.Effects.OfType<AfterStageCompletedRelicEffect>())
                 {
                     rEffect.PerformAfterStageAction(stageNumberCompleted, game);
+                }
+            }
+        }
+        public static void ExecuteAfterSpinRelicEffects(this GameFlowController game)
+        {
+            foreach (Relic r in game.Inventory.Relics)
+            {
+                foreach (AfterSpinRelicEffect rEffect in r.Effects.OfType<AfterSpinRelicEffect>())
+                {
+                    rEffect.PerformAfterSpinAction(game);
                 }
             }
         }

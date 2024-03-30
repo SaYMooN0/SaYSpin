@@ -1,7 +1,7 @@
 ﻿using SaYSpin.src.coins_calculation_related;
 using SaYSpin.src.enums;
+using SaYSpin.src.inventory_items.relics.relic_effects;
 using SaYSpin.src.inventory_items.tile_items;
-using SaYSpin.src.relic_effects;
 using SaYSpin.src.secondary_classes;
 using System.Text;
 
@@ -12,25 +12,25 @@ namespace SaYSpin.src.gameplay_parts
         public int RowsCount => TileItems.GetLength(0);
         public int ColumnsCount => TileItems.GetLength(1);
         public int TotalSlots => TileItems.Length;
-        public BaseTileItem?[,] TileItems { get; private set; }
+        public TileItem?[,] TileItems { get; private set; }
 
-        public SlotMachine(List<BaseTileItem> startingTiles, int rowsCount = 3, int columnsCount = 3)
+        public SlotMachine(List<TileItem> startingTiles, int rowsCount = 3, int columnsCount = 3)
         {
-            TileItems = new BaseTileItem?[rowsCount, columnsCount];
+            TileItems = new TileItem?[rowsCount, columnsCount];
             UpdateItems(startingTiles);
         }
 
         public void UpdateItems(TileItemsPicker itemsPicker) =>
             UpdateItems(itemsPicker.GetRandomizedItems());
 
-        private void UpdateItems(List<BaseTileItem> newItems)
+        private void UpdateItems(List<TileItem> newItems)
         {
             Random rand = new Random();
             var positions = Enumerable.Range(0, TotalSlots)
                                       .OrderBy(x => rand.Next())
                                       .ToList();
 
-            TileItems = new BaseTileItem?[RowsCount, ColumnsCount];
+            TileItems = new TileItem?[RowsCount, ColumnsCount];
 
             for (int i = 0; i < newItems.Count; i++)
             {
@@ -84,7 +84,7 @@ namespace SaYSpin.src.gameplay_parts
             return bonuses;
         }
 
-        private void ApplyRelicEffectsToTileItemInGrid(List<CoinsCalculationEffect> relicEffects, TileItemBonusesGrid bonuses, int i, int j, BaseTileItem tileItem)
+        private void ApplyRelicEffectsToTileItemInGrid(List<CoinsCalculationEffect> relicEffects, TileItemBonusesGrid bonuses, int i, int j, TileItem tileItem)
         {
             foreach (var rEffect in relicEffects)
             {
@@ -103,14 +103,14 @@ namespace SaYSpin.src.gameplay_parts
 
         public void IncreaseRowsCount()
         {
-            var newSlotItems = new BaseTileItem?[RowsCount + 1, ColumnsCount];
+            var newSlotItems = new TileItem?[RowsCount + 1, ColumnsCount];
             Array.Copy(TileItems, 0, newSlotItems, 0, TileItems.Length);
             TileItems = newSlotItems;
         }
 
         public void IncreaseColumnsCount()
         {
-            var newSlotItems = new BaseTileItem?[RowsCount, ColumnsCount + 1];
+            var newSlotItems = new TileItem?[RowsCount, ColumnsCount + 1];
             for (int row = 0; row < RowsCount; row++)
             {
                 for (int column = 0; column < ColumnsCount; column++)
@@ -120,7 +120,7 @@ namespace SaYSpin.src.gameplay_parts
             }
             TileItems = newSlotItems;
         }
-        public IEnumerable<BaseTileItem?> SingleDimensionTileItems()
+        public IEnumerable<TileItem?> SingleDimensionTileItems()
         {
             for (int row = 0; row < TileItems.GetLength(0); row++)
             {
@@ -130,13 +130,18 @@ namespace SaYSpin.src.gameplay_parts
                 }
             }
         }
+        public void SetTileItemNull(int row, int col)
+        {
+            if (row >= 0 && row < RowsCount && col >= 0 && col < ColumnsCount)
+                TileItems[row, col] = null;
+        }
         public override string ToString()
         {
             StringBuilder sB = new StringBuilder();
 
             int emptyCount = 0;
             int filledCount = 0;
-            int maxItemLength = TileItems.Cast<BaseTileItem?>()
+            int maxItemLength = TileItems.Cast<TileItem?>()
                                          .Where(item => item is not null)
                                          .Max(item => item?.ToString().Length ?? 0) + ColumnsCount;
 

@@ -1,17 +1,16 @@
 ﻿using SaYSpin.src.enums;
 using SaYSpin.src.extension_classes;
 using SaYSpin.src.gameplay_parts;
-using SaYSpin.src.gameplay_parts.inventory_related.tile_items;
 using SaYSpin.src.inventory_items.relics;
+using SaYSpin.src.inventory_items.relics.relic_effects;
 using SaYSpin.src.inventory_items.tile_items;
-using SaYSpin.src.relic_effects;
 
 namespace SaYSpin.src.singletons
 {
     public class AllGameController
     {
         public GameFlowController? Game { get; private set; }
-        public BaseTileItem[] AllTileItemsCollection { get; init; }
+        public TileItem[] AllTileItemsCollection { get; init; }
         public Relic[] AllRelicsCollection { get; init; }
         public Difficulty[] PossibleDifficulties { get; init; }
         private BasicStats _basicStats { get; set; }
@@ -43,36 +42,55 @@ namespace SaYSpin.src.singletons
                     game.Inventory.AddTileItem(game.TileItems.FirstOrDefault(i=>i.HasTag("chest")))
                     )
                 ]);
+            var goldenKey = new Relic("Golden Key", Rarity.Rare, new HashSet<BaseRelicEffect>
+                {new AfterSpinRelicEffect("After each spin, have a 30% chance to open a chest in a slot machine field",
+                    (game) =>
+                    {
+                        for (int row = 0; row < game.SlotMachine.RowsCount; row++)
+                        {
+                            for (int col = 0; col < game.SlotMachine.ColumnsCount; col++)
+                            {
+                                var tileItem = game.SlotMachine.TileItems[row, col];
+                                if (tileItem?.IsChest() == true && Randomizer.Percent(30))
+                                {
+                                    game.DestroyTileItem(tileItem, row, col);
+                                }
+                            }
+                        }
+                    })
+                });
+
 
             return [
                 fruitBasket,
-                treasureMap
+                treasureMap,
+                goldenKey
                 ];
         }
-        private BaseTileItem[] InitTileItems()
+        private TileItem[] InitTileItems()
         {
 
-            OrdinaryTileItem t1 = new("medal 1", Rarity.Common, 1, null);
-            OrdinaryTileItem t2 = new("medal 2", Rarity.Common, 2, null);
-            OrdinaryTileItem t3 = new("medal 3", Rarity.Common, 3, null);
+            var t1 = TileItem.Ordinary("medal 1", Rarity.Common, 1, []);
+            var t2 = TileItem.Ordinary("medal 2", Rarity.Common, 2, []);
+            var t3 = TileItem.Ordinary("medal 3", Rarity.Common, 3, []);
 
             return [
-                new OrdinaryTileItem ("Apple", Rarity.Common, 3, ["fruit"]),
-                new OrdinaryTileItem ("Banana", Rarity.Common, 3, ["fruit"]),
-                new OrdinaryTileItem ("Dragon Fruit", Rarity.Rare, 7, ["fruit"]),
-                new OrdinaryTileItem ("Golden Apple", Rarity.Epic, 17, ["fruit","gold" ]),
-                new OrdinaryTileItem ("Orange", Rarity.Common, 3, ["fruit"]),
-                new OrdinaryTileItem ("Pineapple", Rarity.Rare, 5, ["fruit"]),
+                TileItem.Ordinary("Apple", Rarity.Common, 3, ["fruit"]),
+                TileItem.Ordinary("Banana", Rarity.Common, 3, ["fruit"]),
+                TileItem.Ordinary("Dragon Fruit", Rarity.Rare, 7, ["fruit"]),
+                TileItem.Ordinary("Golden Apple", Rarity.Epic, 17, ["fruit", "gold"]),
+                TileItem.Ordinary("Orange", Rarity.Common, 3, ["fruit"]),
+                TileItem.Ordinary("Pineapple", Rarity.Rare, 5, ["fruit"]),
 
-                new OrdinaryTileItem ("Candy", Rarity.Common, 3, ["sweet"]),
-                new OrdinaryTileItem ("Chocolate Bar", Rarity.Rare, 5, ["sweet"]),
-                new OrdinaryTileItem ("Lollipop", Rarity.Common, 3, ["sweet"]),
-                new OrdinaryTileItem ("Sweet Tooth", Rarity.Epic, 1, ["sweet"]),//AbsorberTileItem
-                
-                new OrdinaryTileItem ("Pirate", Rarity.Legendary, 7, ["person"]), //AbsorberTileItem
-                new OrdinaryTileItem ("Chest", Rarity.Rare, 1, [ "chest"]),
-                new OrdinaryTileItem ("Golden Chest", Rarity.Epic, 3, ["chest", "gold"]),
-                new OrdinaryTileItem ("Gold Bar", Rarity.Rare, 20, ["gold"]),
+                TileItem.Ordinary("Candy", Rarity.Common, 3, ["sweet"]),
+                TileItem.Ordinary("Chocolate Bar", Rarity.Rare, 5, ["sweet"]),
+                TileItem.Ordinary("Lollipop", Rarity.Common, 3, ["sweet"]),
+                TileItem.Ordinary("Sweet Tooth", Rarity.Epic, 1, ["sweet"]), //AbsorberTileItem
+        
+                TileItem.Ordinary("Pirate", Rarity.Legendary, 7, ["person"]), //AbsorberTileItem
+                TileItem.Ordinary("Chest", Rarity.Rare, 1, ["chest"]),
+                TileItem.Ordinary("Golden Chest", Rarity.Epic, 3, ["chest", "gold"]),
+                TileItem.Ordinary("Gold Bar", Rarity.Rare, 20, ["gold"]),
                 t1, t2, t3];
         }
         public bool IsGameRunning() => Game is not null;

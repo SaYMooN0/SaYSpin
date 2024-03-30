@@ -5,15 +5,15 @@ namespace SaYSpin.src.gameplay_parts
     public class TileItemsPicker
     {
         private readonly int _itemsNeeded;
-        private List<BaseTileItem> PickedItems { get; set; }
+        private List<TileItem> PickedItems { get; set; }
 
         public TileItemsPicker(int itemsNeeded)
         {
             _itemsNeeded = itemsNeeded;
-            PickedItems = new List<BaseTileItem>();
+            PickedItems = new List<TileItem>();
         }
 
-        public void PickItemsFrom(List<BaseTileItem> itemsToPickFrom)
+        public void PickItemsFrom(List<TileItem> itemsToPickFrom)
         {
             Random rand = new Random();
             PickedItems.Clear();
@@ -38,13 +38,13 @@ namespace SaYSpin.src.gameplay_parts
             }
         }
 
-        public List<BaseTileItem> GetRandomizedItems()
+        public List<TileItem> GetRandomizedItems()
         {
             Random rand = new Random();
             return PickedItems.OrderBy(x => rand.Next()).ToList();
         }
 
-        private IEnumerable<BaseTileItem> RandomSelection(List<BaseTileItem> source, int count, Random rand) =>
+        private IEnumerable<TileItem> RandomSelection(List<TileItem> source, int count, Random rand) =>
             source.OrderBy(x => rand.Next()).Take(count);
     }
 }

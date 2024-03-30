@@ -2,7 +2,6 @@
 {
     public class BasicStats
     {
-
         public double Luck { get; init; }
         public double DiamondsAfterStageCoefficient { get; init; }
         public int NewStageTileItemsForChoiceCount { get; init; }

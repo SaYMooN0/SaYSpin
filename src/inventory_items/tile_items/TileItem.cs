@@ -1,7 +1,5 @@
-﻿using SaYSpin.src.coins_calculation_related;
-using SaYSpin.src.enums;
+﻿using SaYSpin.src.enums;
 using SaYSpin.src.gameplay_parts;
-using System.Collections.Generic;
 
 namespace SaYSpin.src.inventory_items.tile_items
 {
@@ -25,18 +23,22 @@ namespace SaYSpin.src.inventory_items.tile_items
             $"{{Id: {Id}, Rarity: {Rarity}, InitialCoinValue: {InitialCoinValue}}}";
 
         public delegate int CalculateIncomeDelegate(IEnumerable<TileItemIncomeBonus> bonuses);
-
+        public TileItem WithEffect(BaseTileItemEffect effect)
+        {
+            Effects.Add(effect);
+            Description += (string.IsNullOrEmpty(Description) ? "" : "\n") + effect.Description;
+            return this;
+        }
         public static TileItem Ordinary(string name, Rarity rarity, int initialCoinValue, string[] tags) =>
-            new(name, $"Gives {initialCoinValue} coins with each drop", rarity, initialCoinValue, tags, [],
-                (IEnumerable<TileItemIncomeBonus> bonuses) =>
-                {
-                    double value = initialCoinValue;
-                    foreach (var b in bonuses.OrderByModifierType())
-                    {
-                        value = value.Apply(b.ModifierValue, b.ModifierType);
-                    }
-                    return (int)value;
-                });
-
+           new(name, $"Gives {initialCoinValue} coins with each drop", rarity, initialCoinValue, tags, [],
+               (IEnumerable<TileItemIncomeBonus> bonuses) =>
+               {
+                   double value = initialCoinValue;
+                   foreach (var b in bonuses.OrderByModifierType())
+                   {
+                       value = value.Apply(b.ModifierValue, b.ModifierType);
+                   }
+                   return (int)value;
+               });
     }
 }

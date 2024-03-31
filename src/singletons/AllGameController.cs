@@ -2,8 +2,8 @@
 using SaYSpin.src.extension_classes;
 using SaYSpin.src.gameplay_parts;
 using SaYSpin.src.inventory_items.relics;
-using SaYSpin.src.inventory_items.relics.relic_effects;
 using SaYSpin.src.inventory_items.tile_items;
+using SaYSpin.src.extension_classes.factories;
 
 namespace SaYSpin.src.singletons
 {
@@ -32,35 +32,38 @@ namespace SaYSpin.src.singletons
 
         private Relic[] InitRelics()
         {
-            var fruitBasket = new Relic("Fruit Basket", Rarity.Common, [
-                new CoinsCalculationEffect("All fruits gives +1 coin", ModifierType.Plus, 1,i => i.HasTag("fruit"), EffectApplicationArea.Self)
-                ]);
+            var fruitBasket = new Relic("Fruit Basket", Rarity.Common)
+                .WithCoinsCalculationRelicEffect("All fruits gives +1 coin", ModifierType.Plus, 1, i => i.HasTag("fruit"), EffectApplicationArea.Self);
 
-            var treasureMap = new Relic("Treasure Map", Rarity.Rare, [
-                new AfterStageCompletedRelicEffect("After every stage completion receive a chest",
-                (stageNumber, game)=>
-                    game.Inventory.AddTileItem(game.TileItems.FirstOrDefault(i=>i.HasTag("chest")))
-                    )
-                ]);
-            var goldenKey = new Relic("Golden Key", Rarity.Rare, new HashSet<BaseRelicEffect>
-                {new AfterSpinRelicEffect("After each spin, have a 30% chance to open a chest in a slot machine field",
-                    (game) =>
+            var treasureMap = new Relic("Treasure Map", Rarity.Rare)
+                .WithAfterStageCompletedRelicEffect("After every stage completion have a 50% chance to receive a chest tile item and 10% chance to receive golden chest tile item",
+                    (stageNumber, game) =>
+                    {
+                        if (Randomizer.Percent(50))
+                            game.AddTileItemToInventory(game.TileItemWithId("chest"));
+                        if (Randomizer.Percent(10))
+                            game.AddTileItemToInventory(game.TileItemWithId("golden_chest"));
+                    }
+                );
+
+
+            var goldenKey = new Relic("Golden Key", Rarity.Rare)
+                .WithAfterSpinRelicEffect("After each spin have a 30% chance to open a chest in a slot machine field",
+                    game =>
                     {
                         for (int row = 0; row < game.SlotMachine.RowsCount; row++)
                         {
                             for (int col = 0; col < game.SlotMachine.ColumnsCount; col++)
                             {
                                 var tileItem = game.SlotMachine.TileItems[row, col];
-                                if (tileItem?.IsChest() == true && Randomizer.Percent(30))
+                                if (tileItem.IsChest() && Randomizer.Percent(30))
                                 {
                                     game.DestroyTileItem(tileItem, row, col);
                                 }
                             }
                         }
-                    })
-                });
-
-
+                    }
+                );
             return [
                 fruitBasket,
                 treasureMap,
@@ -88,8 +91,18 @@ namespace SaYSpin.src.singletons
                 TileItem.Ordinary("Sweet Tooth", Rarity.Epic, 1, ["sweet"]), //AbsorberTileItem
         
                 TileItem.Ordinary("Pirate", Rarity.Legendary, 7, ["person"]), //AbsorberTileItem
-                TileItem.Ordinary("Chest", Rarity.Rare, 1, ["chest"]),
-                TileItem.Ordinary("Golden Chest", Rarity.Epic, 3, ["chest", "gold"]),
+                TileItem.Ordinary("Chest", Rarity.Rare, 1, ["chest"])
+                    .WithOnDestroyTileItemEffect("After opening gives from 20 to 50 coins and from 3 to 7 diamonds",
+                        (game)=>{
+                            game.AddCoins(Randomizer.Int(20,50));
+                            game.Inventory.AddDiamonds(Randomizer.Int(3,7));
+                        }),
+                TileItem.Ordinary("Golden Chest", Rarity.Epic, 3, ["chest", "gold"])
+                    .WithOnDestroyTileItemEffect("After opening gives from 50 to 150 coins and from 10 to 20 diamonds",
+                        (game)=>{
+                            game.AddCoins(Randomizer.Int(50,150));
+                            game.Inventory.AddDiamonds(Randomizer.Int(10,20));
+                        }),
                 TileItem.Ordinary("Gold Bar", Rarity.Rare, 20, ["gold"]),
                 t1, t2, t3];
         }

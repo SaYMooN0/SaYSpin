@@ -78,7 +78,7 @@
     }
     private void FinishStageAndStartNew(int diamondsCount)
     {
-        gameFlowController.Inventory.IncreaseDiamonds(diamondsCount);
+        gameFlowController.Inventory.AddDiamonds(diamondsCount);
         gameFlowController.StartNewStage();
         StateHasChanged();
     }

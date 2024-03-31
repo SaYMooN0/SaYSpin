@@ -5,6 +5,7 @@ using SaYSpin.src.inventory_items.tile_items;
 using SaYSpin.src.inventory_items.relics;
 using SaYSpin.src.inventory_items.relics.relic_effects;
 using SaYSpin.src.inventory_items.tile_items.tile_item_effects;
+using SaYSpin.src.inventory_items;
 
 namespace SaYSpin.src.gameplay_parts
 {
@@ -21,6 +22,7 @@ namespace SaYSpin.src.gameplay_parts
         public int CoinsNeededToCompleteTheStage { get; private set; }
         public BasicStats BasicStats { get; init; }
         public event Action<TileItem> OnTileItemDestruction;
+        public event Action<BaseInventoryItem> OnInventoryItemAdded;
         public GameFlowController(BasicStats stats, Difficulty difficulty, IEnumerable<TileItem> accessibleTileItems, IEnumerable<Relic> accessibleRelics)
         {
             BasicStats = stats;
@@ -76,7 +78,7 @@ namespace SaYSpin.src.gameplay_parts
 
 
             int income = SlotMachine.CalculateCoinValue(relicEffects);
-            CoinsCount += income;
+            AddCoins(income);
             SpinsLeft -= 1;
             this.ExecuteAfterSpinRelicEffects();
         }
@@ -90,8 +92,19 @@ namespace SaYSpin.src.gameplay_parts
             Inventory.TileItems.Remove(tileItemToDestroy);
             SlotMachine.SetTileItemNull(row, col);
         }
-        public bool CoinsEnoughToCompleteTheStage() =>
-            CoinsCount >= CoinsNeededToCompleteTheStage;
+        public void AddTileItemToInventory(TileItem item)
+        {
+            Inventory.TileItems.Add(item);
+            OnInventoryItemAdded?.Invoke(item);
+        }
+        public void AddRelicToInventory(Relic relic)
+        {
+            Inventory.Relics.Add(relic);
+            OnInventoryItemAdded?.Invoke(relic);
+        }
+        public void AddCoins(int count) =>
+            CoinsCount += count;
+
 
         public event StageStartedDelegate OnNewStageStarted;
         public delegate void StageStartedDelegate(int newStageNumber);

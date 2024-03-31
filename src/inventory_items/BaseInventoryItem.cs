@@ -7,7 +7,7 @@ namespace SaYSpin.src.inventory_items
     {
         public string Id { get; init; }
         public string Name { get; init; }
-        public string Description { get; init; } = "";
+        public string Description { get; protected set; } = "";
         public string Image { get; init; }
         public Rarity Rarity { get; init; }
         public abstract string ImageFolderPath { get; }

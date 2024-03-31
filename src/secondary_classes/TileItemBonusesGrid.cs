@@ -1,4 +1,4 @@
-﻿using SaYSpin.src.coins_calculation_related;
+﻿using SaYSpin.src.inventory_items.tile_items;
 
 namespace SaYSpin.src.secondary_classes
 {

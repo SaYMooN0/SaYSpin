@@ -68,14 +68,14 @@
     {
         if (chosenItem is TileItem)
         {
-            game.Inventory.AddTileItem(chosenItem as TileItem);
+            game.AddTileItemToInventory(chosenItem as TileItem);
             _pickingStageTileItem = false;
             refreshInventory();
 
         }
         else if (chosenItem is Relic)
         {
-            game.Inventory.AddRelic(chosenItem as Relic);
+            game.AddRelicToInventory(chosenItem as Relic);
             refreshInventory();
             Close();
         }

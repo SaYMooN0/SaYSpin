@@ -17,14 +17,9 @@ namespace SaYSpin.src.gameplay_parts.inventory_related
         public TokensCollection Tokens { get; init; }
         public List<Relic> Relics { get; init; }
         public List<TileItem> TileItems { get; init; }
-        public void AddTileItem(TileItem item) =>
-            TileItems.Add(item);
-        public void AddRelic(Relic relic) =>
-            Relics.Add(relic);
-
-        public void IncreaseDiamonds(int value) =>
-            DiamondsCount += value;
-        public void DecreaseDiamonds(int value) =>
-            DiamondsCount -= value;
+        public void ChangeDiamondsCount(Func<int, int> func) =>
+            DiamondsCount = func(DiamondsCount);
+        public void AddDiamonds(int count) =>
+            DiamondsCount += count;
     }
 }

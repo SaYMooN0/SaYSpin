@@ -4,6 +4,7 @@ using SaYSpin.src.gameplay_parts;
 using SaYSpin.src.inventory_items.relics;
 using SaYSpin.src.inventory_items.tile_items;
 using SaYSpin.src.extension_classes.factories;
+using SaYSpin.src.inventory_items;
 
 namespace SaYSpin.src.singletons
 {
@@ -36,14 +37,10 @@ namespace SaYSpin.src.singletons
                 .WithCoinsCalculationRelicEffect("All fruits gives +1 coin", ModifierType.Plus, 1, i => i.HasTag("fruit"), EffectApplicationArea.Self);
 
             var treasureMap = new Relic("Treasure Map", Rarity.Rare)
-                .WithAfterStageCompletedRelicEffect("After every stage completion have a 50% chance to receive a chest tile item and 10% chance to receive golden chest tile item",
-                    (stageNumber, game) =>
-                    {
-                        if (Randomizer.Percent(50))
-                            game.AddTileItemToInventory(game.TileItemWithId("chest"));
-                        if (Randomizer.Percent(10))
-                            game.AddTileItemToInventory(game.TileItemWithId("golden_chest"));
-                    }
+                .WithAfterStageRewardRelicEffect("After every stage completion have a 50% chance to receive a chest tile item and 10% chance to receive golden chest tile item",
+                    (stageNumber, game) => [
+                        Randomizer.Percent(50)? game.TileItemWithId("chest")        : null ,
+                        Randomizer.Percent(10)? game.TileItemWithId("golden_chest") : null]
                 );
 
 

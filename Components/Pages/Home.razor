@@ -50,8 +50,8 @@
     </div>
     <InventoryComponent inventory="gameFlowController.Inventory" />
 </div>
-<NewStageItemsChoosingDialog @ref="newStageDialog" game="gameFlowController" refreshInventory="StateHasChanged" />
-<StageCompletedDialog @ref="stageCompletedDialog" StartNewStage="FinishStageAndStartNew" />
+<NewStageItemsChoosingDialog @ref="newStageDialog" game="gameFlowController" refreshInventory="@StateHasChanged" />
+<StageCompletedDialog @ref="stageCompletedDialog" ClaimRewardsAndStartNewStage="@FinishStageAndStartNew" />
 
 @code {
 
@@ -76,10 +76,25 @@
         var stageRes = gameFlowController.CompleteStage();
         await stageCompletedDialog.Open(stageRes);
     }
-    private void FinishStageAndStartNew(int diamondsCount)
+    private void FinishStageAndStartNew(StageCompletionResult rewards)
     {
-        gameFlowController.Inventory.AddDiamonds(diamondsCount);
+        gameFlowController.Inventory.AddDiamonds(rewards.TotalDiamondsToAdd);
+
+        foreach (var item in rewards.ItemRewards)
+        {
+            switch (item)
+            {
+                case Relic relic:
+                    gameFlowController.AddRelicToInventory(relic);
+                    break;
+                case TileItem tileItem:
+                    gameFlowController.AddTileItemToInventory(tileItem);
+                    break;
+            }
+        }
+
         gameFlowController.StartNewStage();
         StateHasChanged();
     }
+
 }

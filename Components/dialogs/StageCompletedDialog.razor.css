@@ -2,7 +2,7 @@
     border: none;
     outline: none;
     border-radius: 26px;
-    padding: 20px 50px;
+    padding: 20px 30px;
     background-image: linear-gradient(to right bottom, #1b75ff, #2073ff, #2471ff, #296eff, #2d6cff, #346bfe, #3a6bfd, #3f6afc, #466afa, #4c6bf8, #526bf6, #576cf4);
 }
 
@@ -18,12 +18,12 @@
     #stageCompletedDialog .dialog-content {
         height: 100%;
         display: grid;
-        grid-template-rows: auto 1fr auto;
+        grid-template-rows: auto 1fr auto auto;
         justify-content: center;
     }
 
     #stageCompletedDialog .results-container {
-        margin-bottom: 80px;
+        margin-bottom: 16px;
         display: flex;
         flex-direction: column;
         gap: 14px;
@@ -62,23 +62,67 @@
             border: none;
         }
 
-    #stageCompletedDialog .claim-rewards-button {
-        background-image: radial-gradient(circle, #ffce20, #ffd126, #ffd42b, #ffd630, #ffd935, #ffd935, #ffd935, #ffd935, #ffd630, #ffd42b, #ffd125, #ffce1f);
-        padding: 10px 22px;
-        width: fit-content;
-        justify-self: center;
-        color: white;
-        font-size: 18px;
-        font-family: Montserrat;
-        font-weight: bold;
-        letter-spacing: 1px;
-        border: none;
-        border-radius: 100px;
-        cursor: pointer;
-        transition: all 0.1s ease-in;
+    #stageCompletedDialog .item-rewards-container {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        overflow-y: auto;
+        max-height: 160px;
+        max-width: 300px;
+        box-sizing: border-box;
+        padding: 0px 4px;
+        background-color: white;
+        border-radius: 10px;
+        margin-bottom: 20px;
     }
 
-        #stageCompletedDialog .claim-rewards-button:hover {
-            background-image: radial-gradient(circle, #ffcd1b, #ffcd1b, #ffcd1b, #ffcd1a, #ffcd1a, #fecc19, #fecc18, #fdcb17, #fcca16, #fac915, #f9c713, #f8c612);
-            transform: scale(1.08);
-        }
+.irc-scrollbar::-webkit-scrollbar {
+    width: 10px;
+    box-sizing: border-box;
+    margin-left: 8px;
+}
+
+.irc-scrollbar::-webkit-scrollbar-track {
+    background: white;
+    border-radius: 8px;
+    margin-left: 8px;
+}
+
+.irc-scrollbar::-webkit-scrollbar-thumb {
+    background: #facd2e;
+    border-radius: 8px;
+
+}
+
+    .irc-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #f8c612;
+    }
+
+.item-rewards-container div {
+    flex: 0 1 auto;
+    aspect-ratio: 1/1;
+    height: 68px;
+}
+
+
+#stageCompletedDialog .claim-rewards-button {
+    background-image: radial-gradient(circle, #ffce20, #ffd126, #ffd42b, #ffd630, #ffd935, #ffd935, #ffd935, #ffd935, #ffd630, #ffd42b, #ffd125, #ffce1f);
+    padding: 10px 22px;
+    width: fit-content;
+    justify-self: center;
+    color: white;
+    font-size: 18px;
+    font-family: Montserrat;
+    font-weight: bold;
+    letter-spacing: 1px;
+    border: none;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: all 0.1s ease-in;
+}
+
+    #stageCompletedDialog .claim-rewards-button:hover {
+        background-image: radial-gradient(circle, #ffcd1b, #ffcd1b, #ffcd1b, #ffcd1a, #ffcd1a, #fecc19, #fecc18, #fdcb17, #fcca16, #fac915, #f9c713, #f8c612);
+        transform: scale(1.08);
+    }

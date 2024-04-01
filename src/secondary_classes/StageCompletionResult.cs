@@ -1,4 +1,6 @@
-﻿namespace SaYSpin.src.secondary_classes
+﻿using SaYSpin.src.inventory_items;
+
+namespace SaYSpin.src.secondary_classes
 {
     public record class StageCompletionResult(
         int StageCompletedNumber,
@@ -8,6 +10,7 @@
         int SpinsLeft,
         int DiamondsForExtraCoins,
         int DiamondsForExtraSpins,
-        int TotalDiamondsToAdd
+        int TotalDiamondsToAdd,
+        List<BaseInventoryItem> ItemRewards
         );
 }

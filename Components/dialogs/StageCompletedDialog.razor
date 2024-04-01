@@ -34,6 +34,19 @@
                     <span>@result.TotalDiamondsToAdd</span>
                 </label>
             </div>
+            <div class="item-rewards-container irc-scrollbar">
+                @if (result.ItemRewards is not null && result.ItemRewards.Count > 0)
+                {
+
+                    @foreach (var item in result.ItemRewards)
+                    {
+                        <div>
+                            <InventoryItemWithRarityComponent itemToDisplay="item" />
+                        </div>
+                    }
+
+                }
+            </div>
             <button class="claim-rewards-button unselectable" @onclick="NextStage">Claim Rewards</button>
         }
         else
@@ -45,7 +58,7 @@
 
 @code {
     [Parameter]
-    public Action<int> StartNewStage { get; set; }
+    public Action<StageCompletionResult> ClaimRewardsAndStartNewStage { get; set; }
     private StageCompletionResult result { get; set; }
     public async Task Open(StageCompletionResult result)
     {
@@ -56,7 +69,7 @@
     private async Task NextStage()
     {
         await JSRuntime.InvokeVoidAsync("blazorDialogFunctions.closeDialog", "stageCompletedDialog");
-        StartNewStage(result.TotalDiamondsToAdd);
+        ClaimRewardsAndStartNewStage(result);
     }
 
 }

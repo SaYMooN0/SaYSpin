@@ -4,6 +4,7 @@ using SaYSpin.src.inventory_items.relics;
 using SaYSpin.src.inventory_items.relics.relic_effects;
 using SaYSpin.src.inventory_items.tile_items;
 using SaYSpin.src.inventory_items.tile_items.tile_item_effects;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace SaYSpin.src.extension_classes
@@ -52,16 +53,12 @@ namespace SaYSpin.src.extension_classes
             return game.Relics.OrderBy(x => Guid.NewGuid()).Take(5).ToArray();
             //will be changed
         }
-        public static void ExecuteAfterStageRelicEffects(this GameFlowController game, int stageNumberCompleted)
-        {
-            foreach (Relic r in game.Inventory.Relics)
-            {
-                foreach (AfterStageCompletedRelicEffect rEffect in r.Effects.OfType<AfterStageCompletedRelicEffect>())
-                {
-                    rEffect.PerformAfterStageAction(stageNumberCompleted, game);
-                }
-            }
-        }
+        public static List<BaseInventoryItem> GatherAllAfterStageRewards(this GameFlowController game, int currentStage) =>
+            game.Inventory.Relics
+                .SelectMany(r => r.Effects.OfType<AfterStageRewardRelicEffect>())
+                .SelectMany(effect => effect.AfterStageReward(currentStage, game))
+                .Where(reward => reward is not null)
+                .ToList();
         public static void ExecuteAfterSpinRelicEffects(this GameFlowController game)
         {
             foreach (Relic r in game.Inventory.Relics)
@@ -85,7 +82,7 @@ namespace SaYSpin.src.extension_classes
             if (relic is null)
                 throw new InvalidOperationException($"Relic with ID '{id}' not found.");
             return relic;
-        }     
+        }
         public static bool CoinsEnoughToCompleteTheStage(this GameFlowController game) =>
             game.CoinsCount >= game.CoinsNeededToCompleteTheStage;
     }

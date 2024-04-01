@@ -45,7 +45,7 @@ namespace SaYSpin.src.gameplay_parts
             int diamondsFromCoins = (int)(extraCoins / (CurrentStage + 4) * 1.4 * this.CoinsToDiamondsCoefficient());
             int diamondsFromSpins = (int)((CurrentStage + 4) / 4.5 * SpinsLeft);
 
-            this.ExecuteAfterStageRelicEffects(CurrentStage);
+            var rewards = this.GatherAllAfterStageRewards(CurrentStage);
 
             return new(
                 CurrentStage,
@@ -55,7 +55,8 @@ namespace SaYSpin.src.gameplay_parts
                 SpinsLeft,
                 diamondsFromCoins,
                 diamondsFromSpins,
-                diamondsFromCoins + diamondsFromSpins);
+                diamondsFromCoins + diamondsFromSpins,
+                rewards);
         }
         public void StartNewStage()
         {

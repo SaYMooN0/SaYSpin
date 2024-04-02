@@ -1,13 +1,8 @@
 ﻿@page "/run_preparing"
 @layout Layout.EmptyLayout
 @inject AllGameController allGameController
-
+@inject GameLoggingService gameLoggingService
 <div class="run-preparing-page">
-    <NavLink href="">
-        <div class="cancel-button unselectable">
-            Cancel
-        </div>
-    </NavLink>
     <div class="content">
         @if (currentStageIsDifficlutyChoosing)
         {
@@ -15,6 +10,11 @@
         }
         else
         {
+            <NavLink href="">
+                <div class="cancel-button unselectable">
+                    Cancel
+                </div>
+            </NavLink>
             <ChooseStarterKitStageComponent game="allGameController.Game" />
         }
     </div>
@@ -24,7 +24,8 @@
     private bool currentStageIsDifficlutyChoosing = true;
     private void DifficultyChosen(Difficulty difficulty)
     {
-        allGameController.InitializeNewGame(difficulty);
+        allGameController.InitializeNewGame(difficulty, gameLoggingService);
         currentStageIsDifficlutyChoosing = false;
+
     }
 }

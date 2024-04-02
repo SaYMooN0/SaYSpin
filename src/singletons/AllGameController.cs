@@ -5,6 +5,7 @@ using SaYSpin.src.inventory_items.relics;
 using SaYSpin.src.inventory_items.tile_items;
 using SaYSpin.src.extension_classes.factories;
 using SaYSpin.src.inventory_items;
+using SaYSpin.src.in_game_logging_related;
 
 namespace SaYSpin.src.singletons
 {
@@ -104,13 +105,18 @@ namespace SaYSpin.src.singletons
                 t1, t2, t3];
         }
         public bool IsGameRunning() => Game is not null;
-        public void InitializeNewGame(Difficulty difficulty)
+        public void InitializeNewGame(Difficulty difficulty,GameLoggingService logger)
         {
+            logger.Clear();
+
             Game = new(_basicStats, difficulty, AllTileItemsCollection, AllRelicsCollection);
+
+            Game.OnNewStageStarted += (newStage) => logger.Log(GameLogModel.New($"Stage #{newStage} has been started", GameLogType.Info));
+            Game.OnInventoryItemAdded += logger.LogItemAdded;
+            Game.OnTileItemDestruction += logger.LogItemDestroyed;
         }
         public void FinishGame()
         {
-            Logger.Log("game ended");
             Game = null;
         }
         private BasicStats LoadBasicStats()

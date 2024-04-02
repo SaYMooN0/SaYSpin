@@ -1,10 +1,36 @@
 ﻿@page "/run_info"
 @inject AllGameController allGameController
+@inject GameLoggingService loggingService
+@using SaYSpin.src.in_game_logging_related
+
+<div class="info-page">
+
+    @if (logs != null && logs.Any())
+    {
+        <div class="log-container">
+            @foreach (var log in logs)
+            {
+                <LogComponent log="@log"/>
+            }
+        </div>
+    }
+    else
+    {
+        <p>No logs available.</p>
+    }
+</div>
+
 <button @onclick="OpenFinishRunDialog">Finish run</button>
 @code {
     private void OpenFinishRunDialog()
     {
         //show dialog but for now
         allGameController.FinishGame();
+    }
+    private IEnumerable<GameLogModel> logs;
+
+    protected override void OnInitialized()
+    {
+        logs = loggingService.Logs();
     }
 }

@@ -19,7 +19,16 @@
     background-image: linear-gradient(to right bottom, #769aff, #6d95ff, #6490ff, #598bff, #4e86ff, #4780ff, #417bff, #3a75ff, #3d6cff, #4562ff, #4e57ff, #594aff);
     box-shadow: 3px 3px 12px rgba(156, 158, 202, 0.4);
 }
-
+.nav-link use {
+    height: 40px;
+    width: 40px;
+    transition: height 0.3s, width 0.3s;
+    box-sizing: border-box;
+    padding: 4px;
+    border-radius: 26%;
+    background-image: linear-gradient(to right bottom, #769aff, #6d95ff, #6490ff, #598bff, #4e86ff, #4780ff, #417bff, #3a75ff, #3d6cff, #4562ff, #4e57ff, #594aff);
+    box-shadow: 3px 3px 12px rgba(156, 158, 202, 0.4);
+}
 .nav-links-container .icon-fill path {
     fill: #f4f5e4;
 }

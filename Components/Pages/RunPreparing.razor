@@ -7,14 +7,14 @@
         @if (currentStageIsDifficlutyChoosing)
         {
             <ChooseDifficultyStageComponent onDifficultyChosen="@DifficultyChosen" />
-        }
-        else
-        {
             <NavLink href="">
                 <div class="cancel-button unselectable">
                     Cancel
                 </div>
             </NavLink>
+        }
+        else
+        {
             <ChooseStarterKitStageComponent game="allGameController.Game" />
         }
     </div>

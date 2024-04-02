@@ -6,6 +6,7 @@ using SaYSpin.src.inventory_items.relics;
 using SaYSpin.src.inventory_items.relics.relic_effects;
 using SaYSpin.src.inventory_items.tile_items.tile_item_effects;
 using SaYSpin.src.inventory_items;
+using SaYSpin.src.extension_classes;
 
 namespace SaYSpin.src.gameplay_parts
 {
@@ -73,9 +74,8 @@ namespace SaYSpin.src.gameplay_parts
             itemsPicker.PickItemsFrom(Inventory.TileItems);
             SlotMachine.UpdateItems(itemsPicker);
 
-            List<CoinsCalculationEffect> relicEffects = Inventory.Relics
-                .SelectMany(relic => relic.Effects.OfType<CoinsCalculationEffect>())
-                .ToList();
+            IEnumerable<CoinsCalculationRelicEffect> relicEffects = Inventory.Relics
+                .SelectMany(relic => relic.Effects.OfType<CoinsCalculationRelicEffect>());
 
 
             int income = SlotMachine.CalculateCoinValue(relicEffects);

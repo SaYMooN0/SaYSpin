@@ -35,7 +35,7 @@ namespace SaYSpin.src.singletons
         private Relic[] InitRelics()
         {
             var fruitBasket = new Relic("Fruit Basket", Rarity.Common)
-                .WithCoinsCalculationRelicEffect("All fruits gives +1 coin", ModifierType.Plus, 1, i => i.HasTag("fruit"), EffectApplicationArea.Self);
+                .WithCoinsCalculationRelicEffect("All fruits gives +1 coin", ModifierType.Plus, 1, i => i.HasTag("fruit"));
 
             var treasureMap = new Relic("Treasure Map", Rarity.Rare)
                 .WithAfterStageRewardRelicEffect("After every stage completion have a 50% chance to receive a chest tile item and 10% chance to receive golden chest tile item",

@@ -1,4 +1,7 @@
-﻿using SaYSpin.src.inventory_items.tile_items;
+﻿using SaYSpin.src.enums;
+using SaYSpin.src.inventory_items.relics.relic_effects;
+using SaYSpin.src.inventory_items.tile_items;
+using SaYSpin.src.tile_item_effects;
 
 namespace SaYSpin.src.secondary_classes
 {
@@ -47,6 +50,18 @@ namespace SaYSpin.src.secondary_classes
 
             _bonuses[row, column].AddRange(bonuses);
         }
+        public void ApplyRelicEffectsToTileItem(IEnumerable<CoinsCalculationRelicEffect> relicEffects, int i, int j, TileItem tileItem)
+        {
+            var applicableBonuses = relicEffects
+                .Where(rEffect => rEffect.Condition(tileItem))
+                .Select(rEffect => new TileItemIncomeBonus(rEffect.ModifierType, rEffect.ModificationValue));
+
+            if (applicableBonuses.Any())
+                AddBonuses(i, j, applicableBonuses);
+        }
+
+       
+
     }
 
 }

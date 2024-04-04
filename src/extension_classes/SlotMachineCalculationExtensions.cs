@@ -34,9 +34,6 @@ namespace SaYSpin.src.extension_classes
         {
             TileItemBonusesGrid bonusesGrid = new TileItemBonusesGrid(slotMachine.TileItems.GetLength(0), slotMachine.TileItems.GetLength(1));
 
-            if (relicEffects is null || !relicEffects.Any())
-                return bonusesGrid;
-
             for (int i = 0; i < slotMachine.TileItems.GetLength(0); i++)
             {
                 for (int j = 0; j < slotMachine.TileItems.GetLength(1); j++)
@@ -85,7 +82,7 @@ namespace SaYSpin.src.extension_classes
 
         private static void AddBonusToAdjacent(this SlotMachine slotMachine, TileItemBonusesGrid bonusesGrid, int i, int j, TileItemsEnhancingTileItemEffect effect)
         {
-            var offsets = new[] { (-1, 0), (1, 0), (0, -1), (0, 1) };
+            var offsets = new[] { (-1, 0), (1, 0), (0, -1), (0, 1) , (1,1), (1, -1), (-1, 1), (-1, -1) };
             foreach (var (di, dj) in offsets)
             {
                 int newI = i + di, newJ = j + dj;

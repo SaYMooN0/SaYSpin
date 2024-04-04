@@ -81,7 +81,8 @@ namespace SaYSpin.src.gameplay_parts
             int income = SlotMachine.CalculateCoinValue(relicEffects);
             AddCoins(income);
             SpinsLeft -= 1;
-            this.ExecuteAfterSpinRelicEffects();
+            this.HandleAfterSpinRelicEffects();
+            this.HandleTileItemsWithAbsorbingEffects();
         }
         public void DestroyTileItem(TileItem tileItemToDestroy, int row, int col)
         {

@@ -1,9 +1,11 @@
 .machine-tile-item {
-    width: 50px;
+    position: relative;
     aspect-ratio: 1/1;
 }
 
     .machine-tile-item img {
+        position: absolute;
         height: 100%;
         width: 100%;
     }
+

@@ -1,0 +1,16 @@
+﻿@if (income is not null && income != 0)
+{
+    <div class="income absolute-centering">
+        <label>
+            @income
+        </label>
+        <img src="/resources/images/coin.png" />
+
+    </div>
+}
+
+
+@code {
+    [Parameter]
+    public int? income { get; set; }
+}

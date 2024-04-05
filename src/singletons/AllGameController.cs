@@ -71,10 +71,6 @@ namespace SaYSpin.src.singletons
         private TileItem[] InitTileItems()
         {
 
-            var t1 = TileItem.Ordinary("medal 1", Rarity.Common, 1, []);
-            var t2 = TileItem.Ordinary("medal 2", Rarity.Common, 2, []);
-            var t3 = TileItem.Ordinary("medal 3", Rarity.Common, 3, []);
-
             return [
                 TileItem.Ordinary("Apple", Rarity.Common, 3, ["fruit"]),
                 TileItem.Ordinary("Banana", Rarity.Common, 3, ["fruit"]),
@@ -121,7 +117,7 @@ namespace SaYSpin.src.singletons
 
                 TileItem.Ordinary("Carrot", Rarity.Common, 5, []),
                 TileItem.Ordinary("Golden Carrot", Rarity.Epic, 15, []),
-                t1, t2, t3];
+                ];
         }
         public bool IsGameRunning() => Game is not null;
         public void InitializeNewGame(Difficulty difficulty, GameLoggingService logger)

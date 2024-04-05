@@ -1,13 +1,43 @@
-﻿@code {
-    [Parameter]
-    public TileItem? tileItem { get; set; }
-    [Parameter]
-    public string tileWidth{ get; set; }
-}
-<div class="machine-tile-item" style="width: @(tileWidth)">
+﻿<div class="machine-tile-item" style="width: @(tileWidth)">
     @if (tileItem is not null)
     {
         <img src="@ResourcePathsHelper.ResourcesImages(tileItem.Image)" onerror="this.src='@ResourcePathsHelper.DefaultTileItem';" alt="tile item image">
     }
-
+    @if (showIncome)
+    {
+        <IncomeShowingComponent income="@tileItem?.LastIncome" />
+    }
 </div>
+
+@code {
+    [Parameter]
+    public TileItem tileItem { get; set; }
+
+    [Parameter]
+    public string tileWidth { get; set; }
+    private bool showIncome = false;
+
+    protected override void OnParametersSet()
+    {
+        if (tileItem is null)
+        {
+            showIncome=false;
+            return;
+        }
+  
+
+        showIncome = true;
+        var timer = new System.Timers.Timer(1400);
+        timer.Elapsed += (sender, e) =>
+        {
+            showIncome = false;
+            tileItem?.SetLastIncomeToZero();
+            timer.Stop();
+
+            InvokeAsync(StateHasChanged);
+
+        };
+        timer.Start();
+
+    }
+}

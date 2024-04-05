@@ -1,0 +1,78 @@
+.absolute-centering {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+.income {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    box-sizing: border-box;
+    width: fit-content;
+    height: fit-content;
+    padding: 2px 10px;
+    border-radius:200px;
+    border:2px solid #000;
+    background-color: white;
+    opacity: 0;
+    animation: fadeIn 0.5s forwards, fadeOut 0.5s 1s forwards;
+}
+
+
+    .income label {
+        font-size: 28px;
+        font-family: 'Overload';
+    }
+
+    .income img {
+        height: 42px;
+        aspect-ratio: 1/1;
+    }
+
+@keyframes fadeIn {
+    from {
+        transform: translateY(-50%);
+        opacity: 0.2;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateY(50%);
+        opacity: 0;
+    }
+}
+@media (max-width: 1100px), (max-height:800px) {
+    .income label {
+        font-size: 24px;
+    }
+
+    .income img {
+        height: 30px;
+    }
+}
+
+@media (max-width: 850px), (max-height:600px) {
+    .income label {
+        font-size: 20px;
+    }
+
+    .income img {
+        height: 26px;
+    }
+}

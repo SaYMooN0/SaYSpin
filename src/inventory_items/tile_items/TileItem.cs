@@ -11,13 +11,21 @@ namespace SaYSpin.src.inventory_items.tile_items
             Tags = tags;
             InitialCoinValue = initialCoinValue;
             Effects = effects;
-            CalculateIncome = incomeCalculationFunc;
+            CalculateIncome = (bonuses) =>
+            {
+                int income = incomeCalculationFunc(bonuses);
+                LastIncome = income;
+                return income;
+            };
         }
 
         public string[] Tags { get; init; }
         public int InitialCoinValue { get; init; }
         public HashSet<BaseTileItemEffect> Effects { get; init; } = new();
         public CalculateIncomeDelegate CalculateIncome { get; init; }
+        public int LastIncome { get; private set; }
+        public void SetLastIncomeToZero() =>
+            LastIncome = 0;
         public override string ImageFolderPath => "tile_items";
         public override string ToString() =>
             $"{{Id: {Id}, Rarity: {Rarity}, InitialCoinValue: {InitialCoinValue}}}";

@@ -19,10 +19,9 @@ namespace SaYSpin.src.extension_classes
                 for (int j = 0; j < slotMachine.TileItems.GetLength(1); j++)
                 {
                     var item = slotMachine.TileItems[i, j];
-                    if (item != null)
+                    if (item is not null)
                     {
-                        coinValue += item.CalculateIncome(
-                            bonuses.GetBonusesFor(i, j));
+                        coinValue += item.CalculateIncome(bonuses.GetBonusesFor(i, j));
                     }
                 }
             }
@@ -82,7 +81,7 @@ namespace SaYSpin.src.extension_classes
 
         private static void AddBonusToAdjacent(this SlotMachine slotMachine, TileItemBonusesGrid bonusesGrid, int i, int j, TileItemsEnhancingTileItemEffect effect)
         {
-            var offsets = new[] { (-1, 0), (1, 0), (0, -1), (0, 1) , (1,1), (1, -1), (-1, 1), (-1, -1) };
+            var offsets = new[] { (-1, 0), (1, 0), (0, -1), (0, 1), (1, 1), (1, -1), (-1, 1), (-1, -1) };
             foreach (var (di, dj) in offsets)
             {
                 int newI = i + di, newJ = j + dj;

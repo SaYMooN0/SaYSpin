@@ -1,13 +1,6 @@
 @code {
     [Parameter]
     public SlotMachine slotMachine { get; set; }
-
-    private IEnumerable<TileItem?> allItems;
-
-    protected override void OnParametersSet()
-    {
-        allItems = slotMachine?.SingleDimensionTileItems() ?? Enumerable.Empty<TileItem?>();
-    }
     private string CalcGridStyle() =>
         $"grid-template-columns: repeat({slotMachine.ColumnsCount}, 1fr); grid-template-rows: repeat({slotMachine.RowsCount}, 1fr);";
     private string CalcTileItemsWidth()
@@ -16,19 +9,24 @@
         return $"calc(28px + {16 / maxGridPart}vw + {20 / maxGridPart}vh - 3px * {maxGridPart})";
     }
 
-        
+
 }
 
 <div class="slot-machine unselectable" style="@CalcGridStyle()">
-    @if (allItems is not null)
+
+    @for (int row = 0; row < slotMachine.TileItems.GetLength(0); row++)
     {
-        @foreach (TileItem? item in allItems)
+
+        for (int col = 0; col < slotMachine.TileItems.GetLength(1); col++)
         {
-            <SlotMachineTileComponent tileItem="@item" tileWidth="@CalcTileItemsWidth()" />
+
+
+
+            <SlotMachineTileComponent tileItem="@slotMachine.TileItems[row, col]" tileWidth="@CalcTileItemsWidth()" />
+
+
+
+
         }
-    }
-    else
-    {
-        <h2>allItems are null</h2>
     }
 </div>

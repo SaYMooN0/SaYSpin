@@ -1,0 +1,35 @@
+.spin-button {
+    height: 100%;
+    padding: 12px 0;
+    width: 210px;
+    border: 0;
+    box-shadow: #13D626 0px 9px 0px 0px;
+    background: radial-gradient(circle, #65ff4d, #61fc46, #5df93f, #58f537, #54f22f, #50f129, #4cef23, #47ee1b, #41ee16, #3aed10, #33ed09, #2aec00);
+    border-radius: 10px;
+    color: white;
+    font-size: 32px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    font-family: 'Montserrat';
+    cursor: pointer;
+    transition:all 0.12s ease-in;
+}
+
+    .spin-button:hover {
+        box-shadow: #13D626 0px 5px 0px 0px;
+        transform: translateY(4px);
+    }
+
+    .spin-button:disabled {
+        background: #8b9a88 !important;
+        box-shadow: #646d5f 0px 5px 0px 0px;
+        transform: translateY(4px);
+    }
+
+@media (max-width: 1000px) {
+
+    .spin-button {
+        width: 160px;
+        font-size: 28px;
+    }
+}

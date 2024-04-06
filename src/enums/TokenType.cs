@@ -2,11 +2,9 @@
 {
     public enum TokenType
     {
-        AddSpin,
         FreeShopRefresh,
-        TileItemRemoval,
-        NewStageRelicChoiceRefresh,
-        NewStageItemChoiceRefresh
+        InventoryItemRemoval,
+        NewStageItemsRefresh
     }
     public static class TokenTypeExtensions
     {
@@ -14,11 +12,9 @@
         {
             return tokenType switch
             {
-                TokenType.AddSpin => "add_spin_token.png",
                 TokenType.FreeShopRefresh => "free_shop_refresh.png",
-                TokenType.TileItemRemoval => "tile_item_removal.png",
-                TokenType.NewStageRelicChoiceRefresh => "new_stage_relic_choice_refresh.png",
-                TokenType.NewStageItemChoiceRefresh => "new_stage_item_choice_refresh.png",
+                TokenType.InventoryItemRemoval => "inventory_item_removal.png",
+                TokenType.NewStageItemsRefresh => "new_stage_items_refresh.png",
                 _ => throw new ArgumentException("Unsupported token type"),
             };
         }

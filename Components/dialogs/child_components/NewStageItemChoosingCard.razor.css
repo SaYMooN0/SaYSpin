@@ -3,10 +3,75 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    width:180px;
+    padding: 28px;
+    border-radius:20px;
+    background: #ffedca;
 }
 
-    .item-choosing-card button {
-        font-size: 20px;
-        padding: 10px;
+    .item-choosing-card span {
+        background-color: white;
+        width: 160px;
+        border-radius: 14px;
     }
+    .item-choosing-card button {
+        margin-top:30px;
+        padding: 12px 24px;
+        border: 0;
+        box-shadow: #FFC524 0px 6px 0px 0px;
+        background-color: #FFD40C;
+        border-radius: 6px;
+        color: white;
+        font-size: 20px;
+        font-weight: bold;
+        letter-spacing: 2px;
+        font-family: 'Montserrat';
+    }
+
+    .item-choosing-card button:hover {
+        box-shadow: #FFC524 0px 2px 0px 0px;
+        transform: translateY(4px);
+    }
+@media (max-width: 1100px), (max-height:800px) {
+    .item-choosing-card {
+        padding: 26px;
+    }
+        .item-choosing-card span {
+            width: 140px;
+        }
+
+        .item-choosing-card button {
+            margin-top: 24px;
+            padding: 11px 22px;
+            font-size: 18px;
+        }
+}
+
+@media (max-width: 850px), (max-height:600px) {
+    .item-choosing-card {
+        padding: 24px;
+    }
+
+        .item-choosing-card span {
+            width: 120px;
+        }
+
+        .item-choosing-card button {
+            margin-top: 22px;
+            padding: 10px 20px;
+        }
+}
+@media (max-width: 700px), (max-height:500px) {
+    .item-choosing-card {
+        padding: 20px;
+    }
+
+        .item-choosing-card span {
+            width: 100px;
+        }
+
+        .item-choosing-card button {
+            margin-top: 18px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+}

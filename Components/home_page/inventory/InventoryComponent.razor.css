@@ -1,11 +1,12 @@
 .inventory {
-    background: linear-gradient(to right bottom, #fdf9ff, #faf7fe, #f6f4fd, #f1f2fb, #edf0fa, #eaf0fa, #e8f0fa, #e5f0f9, #e5f2f9, #e5f4f9, #e7f6f8, #e9f8f7);
+    background: white;
     display: grid;
     grid-template-columns: calc(0.8vw + 6px) 1fr;
+    box-sizing: border-box;
 }
 
 .inventory-border {
-    background-image: linear-gradient(to right, #566cff, #596cff, #5c6cff, #5e6cff, #616cff, #606aff, #6067ff, #5f65ff, #5b5fff, #565aff, #5254ff, #4e4eff);    
+    background-image: linear-gradient(to right, #566cff, #596cff, #5c6cff, #5e6cff, #616cff, #606aff, #6067ff, #5f65ff, #5b5fff, #565aff, #5254ff, #4e4eff);
 }
 
 .inventory-top-div {
@@ -24,8 +25,9 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    overflow-y: auto; 
+    overflow-y: auto;
     max-height: 100%;
+    height:fit-content;
 }
 
     .inventory-items-container div {
@@ -36,15 +38,15 @@
     }
 
 .inventory-content {
+    box-sizing: border-box;
     display: grid;
     grid-template-rows: auto auto 1fr auto 1fr auto;
-    height: 100vh; 
+    height: 100vh;
     overflow: hidden;
-    
 }
 
 .inventory-label {
-    justify-self:center;
+    justify-self: center;
     background-image: linear-gradient(to bottom, #566cff, #596cff, #5c6cff, #5e6cff, #616cff, #606aff, #6067ff, #5f65ff, #5b5fff, #565aff, #5254ff, #4e4eff);
     color: white;
     padding: 10px;
@@ -55,11 +57,26 @@
     justify-content: center;
     font-family: Montserrat;
     font-size: 20px;
-    font-weight:bold;
-    letter-spacing:2px;
-    width:fit-content  ;
-
+    font-weight: bold;
+    letter-spacing: 2px;
+    width: fit-content;
 }
+
+.delete-item-button {
+    justify-self: right;
+    margin: 0 20px 20px 0;
+    width: fit-content;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+}
+
+    .delete-item-button img {
+        height: 50px;
+        aspect-ratio: 1/1;
+    }
 
 @media (max-width: 1100px), (max-height:800px) {
     .inventory-top-div {
@@ -71,7 +88,14 @@
     .inventory-items-container div {
         height: 66px;
     }
+
     .inventory-top-div {
         height: 40px;
     }
+    .inventory-label {
+        padding: 8px;
+        gap: 6px;
+        font-size: 18px;
+    }
+
 }

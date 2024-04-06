@@ -1,0 +1,20 @@
+﻿<div class="buttons-container">
+    <button class="skip-button" @onclick="onSkip">
+        Skip
+    </button>
+    <button @onclick="onRefresh" class="refresh-button">
+        <label>
+            Refresh
+        </label>
+        <img src="@TokenType.NewStageItemsRefresh.ImageFullPath()" />
+
+    </button>
+</div>
+
+
+@code {
+    [Parameter]
+    public Action onRefresh { get; set; }
+    [Parameter]
+    public Action onSkip { get; set; }
+}

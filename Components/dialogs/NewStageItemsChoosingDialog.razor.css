@@ -1,10 +1,54 @@
 #newStagePickingDialog {
+    padding: 20px 2vw;
+    border: none;
+    outline: none;
+    border-radius: 30px;
 }
+    #newStagePickingDialog div{
+        display:grid;
+        grid-template-rows:auto 1fr auto;
+        gap:calc(20px + 2vh);
 
+    }
+
+    #newStagePickingDialog .choose-label {
+        justify-self: center;
+        background-image: linear-gradient(to bottom, #566cff, #596cff, #5c6cff, #5e6cff, #616cff, #606aff, #6067ff, #5f65ff, #5b5fff, #565aff, #5254ff, #4e4eff);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 6px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-family: Montserrat;
+        font-size: 22px;
+        font-weight: bold;
+        letter-spacing: 2px;
+    }  
     #newStagePickingDialog .options-container {
         display: flex;
         flex-direction: row;
         justify-content: center;
         align-items: center;
         gap: 20px;
+        max-width:1300px;
+        overflow-x:auto;
     }
+@media (max-width: 1100px) {
+    #newStagePickingDialog .options-container {
+        gap: 14px;
+        max-width: 900px;
+    }
+}
+@media (max-width: 850px) {
+    #newStagePickingDialog .options-container {
+        gap: 12px;
+        max-width: 700px;
+    }
+}
+@media (max-width: 700px) {
+    #newStagePickingDialog .options-container {
+      
+        max-width: calc(400px + 10vw);
+    }
+}

@@ -1,38 +1,30 @@
 ﻿@inject IJSRuntime JSRuntime
 <dialog id="newStagePickingDialog">
-    <label class="preparing-label">Prepare for stage @StageNumber</label>
-    @if (_pickingStageTileItem)
-    {
-        <label class="choose-label">Choose new item</label>
-        <div class="options-container">
-            @foreach (TileItem tileItem in TileItemsToPick)
-            {
-                <NewStageItemChoosingCard item="tileItem" OnChosen="ItemChosen" />
-            }
-        </div>
-        <button class="skip-button" @onclick="()=>{_pickingStageTileItem=false;}">
-            Skip
-        </button>
-        <button @onclick="RefreshTileItems" class="refresh-button">
-            Refresh
-        </button>
-    }
-    else
-    {
-        <label class="choose-label">Choose new item</label>
-        <div class="options-container">
-            @foreach (Relic relic in RelicsToPick)
-            {
-                <NewStageItemChoosingCard item="relic" OnChosen="ItemChosen" />
-            }
-        </div>
-        <button class="skip-button" @onclick="Close">
-            Skip
-        </button>
-        <button @onclick="RefreshTileItems" class="refresh-button">
-            Refresh
-        </button>
-    }
+    <div>
+        @if (_pickingStageTileItem)
+        {
+            <label class="choose-label">Choose new item</label>
+            <div class="options-container">
+                @foreach (TileItem tileItem in TileItemsToPick)
+                {
+                    <NewStageItemChoosingCard item="tileItem" OnChosen="ItemChosen" />
+                }
+            </div>
+            <ItemsChoosingDialogBottomButtons onRefresh="RefreshTileItems" onSkip="()=>{_pickingStageTileItem=false;}" />
+        }
+        else
+        {
+
+            <label class="choose-label">Choose new item</label>
+            <div class="options-container">
+                @foreach (Relic relic in RelicsToPick)
+                {
+                    <NewStageItemChoosingCard item="relic" OnChosen="ItemChosen" />
+                }
+            </div>
+            <ItemsChoosingDialogBottomButtons onRefresh="RefreshRelics" onSkip="()=> Close()" />
+        }
+    </div>
 </dialog>
 
 @code {

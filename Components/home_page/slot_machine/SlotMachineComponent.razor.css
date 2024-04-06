@@ -1,6 +1,9 @@
 .slot-machine {
     width: auto;
     height: auto;
-    background-color: aliceblue;
+    background-color: white;
     display: grid;
+    gap: 2px;
+    border: 1px solid white;
+    border-radius: 20px;
 }

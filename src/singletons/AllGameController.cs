@@ -102,14 +102,14 @@ namespace SaYSpin.src.singletons
                         }),
                 TileItem.Ordinary("Gold Bar", Rarity.Rare, 20, ["gold"]),
 
-                TileItem.Ordinary("Magic Ball", Rarity.Common, 5 ,["magical"])
+                TileItem.Ordinary("Magic Ball", Rarity.Epic, 5 ,["magical"])
                     .WithTileItemsEnhancingTileItemEffect("All adjacent items give 1.5 times more coins", EffectApplicationArea.Adjacent, ModifierType.Multiply, 1.5,(ti)=>true)
                     .WithTileItemsEnhancingTileItemEffect("Adjacent wizards give extra 2 times more coins ", EffectApplicationArea.Adjacent, ModifierType.Multiply, 2,(ti)=> ti.Id=="wizard"),
 
-                TileItem.Ordinary("Owl", Rarity.Common, 3 ,["bird"])
+                TileItem.Ordinary("Owl", Rarity.Rare, 3 ,["bird"])
                     .WithTileItemsEnhancingTileItemEffect("Adjacent wizards give extra 1.4 times more coins ", EffectApplicationArea.Adjacent, ModifierType.Multiply, 1.4,(ti)=> ti.Id=="wizard"),
 
-                TileItem.Ordinary("Wizard", Rarity.Common, 15 ,["person"]),
+                TileItem.Ordinary("Wizard", Rarity.Rare, 15 ,["person"]),
 
                 TileItem.Ordinary("Rabbit", Rarity.Rare, 3, ["rabbit"])
                     .WithAbsorbingTileItemEffect("Eats adjacent carrots and adds 15 coins for each", (tileItem)=>tileItem.Id=="carrot", (game)=>game.AddCoins(15))

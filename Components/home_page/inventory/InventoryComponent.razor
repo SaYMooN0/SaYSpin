@@ -11,7 +11,7 @@
         </div>
         @* with sorting *@
 
-        <label class="inventory-label">
+        <label class="inventory-label unselectable">
             <span>◆</span>
             Relics
             <span>◆</span>
@@ -24,7 +24,7 @@
                 </div>
             }
         </div>
-        <label class="inventory-label">
+        <label class="inventory-label unselectable">
             <span>◆</span>
             Tile Items
             <span>◆</span>
@@ -38,7 +38,12 @@
             }
         </div>
 
-        <button @onclick="DeleteItem">Delete item</button>
+        <button class="delete-item-button" @onclick="DeleteItem">
+            <label>
+                Delete item
+            </label>
+            <img src="@TokenType.InventoryItemRemoval.ImageFullPath()"/>
+            </button>
     </div>
 
 </div>

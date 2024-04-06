@@ -6,7 +6,7 @@
     private string CalcTileItemsWidth()
     {
         int maxGridPart = Math.Max(slotMachine.ColumnsCount, slotMachine.RowsCount);
-        return $"calc(28px + {16 / maxGridPart}vw + {20 / maxGridPart}vh - 3px * {maxGridPart})";
+        return $"calc(16px + {14 / maxGridPart}vw + {18 / maxGridPart}vh)";
     }
 
 
@@ -20,12 +20,7 @@
         for (int col = 0; col < slotMachine.TileItems.GetLength(1); col++)
         {
 
-
-
             <SlotMachineTileComponent tileItem="@slotMachine.TileItems[row, col]" tileWidth="@CalcTileItemsWidth()" />
-
-
-
 
         }
     }

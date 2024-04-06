@@ -7,17 +7,13 @@ namespace SaYSpin.src.gameplay_parts.inventory_related.tokens
         private Dictionary<TokenType, int> _tokens = new Dictionary<TokenType, int>();
 
         public TokensCollection(
-            int addSpinTokensCount = 0,
             int freeShopRefreshTokensCount = 0,
             int tileItemRemovalTokensCount = 0,
-            int newStageRelicChoiceRefreshTokensCount = 0,
-            int newStageItemChoiceRefreshTokensCount = 0)
+            int newStageItemsRefreshTokensCount = 0)
         {
-            _tokens[TokenType.AddSpin] = addSpinTokensCount;
             _tokens[TokenType.FreeShopRefresh] = freeShopRefreshTokensCount;
-            _tokens[TokenType.TileItemRemoval] = tileItemRemovalTokensCount;
-            _tokens[TokenType.NewStageRelicChoiceRefresh] = newStageRelicChoiceRefreshTokensCount;
-            _tokens[TokenType.NewStageItemChoiceRefresh] = newStageItemChoiceRefreshTokensCount;
+            _tokens[TokenType.InventoryItemRemoval] = tileItemRemovalTokensCount;
+            _tokens[TokenType.NewStageItemsRefresh] = newStageItemsRefreshTokensCount;
         }
         public int GetTokenCount(TokenType tokenType) => _tokens[tokenType];
 

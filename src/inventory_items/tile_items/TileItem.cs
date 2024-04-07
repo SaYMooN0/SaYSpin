@@ -1,5 +1,6 @@
 ﻿using SaYSpin.src.enums;
 using SaYSpin.src.gameplay_parts;
+using System.Text;
 
 namespace SaYSpin.src.inventory_items.tile_items
 {
@@ -48,5 +49,22 @@ namespace SaYSpin.src.inventory_items.tile_items
                    }
                    return (int)value;
                });
+
+        public override string TextInfo()
+        {
+            StringBuilder sb = new();
+            sb.Append($"Name: {Name}\nRarity: {Rarity}\nId: {Id}\nCoinValue: {InitialCoinValue}\n");
+            if (Effects.Count < 1)
+            {
+                sb.Append("No effects");
+                return sb.ToString();
+            }
+            sb.Append("Effects:\n");
+            for (int i = 0; i < Effects.Count; i++)
+            {
+                sb.Append($"{i + 1}. {Effects.ElementAt(i).Description}\n");
+            }
+            return sb.ToString();
+        }
     }
 }

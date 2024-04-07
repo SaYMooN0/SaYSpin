@@ -1,7 +1,7 @@
 ﻿<div class="log-entry">
     <span class="log-icon @log.Type.ToString().ToLower()"></span>
-    <span class="log-date">@log.Time: </span>
-    <span class="log-message">@log.Message</span>
+    <span class="log-message">@((MarkupString)log.Message.Replace("\n", "<br>"))</span>
+    <span class="log-date">@log.Time</span>
 </div>
 @code {
     [Parameter]

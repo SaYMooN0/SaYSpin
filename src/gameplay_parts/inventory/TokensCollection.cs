@@ -1,4 +1,4 @@
-﻿using System;
+﻿using SaYSpin.src.static_classes;
 
 namespace SaYSpin.src.gameplay_parts.inventory_related.tokens
 {

@@ -1,11 +1,12 @@
 ﻿using SaYSpin.src.gameplay_parts;
+using System.Text;
 
 namespace SaYSpin.src.inventory_items.relics
 {
     public class Relic : BaseInventoryItem
     {
         public HashSet<BaseRelicEffect> Effects { get; init; } = new HashSet<BaseRelicEffect>();
-
+        public override string ImageFolderPath => "relics";
         public Relic(string name, Rarity rarity, IEnumerable<BaseRelicEffect> effects = null)
             : base(name, effects != null ? string.Join("\n", effects.Select(e => e.Description)) : string.Empty, rarity)
         {
@@ -24,7 +25,25 @@ namespace SaYSpin.src.inventory_items.relics
             Description += (string.IsNullOrEmpty(Description) ? "" : "\n") + effect.Description;
             return this;
         }
-        public override string ImageFolderPath => "relics";
+
+        public override string TextInfo()
+        {
+            StringBuilder sb = new();
+            sb.Append($"Name: {Name}\nRarity: {Rarity}\nId: {Id}\n");
+            if (Effects.Count < 1)
+            {
+                sb.Append("No effects");
+                return sb.ToString();
+            }
+            sb.Append("Effects:\n");
+            for (int i = 0; i < Effects.Count; i++)
+            {
+                sb.Append($"{i + 1}. {Effects.ElementAt(i).Description}\n");
+            }
+            return sb.ToString();
+        }
+
+
     }
 
 }

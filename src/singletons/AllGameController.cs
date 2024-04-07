@@ -4,8 +4,8 @@ using SaYSpin.src.gameplay_parts;
 using SaYSpin.src.inventory_items.relics;
 using SaYSpin.src.inventory_items.tile_items;
 using SaYSpin.src.extension_classes.factories;
-using SaYSpin.src.inventory_items;
 using SaYSpin.src.in_game_logging_related;
+using SaYSpin.src.static_classes;
 
 namespace SaYSpin.src.singletons
 {

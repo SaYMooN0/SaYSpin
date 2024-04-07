@@ -19,6 +19,7 @@ namespace SaYSpin.src.inventory_items
             Description = description;
             Rarity = rarity;
         }
+        public abstract string TextInfo();
 
     }
 }

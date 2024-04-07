@@ -1,4 +1,4 @@
-﻿namespace SaYSpin.src
+﻿namespace SaYSpin.src.static_classes
 {
     public static class Randomizer
     {

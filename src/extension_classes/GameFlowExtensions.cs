@@ -84,7 +84,7 @@ namespace SaYSpin.src.extension_classes
                         (i + 1, j),
                         (i, j - 1),
                         (i, j + 1),
-                        (i - 1, j - 1), 
+                        (i - 1, j - 1),
                         (i - 1, j + 1),
                         (i + 1, j - 1),
                         (i + 1, j + 1)
@@ -101,7 +101,7 @@ namespace SaYSpin.src.extension_classes
 
                                 if (adjItem != null && effect.AbsorbingCondition(adjItem))
                                 {
-                      
+
                                     effect.ExecuteOnAbsorbAction(game);
 
                                     game.DestroyTileItem(adjItem, adjI, adjJ);
@@ -113,20 +113,10 @@ namespace SaYSpin.src.extension_classes
             }
         }
 
-        public static TileItem TileItemWithId(this GameFlowController game, string id)
-        {
-            var item = game.TileItems.FirstOrDefault(item => item?.Id == id);
-            if (item is null)
-                throw new InvalidOperationException($"TileItem with ID '{id}' not found.");
-            return item;
-        }
-        public static Relic RelicWithId(this GameFlowController game, string id)
-        {
-            var relic = game.Relics.FirstOrDefault(relic => relic?.Id == id);
-            if (relic is null)
-                throw new InvalidOperationException($"Relic with ID '{id}' not found.");
-            return relic;
-        }
+        public static TileItem? TileItemWithId(this GameFlowController game, string id) =>
+            game.TileItems.FirstOrDefault(item => item?.Id == id);
+        public static Relic? RelicWithId(this GameFlowController game, string id) =>
+            game.Relics.FirstOrDefault(relic => relic?.Id == id);
         public static bool CoinsEnoughToCompleteTheStage(this GameFlowController game) =>
             game.CoinsCount >= game.CoinsNeededToCompleteTheStage;
     }

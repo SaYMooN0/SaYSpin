@@ -7,6 +7,9 @@
         ItemDestroyed,
         ItemBought,
         ItemSold,
+        ConsoleInput,
+        ConsoleCommandSuccess,
+        ConsoleCommandError,
         None
     }
 }

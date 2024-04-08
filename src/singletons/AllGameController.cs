@@ -24,12 +24,15 @@ namespace SaYSpin.src.singletons
 
             AllRelicsCollection = InitRelics();
 
-            Difficulty normalDifficulty = new("normal", [], [], "normal.png", 1, 1, 10, 3, 1, 1);
-            Difficulty hardDifficulty = new("hard",
-                ["Receive 1,2 x more rubies after run", "Receive 1,2 x more exp after run"],
-                ["More coins are needed to complete each stage", "Increased prices in the shop"],
-                "normal.png", 1.2, 1.2, 10, 3, 1.2, 1.2);
-            PossibleDifficulties = [normalDifficulty, hardDifficulty];
+            PossibleDifficulties = InitDifficulties();
+        }
+
+        private Difficulty[] InitDifficulties()
+        {
+            Difficulty normalDiff = Difficulty.NormalDifficulty;
+            Difficulty hardDiff = Difficulty.New("Hard", 1.2, 1.2, 10, 3, 3, 1, 1.2, 1.2);
+            Difficulty easyDiffi = Difficulty.New("Easy", 0.95, 1, 15, 3, 3, 2, 1, 1);
+            return [easyDiffi, normalDiff, hardDiff];
         }
 
         private Relic[] InitRelics()

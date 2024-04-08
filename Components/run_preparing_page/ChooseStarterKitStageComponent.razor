@@ -1,7 +1,11 @@
 ﻿@inject NavigationManager NavigationManager
-<div>
-    <label class="difficulty-label">selected difficulty: @game.Difficulty.Name</label>
-    <label class="choose-starter-kit-label"> Choose your starter kit</label>
+<div class="starter-kits-container">
+    <label class="choose-starter-kit-label unselectable">
+        <span>◆</span>
+        Choose your starter kit
+        <span>◆</span>
+    </label>
+
     <div class="starter-kits">
         @foreach (var sK in game.GenerateStarterKits())
         {
@@ -12,7 +16,7 @@
 
 @code {
     [Parameter]
-    public GameFlowController game{ get; set; }
+    public GameFlowController game { get; set; }
     private void kitSelected(GameStarterKit gameStarterKit)
     {
         game.Start(gameStarterKit);

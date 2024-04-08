@@ -19,14 +19,16 @@ namespace SaYSpin.src.extension_classes
             var relics = game.Relics.Where(r => r.Rarity <= Rarity.Rare).OrderBy(x => Guid.NewGuid()).ToArray();
 
             var totalKits = 4;
-            int commonItemsPerKit = 3;
+            int commonItemsPerKit = game.Difficulty.StartingTileItemsCount-1;
 
             for (int i = 0; i < totalKits; i++)
             {
                 var itemsForKit = commonItems.Skip(i * commonItemsPerKit).Take(commonItemsPerKit).ToList();
                 itemsForKit.Add(rareItems[i % rareItems.Length]);
 
-                kits.Add(new GameStarterKit(itemsForKit, [relics[i % relics.Length]],
+                var relicsForKit = relics.Skip(i *game.Difficulty.StartingRelicsCount).Take(game.Difficulty.StartingRelicsCount).ToList();
+
+                kits.Add(new GameStarterKit(itemsForKit, relicsForKit,
                     GameStarterKit.RandomTokensCollection(game.Difficulty.StartingTokensCount), game.Difficulty.StartingDiamondsCount));
             }
 

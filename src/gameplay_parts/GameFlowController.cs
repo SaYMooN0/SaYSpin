@@ -6,7 +6,6 @@ using SaYSpin.src.inventory_items.relics;
 using SaYSpin.src.inventory_items.relics.relic_effects;
 using SaYSpin.src.inventory_items.tile_items.tile_item_effects;
 using SaYSpin.src.inventory_items;
-using SaYSpin.src.extension_classes;
 
 namespace SaYSpin.src.gameplay_parts
 {

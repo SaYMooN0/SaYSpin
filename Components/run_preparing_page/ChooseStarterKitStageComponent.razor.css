@@ -2,6 +2,69 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
-    gap:calc(4vw + 7vh - 30px);
-    align-items:center;
+    gap: 36px;
+    align-items: center;
+}
+
+.starter-kits-container {
+    display: grid;
+    grid-template-rows:auto 1fr;
+    gap: 40px;
+}
+
+.choose-starter-kit-label {
+    margin-top:10px;
+    background-image: linear-gradient(to bottom, #566cff, #596cff, #5c6cff, #5e6cff, #616cff, #606aff, #6067ff, #5f65ff, #5b5fff, #565aff, #5254ff, #4e4eff);
+    color: white;
+    padding: 10px;
+    gap: 8px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Montserrat;
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    width: fit-content;
+    justify-self:center
+}
+
+@media (max-width: 1400px), (max-height: 820px) {
+    .starter-kits-container {
+        gap: 40px;
+    }
+    .choose-starter-kit-label {
+        font-size: 22px;
+    }
+}
+
+
+@media (max-width: 1200px), (max-height: 700px) {
+    .starter-kits-container {
+        gap: 30px;
+    }
+
+    .choose-starter-kit-label {
+        font-size: 19px;
+        padding: 8px;
+        gap: 6px;
+    }
+    .starter-kits {
+        gap: 26px;
+    }
+}
+
+@media (max-width: 800px), (max-height: 600px) {
+    .starter-kits-container {
+        gap: 30px;
+    }
+
+    .choose-starter-kit-label {
+        font-size: 16px;
+        padding: 7px;
+    }
+    .starter-kits {
+        gap: 20px;
+    }
 }

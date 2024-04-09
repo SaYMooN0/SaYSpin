@@ -14,19 +14,27 @@ namespace SaYSpin.src.extension_classes
         {
             List<GameStarterKit> kits = new();
             var commonItems = game.TileItems.Where(i => i.Rarity == Rarity.Common).OrderBy(x => Guid.NewGuid()).ToList();
-            var rareItems = game.TileItems.Where(i => i.Rarity == Rarity.Rare).OrderBy(x => Guid.NewGuid()).ToArray();
+            var rareItems = game.TileItems.Where(i => i.Rarity == Rarity.Rare).OrderBy(x => Guid.NewGuid()).ToList();
+            var relics = game.Relics.Where(r => r.Rarity <= Rarity.Rare).OrderBy(x => Guid.NewGuid()).ToList();
 
-            var relics = game.Relics.Where(r => r.Rarity <= Rarity.Rare).OrderBy(x => Guid.NewGuid()).ToArray();
-
-            var totalKits = 4;
-            int commonItemsPerKit = game.Difficulty.StartingTileItemsCount-1;
+            int totalKits = 4;
+            int commonItemsPerKit = game.Difficulty.StartingTileItemsCount;
+            int relicsPerKit = game.Difficulty.StartingRelicsCount;
 
             for (int i = 0; i < totalKits; i++)
             {
-                var itemsForKit = commonItems.Skip(i * commonItemsPerKit).Take(commonItemsPerKit).ToList();
-                itemsForKit.Add(rareItems[i % rareItems.Length]);
+                List<TileItem> itemsForKit = new();
+                for (int j = 0; j < commonItemsPerKit; j++)
+                {
+                    itemsForKit.Add(commonItems[(i * commonItemsPerKit + j) % commonItems.Count]);
+                }
+                itemsForKit.Add(rareItems[i % rareItems.Count]);
 
-                var relicsForKit = relics.Skip(i *game.Difficulty.StartingRelicsCount).Take(game.Difficulty.StartingRelicsCount).ToList();
+                List<Relic> relicsForKit = new();
+                for (int j = 0; j < relicsPerKit; j++)
+                {
+                    relicsForKit.Add(relics[(i * relicsPerKit + j) % relics.Count]);
+                }
 
                 kits.Add(new GameStarterKit(itemsForKit, relicsForKit,
                     GameStarterKit.RandomTokensCollection(game.Difficulty.StartingTokensCount), game.Difficulty.StartingDiamondsCount));
@@ -34,6 +42,7 @@ namespace SaYSpin.src.extension_classes
 
             return kits;
         }
+
         public static int CalculateCoinsNeededForStage(this GameFlowController game, int stageToCalculateFor)
         {
             return (int)(

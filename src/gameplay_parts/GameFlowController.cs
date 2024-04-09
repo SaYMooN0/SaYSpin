@@ -6,7 +6,7 @@ using SaYSpin.src.inventory_items.relics;
 using SaYSpin.src.inventory_items.relics.relic_effects;
 using SaYSpin.src.inventory_items.tile_items.tile_item_effects;
 using SaYSpin.src.inventory_items;
-
+using SaYSpin.src.gameplay_parts.inventory_related.tokens;
 namespace SaYSpin.src.gameplay_parts
 {
     public class GameFlowController
@@ -21,8 +21,8 @@ namespace SaYSpin.src.gameplay_parts
         public int CoinsCount { get; private set; }
         public int CoinsNeededToCompleteTheStage { get; private set; }
         public BasicStats BasicStats { get; init; }
-        public event Action<TileItem> OnTileItemDestruction;
-        public event Action<BaseInventoryItem> OnInventoryItemAdded;
+
+
         public GameFlowController(BasicStats stats, Difficulty difficulty, IEnumerable<TileItem> accessibleTileItems, IEnumerable<Relic> accessibleRelics)
         {
             BasicStats = stats;
@@ -66,6 +66,11 @@ namespace SaYSpin.src.gameplay_parts
             CoinsNeededToCompleteTheStage = this.CalculateCoinsNeededForStage(CurrentStage);
             OnNewStageStarted?.Invoke(CurrentStage);
 
+            foreach (var effect in Inventory.Relics.SelectMany(r => r.Effects.OfType<OnStageStartedRelicEffect>()))
+            {
+                effect.PerformOnStageStartedAction(this);
+            }
+
         }
         public void SpinSlotMachine()
         {
@@ -105,10 +110,29 @@ namespace SaYSpin.src.gameplay_parts
         }
         public void AddCoins(int count) =>
             CoinsCount += count;
+        public bool UseToken(TokenType token)
+        {
+            if( Inventory.Tokens.TryUseToken(token))
+            {
+                OnTokenUsed?.Invoke(token);
+                foreach (var effect in Inventory.Relics.SelectMany(r => r.Effects.OfType<AfterTokenUsedRelicEffect>()))
+                {
+                    effect.PerformAfterTokenUsedAction(this);
+                }
+                return true;
+            }
+            return false;
+        }
+
 
 
         public event StageStartedDelegate OnNewStageStarted;
         public delegate void StageStartedDelegate(int newStageNumber);
+
+        public event Action<TileItem> OnTileItemDestruction;
+        public event Action<BaseInventoryItem> OnInventoryItemAdded;
+
+        public event Action<TokenType> OnTokenUsed;
 
 
     }

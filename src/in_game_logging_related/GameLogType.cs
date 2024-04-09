@@ -7,6 +7,7 @@
         ItemDestroyed,
         ItemBought,
         ItemSold,
+        TokenUsed,
         ConsoleInput,
         ConsoleCommandSuccess,
         ConsoleCommandError,

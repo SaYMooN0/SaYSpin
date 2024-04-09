@@ -29,7 +29,7 @@ namespace SaYSpin.src.gameplay_parts.inventory_related.tokens
 
         public void AddToken(TokenType tokenType) =>
             _tokens[tokenType]++;
-        static public TokenType GetRandomTokenType()
+        static public TokenType RandomTokenType()
         {
             var tokenTypes = Enum.GetValues(typeof(TokenType));
             var randomIndex = Randomizer.Int(tokenTypes.Length);

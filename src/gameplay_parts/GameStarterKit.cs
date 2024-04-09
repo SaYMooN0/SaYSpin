@@ -16,7 +16,7 @@ namespace SaYSpin.src.gameplay_parts
             TokensCollection tC = new();
             for (int i = 0; i < tokensCount; i++)
             {
-                tC.AddToken(TokensCollection.GetRandomTokenType());
+                tC.AddToken(TokensCollection.RandomTokenType());
             }
             return tC;
         }

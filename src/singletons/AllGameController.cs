@@ -6,6 +6,7 @@ using SaYSpin.src.inventory_items.tile_items;
 using SaYSpin.src.extension_classes.factories;
 using SaYSpin.src.in_game_logging_related;
 using SaYSpin.src.static_classes;
+using SaYSpin.src.gameplay_parts.inventory_related.tokens;
 
 namespace SaYSpin.src.singletons
 {
@@ -38,7 +39,9 @@ namespace SaYSpin.src.singletons
         private Relic[] InitRelics()
         {
             var fruitBasket = new Relic("Fruit Basket", Rarity.Common)
-                .WithCoinsCalculationRelicEffect("All fruits gives +1 coin", ModifierType.Plus, 1, i => i.HasTag("fruit"));
+                .WithCoinsCalculationRelicEffect("All fruits give +1 coin", ModifierType.Plus, 1, i => i.HasTag("fruit"));
+            var birdGuide = new Relic("Bird Guide", Rarity.Common)
+                .WithCoinsCalculationRelicEffect("All birds give +1 coin", ModifierType.Plus, 1, i => i.HasTag("bird"));
 
             var treasureMap = new Relic("Treasure Map", Rarity.Rare)
                 .WithAfterStageRewardRelicEffect("After every stage completion have a 50% chance to receive a chest tile item and 10% chance to receive golden chest tile item",
@@ -46,6 +49,7 @@ namespace SaYSpin.src.singletons
                         Randomizer.Percent(50)? game.TileItemWithId("chest")        : null ,
                         Randomizer.Percent(10)? game.TileItemWithId("golden_chest") : null]
                 );
+
 
 
             var goldenKey = new Relic("Golden Key", Rarity.Rare)
@@ -65,10 +69,40 @@ namespace SaYSpin.src.singletons
                         }
                     }
                 );
+
+            var appleTree = new Relic("Apple Tree", Rarity.Epic)
+                .WithCoinsCalculationRelicEffect(
+                    "Apple tile item gives +1 coins",
+                    ModifierType.Plus, 1, i => i.Id == "apple")
+                .WithAfterStageRewardRelicEffect(
+                    "After stage have a 40% chance to receive an apple tile item",
+                    (stageNumber, game) =>
+                        [Randomizer.Percent(50) ? game.TileItemWithId("apple") : null])
+                .WithAfterStageRewardRelicEffect(
+                    "After every fifth stage receive a golden apple tile item",
+                    (stageNumber, game) =>
+                        [stageNumber % 5 == 0 ? game.TileItemWithId("golden_apple") : null]
+                );
+
+            var randomToken = new Relic("Random Token", Rarity.Epic)
+                    .WithOnStageStartedRelicEffect(
+                        "At the beginning of each stage, receive 1 random token",
+                        (game) => game.Inventory.Tokens.AddToken(TokensCollection.RandomTokenType())
+            );
+
+            var diamondToken = new Relic("Diamond Token", Rarity.Rare)
+                .WithAfterTokenUsedRelicEffect(
+                    "When using any token, receive 7 diamonds",
+                    (game) => game.Inventory.AddDiamonds(7)
+            );
             return [
                 fruitBasket,
                 treasureMap,
-                goldenKey
+                goldenKey,
+                birdGuide,
+                appleTree,
+                randomToken,
+                diamondToken
                 ];
         }
         private TileItem[] InitTileItems()
@@ -131,7 +165,9 @@ namespace SaYSpin.src.singletons
 
             Game.OnNewStageStarted += (newStage) => logger.Log(GameLogModel.New($"Stage #{newStage} has been started", GameLogType.Info));
             Game.OnInventoryItemAdded += logger.LogItemAdded;
+
             Game.OnTileItemDestruction += logger.LogItemDestroyed;
+            Game.OnTokenUsed += logger.LogTokenUsed;
         }
         public void FinishGame()
         {

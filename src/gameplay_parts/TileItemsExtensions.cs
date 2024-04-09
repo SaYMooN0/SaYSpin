@@ -1,8 +1,7 @@
-﻿using SaYSpin.src.gameplay_parts;
-using SaYSpin.src.inventory_items.tile_items;
+﻿using SaYSpin.src.inventory_items.tile_items;
 using SaYSpin.src.inventory_items.tile_items.tile_item_effects;
 
-namespace SaYSpin.src.extension_classes
+namespace SaYSpin.src.gameplay_parts
 {
     static class TileItemsExtensions
     {

@@ -157,11 +157,11 @@ namespace SaYSpin.src.singletons
                 ];
         }
         public bool IsGameRunning() => Game is not null;
-        public void InitializeNewGame(Difficulty difficulty, GameLoggingService logger)
+        public void InitializeNewGame(Difficulty difficulty, GameLoggingService logger, bool areCheatsEnabled)
         {
             logger.Clear();
 
-            Game = new(_basicStats, difficulty, AllTileItemsCollection, AllRelicsCollection);
+            Game = new(_basicStats, difficulty, AllTileItemsCollection, AllRelicsCollection, areCheatsEnabled);
 
             Game.OnNewStageStarted += (newStage) => logger.Log(GameLogModel.New($"Stage #{newStage} has been started", GameLogType.Info));
             Game.OnInventoryItemAdded += logger.LogItemAdded;

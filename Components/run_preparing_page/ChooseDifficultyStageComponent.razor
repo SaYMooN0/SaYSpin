@@ -13,6 +13,13 @@
                             onclickAction="()=>DifficultyChosen(difficulty)" />
         }
     </div>
+
+    <label class="cheats-switch">
+        Cheats
+        <input type="checkbox" @bind-value="@cheatsEnebled" class="cheats-switch" />
+    </label>
+
+
     <div class="difficulty-info-container">
         <label class="difficulty-info-label unselectable">Difficulty info</label>
         <div class="difficulty-info">
@@ -37,15 +44,20 @@
         </div>
     </div>
 </div>
-
+<NavLink href="">
+    <div class="cancel-button unselectable">
+        Cancel
+    </div>
+</NavLink>
 @code {
     [Parameter]
-    public EventCallback<Difficulty> onDifficultyChosen { get; set; }
+    public Action<Difficulty,bool> onDifficultyChosen { get; set; }
     private string[] DifficultyInfoPositives { get; set; } = [];
     private string[] DifficultyInfoNegatives { get; set; } = [];
+    private bool cheatsEnebled = false;
 
     private void DifficultyChosen(Difficulty difficulty) =>
-        onDifficultyChosen.InvokeAsync(difficulty);
+        onDifficultyChosen(difficulty, cheatsEnebled);
     private void SetDifficultyInfo(string[] positives, string[] negatives)
     {
         DifficultyInfoPositives = positives;

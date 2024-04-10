@@ -7,6 +7,7 @@ using SaYSpin.src.inventory_items.relics.relic_effects;
 using SaYSpin.src.inventory_items.tile_items.tile_item_effects;
 using SaYSpin.src.inventory_items;
 using SaYSpin.src.gameplay_parts.inventory_related.tokens;
+using Microsoft.Maui;
 namespace SaYSpin.src.gameplay_parts
 {
     public class GameFlowController
@@ -21,15 +22,15 @@ namespace SaYSpin.src.gameplay_parts
         public int CoinsCount { get; private set; }
         public int CoinsNeededToCompleteTheStage { get; private set; }
         public BasicStats BasicStats { get; init; }
+        public bool AreCheatsEnabled { get; init; }
 
-
-        public GameFlowController(BasicStats stats, Difficulty difficulty, IEnumerable<TileItem> accessibleTileItems, IEnumerable<Relic> accessibleRelics)
+        public GameFlowController(BasicStats stats, Difficulty difficulty, IEnumerable<TileItem> accessibleTileItems, IEnumerable<Relic> accessibleRelics, bool areCheatsEnabled)
         {
             BasicStats = stats;
             Difficulty = difficulty;
             TileItems = accessibleTileItems.ToHashSet();
             Relics = accessibleRelics.ToHashSet();
-
+            AreCheatsEnabled = areCheatsEnabled;
         }
         public void Start(GameStarterKit chosenStarterKit)
         {
@@ -108,6 +109,25 @@ namespace SaYSpin.src.gameplay_parts
             Inventory.Relics.Add(relic);
             OnInventoryItemAdded?.Invoke(relic);
         }
+        public bool RemoveTileItemFromInventory(string tileItemId)
+        {
+            var ti =Inventory.TileItems.FirstOrDefault(ti=>ti.Id==tileItemId);
+            if (ti is null)
+                return false;
+            Inventory.TileItems.Remove(ti);
+            OnInventoryItemRemoved?.Invoke(ti);
+            return true;
+        }
+        public bool RemoveRelicFromInventory(string relicId)
+        {
+            var r=Inventory.Relics.FirstOrDefault(r=>r.Id== relicId);
+            if (r is null)
+                return false;
+            Inventory.Relics.Remove(r);
+            OnInventoryItemRemoved?.Invoke(r);
+            return true;
+
+        }
         public void AddCoins(int count) =>
             CoinsCount += count;
         public bool UseToken(TokenType token)
@@ -131,6 +151,7 @@ namespace SaYSpin.src.gameplay_parts
 
         public event Action<TileItem> OnTileItemDestruction;
         public event Action<BaseInventoryItem> OnInventoryItemAdded;
+        public event Action<BaseInventoryItem> OnInventoryItemRemoved;
 
         public event Action<TokenType> OnTokenUsed;
 

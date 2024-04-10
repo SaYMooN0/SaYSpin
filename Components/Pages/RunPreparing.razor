@@ -7,11 +7,6 @@
         @if (currentStageIsDifficlutyChoosing)
         {
             <ChooseDifficultyStageComponent onDifficultyChosen="@DifficultyChosen" />
-            <NavLink href="">
-                <div class="cancel-button unselectable">
-                    Cancel
-                </div>
-            </NavLink>
         }
         else
         {
@@ -22,10 +17,11 @@
 
 @code {
     private bool currentStageIsDifficlutyChoosing = true;
-    private void DifficultyChosen(Difficulty difficulty)
-    {
-        allGameController.InitializeNewGame(difficulty, gameLoggingService);
-        currentStageIsDifficlutyChoosing = false;
 
+    private void DifficultyChosen(Difficulty difficulty, bool cheatsEnebled)
+    {
+        allGameController.InitializeNewGame(difficulty, gameLoggingService, cheatsEnebled);
+        currentStageIsDifficlutyChoosing = false;
+        StateHasChanged();
     }
 }

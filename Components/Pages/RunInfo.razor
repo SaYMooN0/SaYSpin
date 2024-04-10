@@ -37,6 +37,7 @@
         if (string.IsNullOrEmpty(consoleInput))
             return;
 
+        consoleInput = consoleInput.Trim();
         loggingService.Log(GameLogModel.New(consoleInput, GameLogType.ConsoleInput));
 
         if (consoleInput.StartsWith('/'))

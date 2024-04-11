@@ -14,15 +14,15 @@
         }
     </div>
 
-    <label class="cheats-switch">
+    <label class="cheats-checkbox">
         Cheats
-        <input type="checkbox" @bind-value="@cheatsEnebled" class="cheats-switch" />
+        <ToggleSwitch @bind-isChecked="cheatsEnebled" />
     </label>
-
 
     <div class="difficulty-info-container">
         <label class="difficulty-info-label unselectable">Difficulty info</label>
         <div class="difficulty-info">
+            <a href="#"></a>
             <div class="difficulty-negatives">
                 @foreach (string negative in DifficultyInfoNegatives)
                 {
@@ -51,7 +51,7 @@
 </NavLink>
 @code {
     [Parameter]
-    public Action<Difficulty,bool> onDifficultyChosen { get; set; }
+    public Action<Difficulty, bool> onDifficultyChosen { get; set; }
     private string[] DifficultyInfoPositives { get; set; } = [];
     private string[] DifficultyInfoNegatives { get; set; } = [];
     private bool cheatsEnebled = false;

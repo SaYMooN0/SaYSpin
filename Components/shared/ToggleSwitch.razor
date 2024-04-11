@@ -1,0 +1,17 @@
+﻿<label class="switch">
+    <input type="checkbox" @bind="isChecked" readonly>
+    <span class="slider" @onclick="ToggleChecked"></span>
+</label>
+@code {
+    [Parameter]
+    public bool isChecked { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> isCheckedChanged { get; set; }
+
+    private void ToggleChecked()
+    {
+        isChecked = !isChecked;
+        isCheckedChanged.InvokeAsync(isChecked);
+    }
+}

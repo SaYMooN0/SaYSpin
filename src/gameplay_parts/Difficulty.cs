@@ -16,7 +16,7 @@
 
         public string GetFullImagePath() => $"/resources/images/difficulties/{Name.ToLower()}.png";
         public static Difficulty NormalDifficulty { get; } = new Difficulty(
-        "normal",
+        "Normal",
         [],
         [],
         NeededCoinsMultiplier: 1,

@@ -1,6 +1,4 @@
-﻿
-
-using SaYSpin.src.extension_classes;
+﻿using SaYSpin.src.extension_classes;
 using SaYSpin.src.gameplay_parts;
 using SaYSpin.src.in_game_logging_related;
 using SaYSpin.src.inventory_items;
@@ -12,15 +10,22 @@ namespace SaYSpin.src.static_classes
     public static class CommandHandler
     {
         private static readonly Dictionary<string, Func<string[], GameFlowController, GameLogModel>> commandMap
-            = new()
-            {
-                ["infoR"] = HandleInfoR,
-                ["infoI"] = HandleInfoI,
-                ["addI"] = (args, game) => WithCheatsOnly(game, () => HandleAddI(args, game)),
-                ["addR"] = (args, game) => WithCheatsOnly(game, () => HandleAddR(args, game)),
-                ["delI"] = (args, game) => WithCheatsOnly(game, () => HandleDelI(args, game)),
-                ["delR"] = (args, game) => WithCheatsOnly(game, () => HandleDelR(args, game)),
-            };
+          = new()
+          {
+              ["infoR"] = HandleInfoR,
+              ["infoI"] = HandleInfoI,
+              ["addI"] = HandleAddI,
+              ["addR"] = HandleAddR,
+              ["delI"] = HandleDelI,
+              ["delR"] = HandleDelR,
+              ["commands"] = (args, game) => HandleAvailableCommands(game),
+          };
+        private static readonly HashSet<string> cheatRequiredCommands = [
+            "addI",
+            "addR",
+            "delI",
+            "delR"
+        ];
 
         public static GameLogModel HandleCommand(string command, GameFlowController game)
         {
@@ -29,6 +34,10 @@ namespace SaYSpin.src.static_classes
 
             var parts = command.Remove(0, 1).Split("--");
             var cmd = parts[0].Trim();
+
+            if (cheatRequiredCommands.Contains(cmd) && !game.AreCheatsEnabled)
+                return GameLogModel.CommandError("Cheats are disabled");
+
             var args = parts[1..].Select(a => a.Trim()).ToArray();
 
             if (commandMap.TryGetValue(cmd, out var handler))
@@ -37,6 +46,13 @@ namespace SaYSpin.src.static_classes
             }
 
             return GameLogModel.CommandError($"Unknown command {cmd}");
+        }
+        public static GameLogModel HandleAvailableCommands(GameFlowController game)
+        {
+            IEnumerable<string> availableCommands = game.AreCheatsEnabled?
+                commandMap.Keys:
+                commandMap.Keys.Where(cmd => !cheatRequiredCommands.Contains(cmd));
+            return GameLogModel.CommandSuccess(string.Join("\n", availableCommands));
         }
         private static GameLogModel HandleInfoR(string[] args, GameFlowController game)
         {

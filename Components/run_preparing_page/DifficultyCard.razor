@@ -1,5 +1,5 @@
 ﻿
-<div @onmouseover="renderDifficultyInfo" @onmouseout="clearDifficultyInfo" class="difficulty-choosing-div" @onclick="onclickAction">
+<div @onmouseover="renderDifficultyInfo" @onmouseout="clearDifficultyInfo" class="difficulty-choosing-div unselectable" @onclick="onclickAction">
     <img src="@difficulty.GetFullImagePath()" />
     <label>@difficulty.Name</label>
 </div>

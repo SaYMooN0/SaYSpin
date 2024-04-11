@@ -14,12 +14,13 @@
     justify-content: space-around;
     align-items: center;
     flex-direction: column;
+ 
 }
 
 .difficulties-container {
     display: flex;
     flex-direction: row;
-    gap: 4vw;
+    gap: 6vw;
 }
 
 .difficulty-info-container {
@@ -43,7 +44,7 @@
 
 .difficulty-info {
     height: calc(22vh + 100px);
-    width: 480px;
+    width: 640px;
     color: #FBFBFB;
     border-radius: 18px;
     padding: 10px;
@@ -97,12 +98,12 @@
 
 .cancel-button {
     position: absolute;
-    bottom: 26px;
-    right: 30px;
+    bottom: 30px;
+    right: 40px;
     padding: 12px 22px;
     background-image: radial-gradient(circle, #ff3a3a, #fc3737, #fa3535, #f73232, #f42f2f, #f32d2d, #f32c2c, #f22a2a, #f42a2a, #f62929, #f72929, #f92828);
     color: #FBFBFB;
-    font-size: 26px;
+    font-size: 28px;
     font-family: 'Montserrat';
     font-weight: bold;
     border-radius: 10px;
@@ -113,28 +114,48 @@
         background-image: radial-gradient(circle, #e91e1e, #eb1d1d, #ed1c1c, #ee1b1b, #f01a1a, #ee1818, #ed1717, #eb1515, #e61313, #e11010, #dd0e0e, #d80b0b);
     }
 
+
+.cheats-checkbox {
+    margin-top:20px;
+    display:flex;
+    gap:10px;
+    align-items:center;
+    font-family:'Montserrat';
+    font-size:26px;
+    font-weight:bold;
+    color:#001140;
+}
+@media (max-width: 1300px) {
+    .difficulty-info {
+        width: 520px;
+    }
+    .cancel-button {
+        bottom: 26px;
+        right: 30px;
+        font-size: 26px;
+    }
+}
+@media (max-width: 1100px) {
+    .difficulty-info {
+        width: 460px;
+    }
+    .cancel-button {
+        bottom: 20px;
+        right: 20px;
+    }
+}
 @media (max-width: 800px) {
     .difficulty-info {
         width: 360px;
         border-radius: 14px;
         padding: 8px;
     }
+
     .cancel-button {
         bottom: 15px;
         right: 15px;
         padding: 10px 16px;
         font-size: 19px;
         border-radius: 6px;
-    }
-}
-
-@media (min-width: 1300px) {
-    .difficulty-info {
-        width: 640px;
-    }
-    .cancel-button {
-        bottom: 30px;
-        right: 40px;
-        font-size: 28px;
     }
 }

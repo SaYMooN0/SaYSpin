@@ -139,12 +139,19 @@ namespace SaYSpin.src.singletons
                         }),
                 TileItem.Ordinary("Gold Bar", Rarity.Rare, 20, ["gold"]),
 
+                TileItem.Ordinary("Green Alien", Rarity.Rare, 3 ,["alien"])
+                    .WithTileItemsEnhancingTileItemEffect("All aliens give +1 coin", EffectApplicationArea.AllTiles, ModifierType.Plus, 1,(ti)=> ti.HasTag("alien")),
+
+                TileItem.Ordinary("Pigeon", Rarity.Common, 1 ,["bird"])
+                    .WithTileItemsEnhancingTileItemEffect("Adjacent birds give +2 coins ", EffectApplicationArea.Adjacent, ModifierType.Plus, 2,(ti)=> ti.HasTag("bird") ),
+
+                 TileItem.Ordinary("Owl", Rarity.Rare, 3 ,["bird"])
+                    .WithTileItemsEnhancingTileItemEffect("Adjacent wizards give extra 1.4 times more coins ", EffectApplicationArea.Adjacent, ModifierType.Multiply, 1.4,(ti)=> ti.Id=="wizard"),
+
+
                 TileItem.Ordinary("Magic Ball", Rarity.Epic, 5 ,["magical"])
                     .WithTileItemsEnhancingTileItemEffect("All adjacent items give 1.5 times more coins", EffectApplicationArea.Adjacent, ModifierType.Multiply, 1.5,(ti)=>true)
-                    .WithTileItemsEnhancingTileItemEffect("Adjacent wizards give extra 2 times more coins ", EffectApplicationArea.Adjacent, ModifierType.Multiply, 2,(ti)=> ti.Id=="wizard"),
-
-                TileItem.Ordinary("Owl", Rarity.Rare, 3 ,["bird"])
-                    .WithTileItemsEnhancingTileItemEffect("Adjacent wizards give extra 1.4 times more coins ", EffectApplicationArea.Adjacent, ModifierType.Multiply, 1.4,(ti)=> ti.Id=="wizard"),
+                    .WithTileItemsEnhancingTileItemEffect("Adjacent wizards give extra 2 times more coins", EffectApplicationArea.Adjacent, ModifierType.Multiply, 2,(ti)=> ti.Id=="wizard"),
 
                 TileItem.Ordinary("Wizard", Rarity.Rare, 15 ,["person"]),
 

@@ -22,6 +22,7 @@ namespace SaYSpin.src.static_classes
               ["delAllR"] = HandleDelAllR,
               ["delAllI"] = HandleDelAllI,
               ["clearInv"] = (args, game) => HandleClearInventory(game),
+              ["setCoins"] = HandleSetCurrentCoins
           };
         private static readonly HashSet<string> cheatRequiredCommands = [
             "addI",
@@ -30,7 +31,8 @@ namespace SaYSpin.src.static_classes
             "delR",
             "delAllR",
             "delAllI",
-            "clearInv"
+            "clearInv",
+            "setCoins"
         ];
 
         public static GameLogModel HandleCommand(string command, GameFlowController game)
@@ -169,6 +171,18 @@ namespace SaYSpin.src.static_classes
             game.Inventory.Relics.Clear();
             return GameLogModel.CommandSuccess("Inventory cleared");
         }
+        private static GameLogModel HandleSetCurrentCoins(string[] args, GameFlowController game)
+        {
+            if (args.Length == 0) return NotEnoughArgs("setCoins", 1, 0);
+
+            if (uint.TryParse(args[0], out uint count))
+            {
+                game.SetCurrentCoinsCount((int)count);
+                return GameLogModel.CommandSuccess($"Current coins set to {count}");
+            }
+            return GameLogModel.CommandError($"Unable to parse {args[0]}");
+        }
+
 
     }
 

@@ -7,7 +7,6 @@ using SaYSpin.src.inventory_items.relics.relic_effects;
 using SaYSpin.src.inventory_items.tile_items.tile_item_effects;
 using SaYSpin.src.inventory_items;
 using SaYSpin.src.gameplay_parts.inventory_related.tokens;
-using Microsoft.Maui;
 namespace SaYSpin.src.gameplay_parts
 {
     public class GameFlowController
@@ -79,9 +78,7 @@ namespace SaYSpin.src.gameplay_parts
             itemsPicker.PickItemsFrom(Inventory.TileItems);
             SlotMachine.UpdateItems(itemsPicker);
 
-            IEnumerable<CoinsCalculationRelicEffect> relicEffects = Inventory.Relics
-                .SelectMany(relic => relic.Effects.OfType<CoinsCalculationRelicEffect>());
-
+            IEnumerable<CoinsCalculationRelicEffect> relicEffects =this.GatherCoinsCalculationRelicEffects();
 
             int income = SlotMachine.CalculateCoinValue(relicEffects);
             AddCoins(income);
@@ -145,7 +142,8 @@ namespace SaYSpin.src.gameplay_parts
         }
 
 
-
+        public void SetCurrentCoinsCount(int value)=>
+            CoinsCount = value;
         public event StageStartedDelegate OnNewStageStarted;
         public delegate void StageStartedDelegate(int newStageNumber);
 

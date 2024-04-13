@@ -124,6 +124,19 @@ namespace SaYSpin.src.extension_classes
             }
         }
 
+        public static IEnumerable<CoinsCalculationRelicEffect> GatherCoinsCalculationRelicEffects(this GameFlowController game)
+        {
+
+            IEnumerable<CoinsCalculationRelicEffect> effects = game.Inventory.Relics
+               .SelectMany(relic => relic.Effects.OfType<CoinsCalculationRelicEffect>());
+
+            IEnumerable<CoinsCalculationRelicEffect> nonConstantEffects = game.Inventory.Relics
+               .SelectMany(relic => relic.Effects.OfType<NonConstantCalculationRelicEffect>())
+               .Select(eff=>eff.GetCalculationEffect(game));
+
+            return effects.Concat(nonConstantEffects);
+        }
+
         public static TileItem? TileItemWithId(this GameFlowController game, string id) =>
             game.TileItems.FirstOrDefault(item => item?.Id == id);
         public static Relic? RelicWithId(this GameFlowController game, string id) =>

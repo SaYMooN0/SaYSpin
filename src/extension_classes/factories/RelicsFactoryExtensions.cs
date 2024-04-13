@@ -2,10 +2,12 @@
 using SaYSpin.src.inventory_items.relics;
 using SaYSpin.src.inventory_items.relics.relic_effects;
 using SaYSpin.src.inventory_items.tile_items;
+using SaYSpin.src.inventory_items.tile_items.tile_item_effects;
 using static SaYSpin.src.inventory_items.relics.relic_effects.AfterSpinRelicEffect;
 using static SaYSpin.src.inventory_items.relics.relic_effects.AfterStageRewardRelicEffect;
 using static SaYSpin.src.inventory_items.relics.relic_effects.AfterTokenUsedRelicEffect;
 using static SaYSpin.src.inventory_items.relics.relic_effects.OnStageStartedRelicEffect;
+using static SaYSpin.src.inventory_items.tile_items.tile_item_effects.NonConstantCalculationRelicEffect;
 
 namespace SaYSpin.src.extension_classes.factories
 {
@@ -13,6 +15,8 @@ namespace SaYSpin.src.extension_classes.factories
     {
         public static Relic WithCoinsCalculationRelicEffect(this Relic relic, string description, ModifierType modifierType, int modificationValue, Func<TileItem, bool> condition) =>
             relic.WithEffect(new CoinsCalculationRelicEffect(description, modifierType, modificationValue, condition));
+        public static Relic WithNonConstantCalculationRelicEffect(this Relic relic, string description, NonConstantCalculationEffectDelegate modificationValue, Func<TileItem, bool> condition) =>
+            relic.WithEffect(new NonConstantCalculationRelicEffect(description, modificationValue, condition));
 
         public static Relic WithAfterStageRewardRelicEffect(this Relic relic, string description, AfterStageCompletedReward reward) =>
             relic.WithEffect(new AfterStageRewardRelicEffect(description, reward));

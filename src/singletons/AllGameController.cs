@@ -95,6 +95,17 @@ namespace SaYSpin.src.singletons
                     "When using any token, receive 7 diamonds",
                     (game) => game.Inventory.AddDiamonds(7)
             );
+
+            var ufo = new Relic("UFO", Rarity.Epic)
+                .WithNonConstantCalculationRelicEffect(
+                "Aliens give an additional 0.5 coins for each alien in the inventory",
+                (game) =>
+                {
+                    int aliensCount = game.Inventory.TileItems.Where(ti => ti.HasTag("alien")).Count();
+                    return new(ModifierType.Plus, aliensCount * 0.5);
+                },
+                ti => ti.HasTag("alien")
+                );
             return [
                 fruitBasket,
                 treasureMap,
@@ -102,7 +113,8 @@ namespace SaYSpin.src.singletons
                 birdGuide,
                 appleTree,
                 randomToken,
-                diamondToken
+                diamondToken,
+                ufo
                 ];
         }
         private TileItem[] InitTileItems()
@@ -161,6 +173,10 @@ namespace SaYSpin.src.singletons
 
                 TileItem.Ordinary("Carrot", Rarity.Common, 5, []),
                 TileItem.Ordinary("Golden Carrot", Rarity.Epic, 15, []),
+
+
+                TileItem.Ordinary("Сapybara", Rarity.Mythic, 10 ,["animal"])
+                    .WithTileItemsEnhancingTileItemEffect("Adjacent people, animals and birds give 2 times more coins ", EffectApplicationArea.Adjacent, ModifierType.Multiply, 2,(ti)=> ti.HasOneOfTags(["bird", "animal", "person"]) ),
                 ];
         }
         public bool IsGameRunning() => Game is not null;

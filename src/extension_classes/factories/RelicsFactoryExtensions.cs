@@ -3,6 +3,7 @@ using SaYSpin.src.inventory_items.relics;
 using SaYSpin.src.inventory_items.relics.relic_effects;
 using SaYSpin.src.inventory_items.tile_items;
 using SaYSpin.src.inventory_items.tile_items.tile_item_effects;
+using System;
 using static SaYSpin.src.inventory_items.relics.relic_effects.AfterSpinRelicEffect;
 using static SaYSpin.src.inventory_items.relics.relic_effects.AfterStageRewardRelicEffect;
 using static SaYSpin.src.inventory_items.relics.relic_effects.AfterTokenUsedRelicEffect;
@@ -29,6 +30,8 @@ namespace SaYSpin.src.extension_classes.factories
         public static Relic WithAfterTokenUsedRelicEffect(this Relic relic, string description, AfterTokenUsedAction action) =>
             relic.WithEffect(new AfterTokenUsedRelicEffect(description, action));
 
+        public static Relic WithGameStatRelicEffect(this Relic relic, string description, GameStat gameStat, ModifierType modifierType, double modificationValue) =>
+            relic.WithEffect(new GameStatRelicEffect(description, gameStat, modifierType, modificationValue));
 
     }
 }

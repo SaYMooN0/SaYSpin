@@ -16,10 +16,8 @@ namespace SaYSpin.src.singletons
         public TileItem[] AllTileItemsCollection { get; init; }
         public Relic[] AllRelicsCollection { get; init; }
         public Difficulty[] PossibleDifficulties { get; init; }
-        private BasicStats _basicStats { get; set; }
         public AllGameController()
         {
-            _basicStats = LoadBasicStats();
 
             AllTileItemsCollection = InitTileItems();
 
@@ -98,14 +96,16 @@ namespace SaYSpin.src.singletons
 
             var ufo = new Relic("UFO", Rarity.Epic)
                 .WithNonConstantCalculationRelicEffect(
-                "Aliens give an additional 0.5 coins for each alien in the inventory",
-                (game) =>
-                {
-                    int aliensCount = game.Inventory.TileItems.Where(ti => ti.HasTag("alien")).Count();
-                    return new(ModifierType.Plus, aliensCount * 0.5);
-                },
-                ti => ti.HasTag("alien")
+                    "Aliens give an additional 0.5 coins for each alien in the inventory",
+                    (game) =>
+                        {
+                            int aliensCount = game.Inventory.TileItems.Where(ti => ti.HasTag("alien")).Count();
+                            return new(ModifierType.Plus, aliensCount * 0.5);
+                        },
+                    ti => ti.HasTag("alien")
                 );
+            var clover = new Relic("Four Leaf Clover", Rarity.Rare)
+                .WithGameStatRelicEffect("Gives +5 to luck", GameStat.Luck, ModifierType.Plus, 5);
             return [
                 fruitBasket,
                 treasureMap,
@@ -114,7 +114,8 @@ namespace SaYSpin.src.singletons
                 appleTree,
                 randomToken,
                 diamondToken,
-                ufo
+                ufo,
+                clover
                 ];
         }
         private TileItem[] InitTileItems()
@@ -184,7 +185,7 @@ namespace SaYSpin.src.singletons
         {
             logger.Clear();
 
-            Game = new(_basicStats, difficulty, AllTileItemsCollection, AllRelicsCollection, areCheatsEnabled);
+            Game = new(LoadInitialStats(), difficulty, AllTileItemsCollection, AllRelicsCollection, areCheatsEnabled);
 
             Game.OnNewStageStarted += (newStage) => logger.Log(GameLogModel.New($"Stage #{newStage} has been started", GameLogType.Info));
             Game.OnInventoryItemAdded += logger.LogItemAdded;
@@ -194,12 +195,15 @@ namespace SaYSpin.src.singletons
         }
         public void FinishGame()
         {
+            //invoke event
+            //count exp and rubies
+            //only then null
             Game = null;
         }
-        private BasicStats LoadBasicStats()
+        private StatsTracker LoadInitialStats()
         {
             //will be load from file
-            return BasicStats.Default();
+            return new(1, 1, 4, 4, 7, 1);
         }
 
 

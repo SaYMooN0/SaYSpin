@@ -22,7 +22,8 @@ namespace SaYSpin.src.static_classes
               ["delAllR"] = HandleDelAllR,
               ["delAllI"] = HandleDelAllI,
               ["clearInv"] = (args, game) => HandleClearInventory(game),
-              ["setCoins"] = HandleSetCurrentCoins
+              ["setCoins"] = HandleSetCurrentCoins,
+              ["stats"] = (args, game) => HandleGetStats(game),
           };
         private static readonly HashSet<string> cheatRequiredCommands = [
             "addI",
@@ -183,6 +184,8 @@ namespace SaYSpin.src.static_classes
             return GameLogModel.CommandError($"Unable to parse {args[0]}");
         }
 
+        private static GameLogModel HandleGetStats(GameFlowController game) =>
+            GameLogModel.CommandSuccess(string.Join("\n", game.StatsTracker.Values.Select(kvp => $"{kvp.Key}: {kvp.Value}")));
 
     }
 

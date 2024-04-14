@@ -20,12 +20,12 @@ namespace SaYSpin.src.gameplay_parts
         public int CurrentStage { get; private set; }
         public int CoinsCount { get; private set; }
         public int CoinsNeededToCompleteTheStage { get; private set; }
-        public BasicStats BasicStats { get; init; }
+        public StatsTracker StatsTracker { get; init; }
         public bool AreCheatsEnabled { get; init; }
 
-        public GameFlowController(BasicStats stats, Difficulty difficulty, IEnumerable<TileItem> accessibleTileItems, IEnumerable<Relic> accessibleRelics, bool areCheatsEnabled)
+        public GameFlowController(StatsTracker stats, Difficulty difficulty, IEnumerable<TileItem> accessibleTileItems, IEnumerable<Relic> accessibleRelics, bool areCheatsEnabled)
         {
-            BasicStats = stats;
+            StatsTracker = stats;
             Difficulty = difficulty;
             TileItems = accessibleTileItems.ToHashSet();
             Relics = accessibleRelics.ToHashSet();
@@ -42,7 +42,7 @@ namespace SaYSpin.src.gameplay_parts
         public StageCompletionResult CompleteStage()
         {
             int extraCoins = CoinsCount - CoinsNeededToCompleteTheStage;
-            int diamondsFromCoins = (int)(extraCoins / (CurrentStage + 4) * 1.4 * this.CoinsToDiamondsCoefficient());
+            int diamondsFromCoins = (int)(extraCoins / (CurrentStage + 4) * 1.4 * StatsTracker.AfterStageCoinsToDiamondsCoefficient);
             int diamondsFromSpins = (int)((CurrentStage + 4) / 4.5 * SpinsLeft);
 
             var rewards = this.GatherAllAfterStageRewards(CurrentStage);
@@ -60,11 +60,17 @@ namespace SaYSpin.src.gameplay_parts
         }
         public void StartNewStage()
         {
+            this.UpdateStatsIfNeeded();
+
             CurrentStage += 1;
-            SpinsLeft = 7;
+            SpinsLeft = StatsTracker.StageSpinsCount;
             CoinsCount = 0;
-            CoinsNeededToCompleteTheStage = this.CalculateCoinsNeededForStage(CurrentStage);
+
             OnNewStageStarted?.Invoke(CurrentStage);
+
+            
+
+            CoinsNeededToCompleteTheStage = this.CalculateCoinsNeededForStage(CurrentStage);
 
             foreach (var effect in Inventory.Relics.SelectMany(r => r.Effects.OfType<OnStageStartedRelicEffect>()))
             {
@@ -105,7 +111,11 @@ namespace SaYSpin.src.gameplay_parts
         {
             Inventory.Relics.Add(relic);
             OnInventoryItemAdded?.Invoke(relic);
+
+            if (relic.Effects.Any(e => e is GameStatRelicEffect))
+                StatsTracker.SetChanged();
         }
+
         public bool RemoveTileItemFromInventory(string tileItemId)
         {
             var ti =Inventory.TileItems.FirstOrDefault(ti=>ti.Id==tileItemId);
@@ -117,11 +127,15 @@ namespace SaYSpin.src.gameplay_parts
         }
         public bool RemoveRelicFromInventory(string relicId)
         {
-            var r=Inventory.Relics.FirstOrDefault(r=>r.Id== relicId);
-            if (r is null)
+            var relic = Inventory.Relics.FirstOrDefault(r=>r.Id== relicId);
+            if (relic is null)
                 return false;
-            Inventory.Relics.Remove(r);
-            OnInventoryItemRemoved?.Invoke(r);
+
+            Inventory.Relics.Remove(relic);
+            OnInventoryItemRemoved?.Invoke(relic);
+
+            if (relic.Effects.Any(e => e is GameStatRelicEffect))
+                StatsTracker.SetChanged();
             return true;
 
         }

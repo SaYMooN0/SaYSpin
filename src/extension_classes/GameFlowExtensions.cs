@@ -48,7 +48,7 @@ namespace SaYSpin.src.extension_classes
             return (int)(
                 Math.Pow(stageToCalculateFor * 0.9, 1.8)
                 * (game.Difficulty.NeededCoinsMultiplier + 1) * 3.2
-                * game.CoinsNeededToCompleteTheStageCoefficient()
+                * game.Difficulty.NeededCoinsMultiplier
             ) + 10;
         }
         public static TileItem[] GenerateTileItemsForNewStageChoosing(this GameFlowController game)
@@ -132,11 +132,20 @@ namespace SaYSpin.src.extension_classes
 
             IEnumerable<CoinsCalculationRelicEffect> nonConstantEffects = game.Inventory.Relics
                .SelectMany(relic => relic.Effects.OfType<NonConstantCalculationRelicEffect>())
-               .Select(eff=>eff.GetCalculationEffect(game));
+               .Select(eff => eff.GetCalculationEffect(game));
 
             return effects.Concat(nonConstantEffects);
         }
 
+        public static void UpdateStatsIfNeeded(this GameFlowController game)
+        {
+            if (!game.StatsTracker.Changed)
+                return;
+            var effects = game.Inventory.Relics
+                    .SelectMany(r => r.Effects.OfType<GameStatRelicEffect>());
+            game.StatsTracker.Update(effects);
+        }
+             
         public static TileItem? TileItemWithId(this GameFlowController game, string id) =>
             game.TileItems.FirstOrDefault(item => item?.Id == id);
         public static Relic? RelicWithId(this GameFlowController game, string id) =>

@@ -3,12 +3,11 @@
     public enum GameStat
     {
         Luck,
-        CoinsToDiamondsCoefficient,
         NewStageTileItemsForChoiceCount,
         NewStageRelicsForChoiceCount,
-        InfluenceOnTag,
+        StageSpinsCount,
+        AfterStageCoinsToDiamondsCoefficient,
         ShopPriceCoefficient
-
     }
-  
+
 }

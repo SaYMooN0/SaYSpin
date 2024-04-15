@@ -1,7 +1,6 @@
 ﻿using SaYSpin.src.inventory_items.tile_items;
-using SaYSpin.src.inventory_items.tile_items.tile_item_effects;
 
-namespace SaYSpin.src.gameplay_parts
+namespace SaYSpin.src.extension_classes
 {
     static class TileItemsExtensions
     {
@@ -13,5 +12,7 @@ namespace SaYSpin.src.gameplay_parts
             tileItem is not null && tileItem.Tags.Any(t => t == "gold" || t == "chest");
         public static bool IsChest(this TileItem? tileItem) =>
             tileItem.HasTag("chest");
+        public static bool IsAlien(this TileItem? tileItem) =>
+            tileItem.HasTag("alien");
     }
 }

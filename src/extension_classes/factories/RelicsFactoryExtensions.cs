@@ -14,7 +14,7 @@ namespace SaYSpin.src.extension_classes.factories
 {
     internal static class RelicsFactoryExtensions
     {
-        public static Relic WithCoinsCalculationRelicEffect(this Relic relic, string description, ModifierType modifierType, int modificationValue, Func<TileItem, bool> condition) =>
+        public static Relic WithCoinsCalculationRelicEffect(this Relic relic, string description, ModifierType modifierType, double modificationValue, Func<TileItem, bool> condition) =>
             relic.WithEffect(new CoinsCalculationRelicEffect(description, modifierType, modificationValue, condition));
         public static Relic WithNonConstantCalculationRelicEffect(this Relic relic, string description, NonConstantCalculationEffectDelegate modificationValue, Func<TileItem, bool> condition) =>
             relic.WithEffect(new NonConstantCalculationRelicEffect(description, modificationValue, condition));

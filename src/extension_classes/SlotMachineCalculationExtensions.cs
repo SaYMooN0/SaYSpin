@@ -74,8 +74,58 @@ namespace SaYSpin.src.extension_classes
                 case EffectApplicationArea.AllTiles:
                     slotMachine.AddBonusToAllTiles(bonusesGrid, effect);
                     break;
+                case EffectApplicationArea.HorizontalLine:
+                    slotMachine.AddBonusToHorizontalLine(bonusesGrid, i, j, effect);
+                    break;
+                case EffectApplicationArea.VerticalLine:
+                    slotMachine.AddBonusToVerticalLine(bonusesGrid, i, j, effect);
+                    break;
+                case EffectApplicationArea.CornerTiles:
+                    slotMachine.AddBonusToCornerTiles(bonusesGrid, effect);
+                    break;
                 default:
                     throw new NotImplementedException($"EffectApplicationArea {effect.Area} is not implemented.");
+            }
+        }
+
+        private static void AddBonusToHorizontalLine(this SlotMachine slotMachine, TileItemBonusesGrid bonusesGrid, int i, int sourceJ, TileItemsEnhancingTileItemEffect effect)
+        {
+            for (int j = 0; j < slotMachine.TileItems.GetLength(1); j++)
+            {
+                if (j == sourceJ) continue;
+                if (effect.Condition(slotMachine.TileItems[i, j]))
+                {
+                    bonusesGrid.AddBonus(i, j, new TileItemIncomeBonus(effect.ModifierType, effect.ModificationValue));
+                }
+            }
+        }
+
+        private static void AddBonusToVerticalLine(this SlotMachine slotMachine, TileItemBonusesGrid bonusesGrid, int sourceI, int j, TileItemsEnhancingTileItemEffect effect)
+        {
+            for (int i = 0; i < slotMachine.TileItems.GetLength(0); i++)
+            {
+                if (i == sourceI) continue;
+                if (effect.Condition(slotMachine.TileItems[i, j]))
+                {
+                    bonusesGrid.AddBonus(i, j, new TileItemIncomeBonus(effect.ModifierType, effect.ModificationValue));
+                }
+            }
+        }
+
+
+        private static void AddBonusToCornerTiles(this SlotMachine slotMachine, TileItemBonusesGrid bonusesGrid, TileItemsEnhancingTileItemEffect effect)
+        {
+            int[] cornerIndices = { 0, slotMachine.TileItems.GetLength(0) - 1 };
+            foreach (int i in cornerIndices)
+            {
+                foreach (int j in cornerIndices)
+                {
+                    if (i < slotMachine.TileItems.GetLength(0) && j < slotMachine.TileItems.GetLength(1) &&
+                        effect.Condition(slotMachine.TileItems[i, j]))
+                    {
+                        bonusesGrid.AddBonus(i, j, new TileItemIncomeBonus(effect.ModifierType, effect.ModificationValue));
+                    }
+                }
             }
         }
 

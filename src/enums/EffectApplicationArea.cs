@@ -8,6 +8,7 @@
         Square5,
         HorizontalLine,
         VerticalLine,
+        CornerTiles,
         AllTiles
     }
 }

@@ -90,22 +90,24 @@ namespace SaYSpin.src.singletons
 
             var diamondToken = new Relic("Diamond Token", Rarity.Rare)
                 .WithAfterTokenUsedRelicEffect(
-                    "When using any token, receive 7 diamonds",
-                    (game) => game.Inventory.AddDiamonds(7)
-            );
+                    "When using any token, receive from 5 to 7 diamonds",
+                        (game) => game.Inventory.AddDiamonds(Randomizer.Int(5, 7)))
+                .WithGameStatRelicEffect("Receive 5% more diamonds for extra coins after each stage", GameStat.AfterStageCoinsToDiamondsCoefficient, ModifierType.Plus, 0.05);
 
             var ufo = new Relic("UFO", Rarity.Epic)
                 .WithNonConstantCalculationRelicEffect(
-                    "Aliens give an additional 0.5 coins for each alien in the inventory",
+                    "Aliens give additional 0.5 coins for each alien in the inventory",
                     (game) =>
                         {
-                            int aliensCount = game.Inventory.TileItems.Where(ti => ti.HasTag("alien")).Count();
+                            int aliensCount = game.Inventory.TileItems.Where(ti => ti.IsAlien()).Count();
                             return new(ModifierType.Plus, aliensCount * 0.5);
                         },
-                    ti => ti.HasTag("alien")
+                    ti => ti.IsAlien()
                 );
             var clover = new Relic("Four Leaf Clover", Rarity.Rare)
                 .WithGameStatRelicEffect("Gives +5 to luck", GameStat.Luck, ModifierType.Plus, 5);
+            var milk = new Relic("Milk", Rarity.Common)
+                .WithCoinsCalculationRelicEffect("All humans give 10% more gold", ModifierType.Multiply, 1.1, (ti) => ti.HasTag("human"));
             return [
                 fruitBasket,
                 treasureMap,
@@ -115,7 +117,8 @@ namespace SaYSpin.src.singletons
                 randomToken,
                 diamondToken,
                 ufo,
-                clover
+                clover,
+                milk
                 ];
         }
         private TileItem[] InitTileItems()
@@ -132,9 +135,9 @@ namespace SaYSpin.src.singletons
                 TileItem.Ordinary("Candy", Rarity.Common, 3, ["sweet"]),
                 TileItem.Ordinary("Chocolate Bar", Rarity.Rare, 5, ["sweet"]),
                 TileItem.Ordinary("Lollipop", Rarity.Common, 3, ["sweet"]),
-                TileItem.Ordinary("Sweet Tooth", Rarity.Epic, 1, ["person"]), //AbsorberTileItem
+                TileItem.Ordinary("Sweet Tooth", Rarity.Epic, 1, ["human"]), //AbsorberTileItem
         
-                TileItem.Ordinary("Pirate", Rarity.Legendary, 7, ["person"]), //AbsorberTileItem
+                TileItem.Ordinary("Pirate", Rarity.Legendary, 7, ["human"]), //AbsorberTileItem
                 TileItem.Ordinary("Parrot", Rarity.Rare, 5 ,["bird"])
                     .WithTileItemsEnhancingTileItemEffect("Adjacent pirates give 2 times more coins", EffectApplicationArea.Adjacent, ModifierType.Multiply, 2,(ti)=>ti.Id=="pirate"),
 
@@ -152,9 +155,6 @@ namespace SaYSpin.src.singletons
                         }),
                 TileItem.Ordinary("Gold Bar", Rarity.Rare, 20, ["gold"]),
 
-                TileItem.Ordinary("Green Alien", Rarity.Rare, 3 ,["alien"])
-                    .WithTileItemsEnhancingTileItemEffect("All aliens give +1 coin", EffectApplicationArea.AllTiles, ModifierType.Plus, 1,(ti)=> ti.HasTag("alien")),
-
                 TileItem.Ordinary("Pigeon", Rarity.Common, 1 ,["bird"])
                     .WithTileItemsEnhancingTileItemEffect("Adjacent birds give +2 coins ", EffectApplicationArea.Adjacent, ModifierType.Plus, 2,(ti)=> ti.HasTag("bird") ),
 
@@ -166,7 +166,7 @@ namespace SaYSpin.src.singletons
                     .WithTileItemsEnhancingTileItemEffect("All adjacent items give 1.5 times more coins", EffectApplicationArea.Adjacent, ModifierType.Multiply, 1.5,(ti)=>true)
                     .WithTileItemsEnhancingTileItemEffect("Adjacent wizards give extra 2 times more coins", EffectApplicationArea.Adjacent, ModifierType.Multiply, 2,(ti)=> ti.Id=="wizard"),
 
-                TileItem.Ordinary("Wizard", Rarity.Rare, 15 ,["person"]),
+                TileItem.Ordinary("Wizard", Rarity.Rare, 15 ,["human"]),
 
                 TileItem.Ordinary("Rabbit", Rarity.Rare, 3, ["rabbit"])
                     .WithAbsorbingTileItemEffect("Eats adjacent carrots and adds 15 coins for each", (tileItem)=>tileItem.Id=="carrot", (game)=>game.AddCoins(15))
@@ -177,7 +177,17 @@ namespace SaYSpin.src.singletons
 
 
                 TileItem.Ordinary("Сapybara", Rarity.Mythic, 10 ,["animal"])
-                    .WithTileItemsEnhancingTileItemEffect("Adjacent people, animals and birds give 2 times more coins ", EffectApplicationArea.Adjacent, ModifierType.Multiply, 2,(ti)=> ti.HasOneOfTags(["bird", "animal", "person"]) ),
+                    .WithTileItemsEnhancingTileItemEffect("Adjacent people, animals and birds give 2 times more coins ", EffectApplicationArea.Adjacent, ModifierType.Multiply, 2,(ti)=> ti.HasOneOfTags(["bird", "animal", "human"]) ),
+
+                TileItem.Ordinary("Green Alien", Rarity.Rare, 3 ,["alien"])
+                    .WithTileItemsEnhancingTileItemEffect("All aliens give +1 coin", EffectApplicationArea.AllTiles, ModifierType.Plus, 1,(ti)=> ti.IsAlien()),
+                TileItem.Ordinary("Purple Alien", Rarity.Epic, 5 ,["alien"])
+                    .WithTileItemsEnhancingTileItemEffect("All aliens in a 5 by 5 square from give 1.4 times more coins", EffectApplicationArea.Square5, ModifierType.Multiply, 1.4,(ti)=> ti.IsAlien()),
+                TileItem.Ordinary("Orange Alien", Rarity.Rare, 1 ,["alien"])
+                    .WithTileItemsEnhancingTileItemEffect("All aliens in the same horizontal line give +3 coins", EffectApplicationArea.HorizontalLine, ModifierType.Plus, 3,(ti)=> ti.IsAlien()),
+                TileItem.Ordinary("Cyan Alien", Rarity.Legendary, 2 ,["alien"])
+                    .WithTileItemsEnhancingTileItemEffect("All aliens in the same vertical line give +3 coins", EffectApplicationArea.VerticalLine, ModifierType.Plus, 3,(ti)=> ti.IsAlien())
+                    .WithTileItemsEnhancingTileItemEffect("All aliens in the corner tiles line give 2 times more coins", EffectApplicationArea.CornerTiles, ModifierType.Multiply, 2,(ti)=> ti.IsAlien())
                 ];
         }
         public bool IsGameRunning() => Game is not null;
@@ -203,7 +213,7 @@ namespace SaYSpin.src.singletons
         private StatsTracker LoadInitialStats()
         {
             //will be load from file
-            return new(1, 1, 4, 4, 7, 1);
+            return new(1, 4, 4, 7, 1, 1);
         }
 
 

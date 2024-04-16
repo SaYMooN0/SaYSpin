@@ -1,65 +1,64 @@
 ﻿@page "/run_info"
-@inject AllGameController allGameController
-@inject GameLoggingService loggingService
-
 
 <div class="info-page">
-    <div class="logs-part">
-        @if (logs != null && logs.Any())
+    <div class="link-buttons-container">
+        @*
+        stats
+
+        run info *@
+
+        <RunInfoLinkButton color="#ffaa18" text="All Relics" onclick="()=>{ActiveTab = InfoPageTabs.Relics;}">
+            <svg viewBox="0 0 1024 1024" class="icon">
+                <path fill="#000000" d="M192 736h640V128H256a64 64 0 00-64 64v544zm64-672h608a32 32 0 0132 32v672a32 32 0 01-32 32H160l-32 57.536V192A128 128 0 01256 64z" />
+                <path fill="#000000" d="M240 800a48 48 0 100 96h592v-96H240zm0-64h656v160a64 64 0 01-64 64H240a112 112 0 010-224zm144-608v250.88l96-76.8 96 76.8V128H384zm-64-64h320v381.44a32 32 0 01-51.968 24.96L480 384l-108.032 86.4A32 32 0 01320 445.44V64z" />
+            </svg>
+        </RunInfoLinkButton>
+
+        <RunInfoLinkButton color="#ffaa18" text="All Tile Items" onclick="()=>{ActiveTab = InfoPageTabs.TileItems;}">
+            <svg fill="#000000" viewBox="-5.5 0 32 32" version="1.1">
+                <path d="M0 11.531h5.938v-5.938h-5.938v5.938zM7.438 11.531h5.938v-5.938h-5.938v5.938zM14.844 11.531h5.969v-5.938h-5.969v5.938zM0 18.969h5.938v-5.938h-5.938v5.938zM7.438 18.969h5.938v-5.938h-5.938v5.938zM14.844 18.969h5.969v-5.938h-5.969v5.938zM0 26.406h5.938v-5.969h-5.938v5.969zM7.438 26.406h5.938v-5.969h-5.938v5.969zM14.844 26.406h5.969v-5.969h-5.969v5.969z"></path>
+            </svg>
+        </RunInfoLinkButton>
+
+        <RunInfoLinkButton color="#ffaa18" text="Console" onclick="()=>{ActiveTab = InfoPageTabs.Console;}">
+            <svg viewBox="0 0 576 512">
+                <path d="M9.4 86.6C-3.1 74.1-3.1 53.9 9.4 41.4s32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L178.7 256 9.4 86.6zM256 416H544c17.7 0 32 14.3 32 32s-14.3 32-32 32H256c-17.7 0-32-14.3-32-32s14.3-32 32-32z" />
+            </svg>
+        </RunInfoLinkButton>
+    </div>
+    <div class="info-page-content">
+        @switch (ActiveTab)
         {
-            <div class="log-container">
-                @foreach (var log in logs)
+            case InfoPageTabs.Relics:
                 {
-                    <LogComponent log="@log" />
+                    <div>
+                        Relics
+                    </div>
+                    break;
                 }
-            </div>
+            case InfoPageTabs.TileItems:
+                {
+                    <div>
+                        Relics
+                    </div>
+                    break;
+                }
+            case InfoPageTabs.Console:
+                {
+                    <div>
+                        Console
+                    </div>
+                    break;
+                }
         }
-        else
-        {
-            <p>No logs available.</p>
-        }
-        <input class="console-input" @onkeyup="HandleConsoleInput" @bind-value="@consoleInput" />
     </div>
-
-
-    <div class="actions-part">
-        <button @onclick="OpenFinishRunDialog">Finish run</button>
-    </div>
-
 </div>
-
 @code {
-    private string consoleInput { get; set; }
-    private void HandleConsoleInput(KeyboardEventArgs args)
+    private enum InfoPageTabs
     {
-        if (args.Key != "Enter")
-            return;
-        if (string.IsNullOrEmpty(consoleInput))
-            return;
-
-        consoleInput = consoleInput.Trim();
-        loggingService.Log(GameLogModel.New(consoleInput, GameLogType.ConsoleInput));
-
-        if (consoleInput.StartsWith('/'))
-        {
-
-            var commandRes = CommandHandler.HandleCommand(consoleInput, allGameController.Game);
-            loggingService.Log(commandRes);
-        }
-
-        consoleInput = "";
-        return;
+        Relics,
+        TileItems,
+        Console
     }
-    private void OpenFinishRunDialog()
-    {
-        allGameController.FinishGame();
-    }
-}
-@code {
-    private IEnumerable<GameLogModel> logs;
-
-    protected override void OnInitialized()
-    {
-        logs = loggingService.Logs();
-    }
+    private InfoPageTabs ActiveTab { get; set; } = InfoPageTabs.Console;
 }

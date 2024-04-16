@@ -138,7 +138,7 @@ namespace SaYSpin.src.extension_classes
                 if (newI >= 0 && newI < slotMachine.TileItems.GetLength(0) && newJ >= 0 && newJ < slotMachine.TileItems.GetLength(1))
                 {
                     var tileItem = slotMachine.TileItems[newI, newJ];
-                    if (tileItem is not null && effect.Condition(tileItem))
+                    if (effect.Condition(tileItem))
                     {
                         bonusesGrid.AddBonus(newI, newJ, new TileItemIncomeBonus(effect.ModifierType, effect.ModificationValue));
                     }
@@ -157,7 +157,7 @@ namespace SaYSpin.src.extension_classes
                     if (newI >= 0 && newI < slotMachine.TileItems.GetLength(0) && newJ >= 0 && newJ < slotMachine.TileItems.GetLength(1))
                     {
                         var tileItem = slotMachine.TileItems[newI, newJ];
-                        if (tileItem is not null && effect.Condition(tileItem))
+                        if (effect.Condition(tileItem))
                         {
                             bonusesGrid.AddBonus(newI, newJ, new TileItemIncomeBonus(effect.ModifierType, effect.ModificationValue));
                         }
@@ -173,7 +173,7 @@ namespace SaYSpin.src.extension_classes
                 for (int j = 0; j < slotMachine.TileItems.GetLength(1); j++)
                 {
                     var tileItem = slotMachine.TileItems[i, j];
-                    if (tileItem is not null && effect.Condition(tileItem))
+                    if (effect.Condition(tileItem))
                     {
                         bonusesGrid.AddBonus(i, j, new TileItemIncomeBonus(effect.ModifierType, effect.ModificationValue));
                     }

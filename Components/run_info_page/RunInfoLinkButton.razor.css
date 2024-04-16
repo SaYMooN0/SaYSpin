@@ -1,0 +1,13 @@
+.run-info-link-button {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 40px 1fr;
+}
+    .run-info-link-button label{
+
+    }
+
+    .run-info-link-button svg {
+        width: 100%;
+        aspect-ratio: 1/1;
+    }

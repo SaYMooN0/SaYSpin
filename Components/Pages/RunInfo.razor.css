@@ -1,28 +1,15 @@
 
 .info-page {
     display: grid;
-    grid-template-columns: 1fr 100px;
+    grid-template-columns: 1fr 1fr;
+    height:100%;
+    width:100%;
+    box-sizing:border-box;
 }
+.link-buttons-container{
+    display:flex;
+    flex-direction:column;
+    padding:80px;
+    gap:10px;
 
-.logs-part {
-    display: grid;
-    grid-template-rows: 1fr 40px;
-    height: 100vh;
-    box-sizing: border-box;
-}
-
-.log-container {
-    height: 100%;
-    display: flex;
-    flex-direction: column-reverse;
-    overflow-y: auto;
-    align-items: end;
-    background-color:white;
-    gap:1px;
-}
-
-.console-input {
-    height: 100%;
-    width: 100%;
-    box-sizing: border-box;
 }

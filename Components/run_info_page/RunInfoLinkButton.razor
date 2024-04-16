@@ -1,0 +1,18 @@
+﻿<button class="run-info-link-button" style="background-color:@color" @onclick="onclick">
+    @ChildContent
+    <label>@text</label>
+</button>
+
+@code {
+    [Parameter]
+    public string color { get; set; }
+
+    [Parameter]
+    public string text { get; set; }
+
+    [Parameter]
+    public Action onclick { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+}

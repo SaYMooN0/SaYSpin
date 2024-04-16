@@ -1,0 +1,61 @@
+﻿@inject GameLoggingService loggingService
+@inject AllGameController allGameController
+
+<div class="logs-part">
+    @if (logs != null && logs.Any())
+    {
+        <div class="log-container">
+            @foreach (var log in logs)
+            {
+                <LogComponent log="@log" />
+            }
+        </div>
+    }
+    else
+    {
+        <p>No logs available.</p>
+    }
+    <input class="console-input" @onkeyup="HandleConsoleInput" @bind-value="@consoleInput" />
+</div>
+
+
+<div class="actions-part">
+    <button @onclick="OpenFinishRunDialog">Finish run</button>
+</div>
+
+@code {
+
+    private string consoleInput { get; set; }
+    private void HandleConsoleInput(KeyboardEventArgs args)
+    {
+        if (args.Key != "Enter")
+            return;
+        if (string.IsNullOrEmpty(consoleInput))
+            return;
+
+        consoleInput = consoleInput.Trim();
+        loggingService.Log(GameLogModel.New(consoleInput, GameLogType.ConsoleInput));
+
+        if (consoleInput.StartsWith('/'))
+        {
+
+            var commandRes = CommandHandler.HandleCommand(consoleInput, allGameController.Game);
+            loggingService.Log(commandRes);
+        }
+
+        consoleInput = "";
+        return;
+    }
+    private void OpenFinishRunDialog()
+    {
+        allGameController.FinishGame();
+    }
+}
+@code {
+    private IEnumerable<GameLogModel> logs;
+
+    protected override void OnInitialized()
+    {
+        logs = loggingService.Logs();
+    }
+}

@@ -1,4 +1,5 @@
-﻿@inject IJSRuntime JSRuntime
+﻿@using System.Text.RegularExpressions
+@inject IJSRuntime JSRuntime
 @inject ShowItemInfoDialogService DialogService
 
 <dialog id="itemInfoDisplayDialog" class="unselectable">
@@ -9,13 +10,19 @@
                 ◆<span> @item.Rarity.ToString()</span>◆
             </label>
             <img class="item-img" src="@ResourcePathsHelper.ResourcesImages(item.Image)" style="filter: drop-shadow(0 0 12px @item.Rarity.ToHexColor());" />
-
-
-
-
             <label class="item-name">@item.Name</label>
-            <label class="description">@item.Description</label>
+            <ul class="description">
+                @if (!string.IsNullOrEmpty(item.Description))
+                {
+                    var lines = item.Description.Split('\n');
 
+                    @foreach (var line in lines)
+                    {
+                        <li>@ReplaceCoinsWithImages(line)</li>
+                    }
+
+                }
+            </ul>
         }
         else
         {
@@ -26,6 +33,7 @@
 </dialog>
 
 @code {
+
     private BaseInventoryItem item { get; set; }
     public async Task Open(BaseInventoryItem itemToDisplay)
     {
@@ -46,4 +54,15 @@
     {
         DialogService.OnShow -= Open;
     }
+
+    @code {
+        private MarkupString ReplaceCoinsWithImages(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                return new MarkupString("");
+            string processedText = Regex.Replace(text, @"\b(coins?|Coins?)\b", @"<img class=""coin-img-inline"" src=""/resources/images/coin.png"" alt=""coin"" />");
+            return new MarkupString(processedText);
+        }
+    }
+
 }

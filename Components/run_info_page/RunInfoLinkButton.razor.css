@@ -2,12 +2,27 @@
     width: 100%;
     display: grid;
     grid-template-columns: 40px 1fr;
+    align-items: center;
+    gap: 20px;
+    padding: 6px 10px;
+    border:none;
+    border-radius:10px;
+    transition:all 0.1s ease;
 }
-    .run-info-link-button label{
-
+.run-info-link-button:hover {
+    transform:scale(1.05);
+}
+    .run-info-link-button label {
+        color: white;
+        font-family: 'Montserrat';
+        font-size: 26px;
+        font-weight: bold;
+        text-align: start;
+        letter-spacing:1px;
     }
 
-    .run-info-link-button svg {
+    .run-info-link-button span {
         width: 100%;
         aspect-ratio: 1/1;
+        fill:white;
     }

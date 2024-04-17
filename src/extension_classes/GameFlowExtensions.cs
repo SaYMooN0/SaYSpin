@@ -43,29 +43,29 @@ namespace SaYSpin.src.extension_classes
             return kits;
         }
 
-        public static int CalculateCoinsNeededForStage(this GameFlowController game, int stageToCalculateFor)
+        public static int CalculateCoinsNeededForStage(this GameFlowController game)
         {
             return (int)(
-                Math.Pow(stageToCalculateFor * 0.9, 1.8)
-                * (game.Difficulty.NeededCoinsMultiplier + 1) * 3.2
-                * game.Difficulty.NeededCoinsMultiplier
-            ) + 10;
+                Math.Pow(game.CurrentStage * 1.4 + 3, 1.8)
+                * (game.Difficulty.NeededCoinsMultiplier + 0.2)
+                * 2
+                ) - 10;
         }
         public static TileItem[] GenerateTileItemsForNewStageChoosing(this GameFlowController game)
         {
 
-            return game.TileItems.OrderBy(x => Guid.NewGuid()).Take(5).ToArray();
+            return game.TileItems.OrderBy(x => Guid.NewGuid()).Take(game.StatsTracker.NewStageTileItemsForChoiceCount).ToArray();
             //will be changed
         }
         public static Relic[] GenerateRelicsForNewStageChoosing(this GameFlowController game)
         {
-            return game.Relics.OrderBy(x => Guid.NewGuid()).Take(5).ToArray();
+            return game.Relics.OrderBy(x => Guid.NewGuid()).Take(game.StatsTracker.NewStageRelicsForChoiceCount).ToArray();
             //will be changed
         }
-        public static List<BaseInventoryItem> GatherAllAfterStageRewards(this GameFlowController game, int currentStage) =>
+        public static List<BaseInventoryItem> GatherAllAfterStageRewards(this GameFlowController game) =>
             game.Inventory.Relics
                 .SelectMany(r => r.Effects.OfType<AfterStageRewardRelicEffect>())
-                .SelectMany(effect => effect.AfterStageReward(currentStage, game))
+                .SelectMany(effect => effect.AfterStageReward(game.CurrentStage, game))
                 .Where(reward => reward is not null)
                 .ToList();
         public static void HandleAfterSpinRelicEffects(this GameFlowController game)

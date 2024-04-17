@@ -1,0 +1,17 @@
+.shop-page-container {
+    margin: 20px;
+    border-radius: 20px;
+    box-sizing: border-box;
+    height: calc(100% - 40px); 
+    width: calc(100% - 40px);
+    display: grid;
+    grid-template-rows: 200px 1fr;
+    background-color: white;
+}
+
+.shop-roof {
+    height: 100%;
+    width: 100%;
+    /*aspect-ratio: 16/7;*/
+    /*width ="825" height="350"*/
+}

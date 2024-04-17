@@ -39,7 +39,7 @@ namespace SaYSpin.src.inventory_items.tile_items
             return this;
         }
         public static TileItem Ordinary(string name, Rarity rarity, int initialCoinValue, string[] tags) =>
-           new(name, $"Gives {initialCoinValue} coins with each drop", rarity, initialCoinValue, tags, [],
+           new(name, $"Gives {initialCoinValue} coins", rarity, initialCoinValue, tags, [],
                (IEnumerable<TileItemIncomeBonus> bonuses) =>
                {
                    double value = initialCoinValue;

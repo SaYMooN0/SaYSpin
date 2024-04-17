@@ -1,61 +1,77 @@
 ﻿@page "/run_info"
 
 <div class="info-page">
+    <div class="info-page-content">
+        @switch (ActiveTab)
+        {
+            case InfoPageTabs.Stats:
+                {
+                    <StatsRunInfoTab />
+                    break;
+                }
+            case InfoPageTabs.Progress:
+                {
+                    <ProgressRunInfoTab />
+                    break;
+                }
+            case InfoPageTabs.Relics:
+                {
+                    <RelicsRunInfoTab />
+                    break;
+                }
+            case InfoPageTabs.TileItems:
+                {
+                    <TileItemsRunInfoTab />
+                    break;
+                }
+            case InfoPageTabs.Console:
+                {
+                    <ConsoleRunInfoTab />
+                    break;
+                }
+        }
+    </div>
     <div class="link-buttons-container">
-        @*
-        stats
+        <RunInfoLinkButton color="#0d7eff" text="Stats" onclick="()=>{ActiveTab = InfoPageTabs.Stats;}">
+            <svg viewBox="0 0 512 512">
+                <path d="M64 144a48 48 0 1 0 0-96 48 48 0 1 0 0 96zM192 64c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zM64 464a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm48-208a48 48 0 1 0 -96 0 48 48 0 1 0 96 0z" />
+            </svg>
+        </RunInfoLinkButton>
+        <RunInfoLinkButton color="#14d902" text="Progress" onclick="()=>{ActiveTab = InfoPageTabs.Progress;}">
 
-        run info *@
+            <svg viewBox="0 0 24 24">
+                <line x1="12.05" y1="8" x2="11.95" y2="8" style="fill: none; stroke: #fff; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;">
 
-        <RunInfoLinkButton color="#ffaa18" text="All Relics" onclick="()=>{ActiveTab = InfoPageTabs.Relics;}">
-            <svg viewBox="0 0 1024 1024" class="icon">
-                <path fill="#000000" d="M192 736h640V128H256a64 64 0 00-64 64v544zm64-672h608a32 32 0 0132 32v672a32 32 0 01-32 32H160l-32 57.536V192A128 128 0 01256 64z" />
-                <path fill="#000000" d="M240 800a48 48 0 100 96h592v-96H240zm0-64h656v160a64 64 0 01-64 64H240a112 112 0 010-224zm144-608v250.88l96-76.8 96 76.8V128H384zm-64-64h320v381.44a32 32 0 01-51.968 24.96L480 384l-108.032 86.4A32 32 0 01320 445.44V64z" />
+                </line>
+                <line id="secondary" x1="12" y1="13" x2="12" y2="16" style="fill: none; stroke:#fff; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></line>
+                <path id="primary" d="M3,12a9,9,0,0,1,9-9h0a9,9,0,0,1,9,9h0a9,9,0,0,1-9,9h0a9,9,0,0,1-9-9Z" style="fill: none; stroke:#fff; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path>
+            </svg>
+        </RunInfoLinkButton>
+        <RunInfoLinkButton color="#ffce1f" text="All Relics" onclick="()=>{ActiveTab = InfoPageTabs.Relics;}">
+            <svg viewBox="0 0 1024 1024" stroke="1.2">
+                <path d="M192 736h640V128H256a64 64 0 00-64 64v544zm64-672h608a32 32 0 0132 32v672a32 32 0 01-32 32H160l-32 57.536V192A128 128 0 01256 64z" />
+                <path d="M240 800a48 48 0 100 96h592v-96H240zm0-64h656v160a64 64 0 01-64 64H240a112 112 0 010-224zm144-608v250.88l96-76.8 96 76.8V128H384zm-64-64h320v381.44a32 32 0 01-51.968 24.96L480 384l-108.032 86.4A32 32 0 01320 445.44V64z" />
             </svg>
         </RunInfoLinkButton>
 
-        <RunInfoLinkButton color="#ffaa18" text="All Tile Items" onclick="()=>{ActiveTab = InfoPageTabs.TileItems;}">
-            <svg fill="#000000" viewBox="-5.5 0 32 32" version="1.1">
+        <RunInfoLinkButton color="#872dfc" text="All Tile Items" onclick="()=>{ActiveTab = InfoPageTabs.TileItems;}">
+            <svg viewBox="-5.5 0 32 32" version="1.1">
                 <path d="M0 11.531h5.938v-5.938h-5.938v5.938zM7.438 11.531h5.938v-5.938h-5.938v5.938zM14.844 11.531h5.969v-5.938h-5.969v5.938zM0 18.969h5.938v-5.938h-5.938v5.938zM7.438 18.969h5.938v-5.938h-5.938v5.938zM14.844 18.969h5.969v-5.938h-5.969v5.938zM0 26.406h5.938v-5.969h-5.938v5.969zM7.438 26.406h5.938v-5.969h-5.938v5.969zM14.844 26.406h5.969v-5.969h-5.969v5.969z"></path>
             </svg>
         </RunInfoLinkButton>
 
-        <RunInfoLinkButton color="#ffaa18" text="Console" onclick="()=>{ActiveTab = InfoPageTabs.Console;}">
+        <RunInfoLinkButton color="#171717" text="Console" onclick="()=>{ActiveTab = InfoPageTabs.Console;}">
             <svg viewBox="0 0 576 512">
                 <path d="M9.4 86.6C-3.1 74.1-3.1 53.9 9.4 41.4s32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L178.7 256 9.4 86.6zM256 416H544c17.7 0 32 14.3 32 32s-14.3 32-32 32H256c-17.7 0-32-14.3-32-32s14.3-32 32-32z" />
             </svg>
         </RunInfoLinkButton>
     </div>
-    <div class="info-page-content">
-        @switch (ActiveTab)
-        {
-            case InfoPageTabs.Relics:
-                {
-                    <div>
-                        Relics
-                    </div>
-                    break;
-                }
-            case InfoPageTabs.TileItems:
-                {
-                    <div>
-                        Relics
-                    </div>
-                    break;
-                }
-            case InfoPageTabs.Console:
-                {
-                    <div>
-                        Console
-                    </div>
-                    break;
-                }
-        }
-    </div>
 </div>
 @code {
     private enum InfoPageTabs
     {
+        Stats,
+        Progress,
         Relics,
         TileItems,
         Console

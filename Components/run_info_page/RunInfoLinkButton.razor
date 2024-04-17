@@ -1,5 +1,7 @@
-﻿<button class="run-info-link-button" style="background-color:@color" @onclick="onclick">
-    @ChildContent
+﻿<button class="run-info-link-button unselectable" style="background-color:@color" @onclick="onclick">
+    <span>
+        @ChildContent
+    </span>
     <label>@text</label>
 </button>
 

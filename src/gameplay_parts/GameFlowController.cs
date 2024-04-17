@@ -45,7 +45,7 @@ namespace SaYSpin.src.gameplay_parts
             int diamondsFromCoins = (int)(extraCoins / (CurrentStage + 4) * 1.4 * StatsTracker.AfterStageCoinsToDiamondsCoefficient);
             int diamondsFromSpins = (int)((CurrentStage + 4) / 4.5 * SpinsLeft);
 
-            var rewards = this.GatherAllAfterStageRewards(CurrentStage);
+            var rewards = this.GatherAllAfterStageRewards();
 
             return new(
                 CurrentStage,
@@ -70,7 +70,7 @@ namespace SaYSpin.src.gameplay_parts
 
             
 
-            CoinsNeededToCompleteTheStage = this.CalculateCoinsNeededForStage(CurrentStage);
+            CoinsNeededToCompleteTheStage = this.CalculateCoinsNeededForStage();
 
             foreach (var effect in Inventory.Relics.SelectMany(r => r.Effects.OfType<OnStageStartedRelicEffect>()))
             {

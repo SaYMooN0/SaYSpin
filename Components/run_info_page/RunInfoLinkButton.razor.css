@@ -7,10 +7,10 @@
     padding: 6px 10px;
     border:none;
     border-radius:10px;
-    transition:all 0.1s ease;
+    transition:all 0.08s ease-in;
 }
 .run-info-link-button:hover {
-    transform:scale(1.05);
+    transform:scale(1.07);
 }
     .run-info-link-button label {
         color: white;
@@ -26,3 +26,24 @@
         aspect-ratio: 1/1;
         fill:white;
     }
+@media (max-width: 1100px), (max-height:800px) {
+    .run-info-link-button {
+        gap: 18px;
+    }
+
+        .run-info-link-button label {
+            font-size: 24px;
+        }
+}
+
+@media (max-width: 850px), (max-height:600px) {
+    .run-info-link-button {
+        grid-template-columns: 32px 1fr;
+        gap: 12px;
+        border-radius: 8px;
+    }
+
+        .run-info-link-button label {
+            font-size: 22px;
+        }
+}

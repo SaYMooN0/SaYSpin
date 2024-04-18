@@ -10,13 +10,13 @@ using SaYSpin.src.gameplay_parts.inventory_related.tokens;
 
 namespace SaYSpin.src.singletons
 {
-    public class AllGameController
+    public class AppController
     {
         public GameFlowController? Game { get; private set; }
         public TileItem[] AllTileItemsCollection { get; init; }
         public Relic[] AllRelicsCollection { get; init; }
         public Difficulty[] PossibleDifficulties { get; init; }
-        public AllGameController()
+        public AppController()
         {
 
             AllTileItemsCollection = InitTileItems();

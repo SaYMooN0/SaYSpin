@@ -1,5 +1,13 @@
-﻿<h3>RelicsRunInfoTab</h3>
+﻿@inject AppController gameController
 
-@code {
+<div class="relics-container">
+    <div class="relics-grid">
+        @foreach (var relic in gameController.Game.Relics)
+        {
+            <div>
+                <InventoryItemWithRarityComponent itemToDisplay="@relic" />
+            </div>
 
-}
+        }
+    </div>
+</div>

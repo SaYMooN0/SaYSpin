@@ -1,5 +1,14 @@
-﻿<h3>TileItemsRunInfoTab</h3>
+﻿@inject AppController gameController
 
-@code {
+<div class="tile-items-container">
+    <div class="tile-items-grid ">
 
-}
+        @foreach (var tileItem in gameController.Game.TileItems)
+        {
+            <div>
+                <InventoryItemWithRarityComponent itemToDisplay="@tileItem" />
+            </div>
+        }
+
+    </div>
+</div>

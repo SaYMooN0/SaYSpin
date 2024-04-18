@@ -23,7 +23,7 @@ namespace SaYSpin
             builder.Services.AddBlazorWebViewDeveloperTools();
 #endif
 
-            AllGameController mainController = new();
+            AppController mainController = new();
 
             
             builder.Services.AddSingleton(provider => mainController);

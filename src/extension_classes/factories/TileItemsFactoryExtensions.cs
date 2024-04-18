@@ -13,8 +13,8 @@ namespace SaYSpin.src.extension_classes.factories
             tileItem.WithEffect(new OnDestroyTileItemEffect(description, onDestroyAction));
         public static TileItem WithTileItemsEnhancingTileItemEffect(this TileItem tileItem, string description, EffectApplicationArea area, ModifierType modifierType, double modificationValue, Func<TileItem, bool> condition) =>
             tileItem.WithEffect(new TileItemsEnhancingTileItemEffect(description, area, modifierType, modificationValue, condition));
-
         public static TileItem WithAbsorbingTileItemEffect(this TileItem tileItem, string description, Func<TileItem, bool> absorbingCondition, OnAbsorbActionDelegate onAbsorbAction) =>
             tileItem.WithEffect(new AbsorbingTileItemEffect(description, absorbingCondition, onAbsorbAction));
+
     }
 }

@@ -12,12 +12,7 @@ namespace SaYSpin.src.inventory_items.tile_items
             Tags = tags;
             InitialCoinValue = initialCoinValue;
             Effects = effects;
-            CalculateIncome = (bonuses) =>
-            {
-                int income = incomeCalculationFunc(bonuses);
-                LastIncome = income;
-                return income;
-            };
+            CalculateIncome = incomeCalculationFunc;
         }
 
         public string[] Tags { get; init; }
@@ -27,6 +22,8 @@ namespace SaYSpin.src.inventory_items.tile_items
         public int LastIncome { get; private set; }
         public void SetLastIncomeToZero() =>
             LastIncome = 0;
+        public void SetLastIncome(int value) =>
+            LastIncome = value;
         public override string ImageFolderPath => "tile_items";
         public override string ToString() =>
             $"{{Id: {Id}, Rarity: {Rarity}, InitialCoinValue: {InitialCoinValue}}}";

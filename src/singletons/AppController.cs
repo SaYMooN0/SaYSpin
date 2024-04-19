@@ -139,8 +139,13 @@ namespace SaYSpin.src.singletons
                 TileItem.Ordinary("Candy", Rarity.Common, 3, ["sweet"]),
                 TileItem.Ordinary("Chocolate Bar", Rarity.Rare, 5, ["sweet"]),
                 TileItem.Ordinary("Lollipop", Rarity.Common, 3, ["sweet"]),
-                TileItem.Ordinary("Sweet Tooth", Rarity.Epic, 1, ["human"]), //AbsorberTileItem
-        
+                TileItemWithCounter
+                    .New("Sweet Tooth","Gives coins equal to the value of the counter", Rarity.Epic, 0, ["human"])
+                    .SetBaseIncomeCalculationFunc((ti) =>ti.Counter)
+                    .WithAbsorbingTileItemEffect("Eats adjacent sweets and increases the counter depending on the rarity of the eaten sweet",(ti)=>ti.HasTag("sweet"),
+                        (game, absorber, absorbedTI)=>absorber.IncrementCounter((int)absorbedTI.Rarity+1)
+                    ),
+
                 TileItem.Ordinary("Pirate", Rarity.Legendary, 7, ["human"]), //AbsorberTileItem
                 TileItem.Ordinary("Parrot", Rarity.Rare, 5 ,["bird"])
                     .WithTileItemsEnhancingTileItemEffect("Adjacent pirates give 2 × coins", EffectApplicationArea.Adjacent, ModifierType.Multiply, 2,(ti)=>ti.IdIs("pirate")),
@@ -173,8 +178,8 @@ namespace SaYSpin.src.singletons
                 TileItem.Ordinary("Wizard", Rarity.Rare, 15 ,["human"]),
 
                 TileItem.Ordinary("Rabbit", Rarity.Rare, 3, ["rabbit"])
-                    .WithAbsorbingTileItemEffect("Eats adjacent carrots and adds 15 coins for each", (tileItem)=>tileItem.IdIs("carrot"), (game)=>game.AddCoins(15))
-                    .WithAbsorbingTileItemEffect("Eats adjacent golden carrots and adds 150 coins for each", (tileItem)=>tileItem.IdIs("golden_carrot"), (game)=>game.AddCoins(150)),
+                    .WithAbsorbingTileItemEffect("Eats adjacent carrots and adds 15 coins for each", (tileItem)=>tileItem.IdIs("carrot"), (game, absorbedTI)=>game.AddCoins(15))
+                    .WithAbsorbingTileItemEffect("Eats adjacent golden carrots and adds 150 coins for each", (tileItem)=>tileItem.IdIs("golden_carrot"), (game, absorbedTI)=>game.AddCoins(150)),
 
                 TileItem.Ordinary("Carrot", Rarity.Common, 5, []),
                 TileItem.Ordinary("Golden Carrot", Rarity.Epic, 15, []),
@@ -201,7 +206,7 @@ namespace SaYSpin.src.singletons
                     .WithTileItemsEnhancingTileItemEffect("Orange aliens in a 5 by 5 area give 5 more coins", EffectApplicationArea.Square5,ModifierType.Plus, 5 , (ti)=> ti.IdIs("orange_alien")),
                 TileItem.Ordinary("Neptune", Rarity.Epic, 2, ["planet"])
                     .WithTileItemsEnhancingTileItemEffect("Cyan aliens in the same horizontal line give 3× coins", EffectApplicationArea.HorizontalLine,ModifierType.Multiply,  3, (ti)=> ti.IdIs("cyan_alien"))
-                    .WithTileItemsEnhancingTileItemEffect("Cyan aliens in the corner tiles give 5 more coins", EffectApplicationArea.CornerTiles,ModifierType.Plus, 5, (ti)=> ti.IdIs("cyan_alien")), 
+                    .WithTileItemsEnhancingTileItemEffect("Cyan aliens in the corner tiles give 5 more coins", EffectApplicationArea.CornerTiles,ModifierType.Plus, 5, (ti)=> ti.IdIs("cyan_alien")),
                 TileItem.Ordinary("Artificial Satellite", Rarity.Legendary, 10 , [])
                     .WithTileItemsEnhancingTileItemEffect("Adjacent planets give 2.5× coins", EffectApplicationArea.Adjacent,ModifierType.Multiply,  2.5, (ti)=> ti.IsPlanet())
                     ];

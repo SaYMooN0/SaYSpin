@@ -1,46 +1,57 @@
 ﻿using SaYSpin.src.enums;
 using SaYSpin.src.gameplay_parts;
 
-namespace SaYSpin.src.inventory_items.tile_items.tile_item_with_counter
+namespace SaYSpin.src.inventory_items.tile_items
 {
-
-    namespace SaYSpin.src.inventory_items.tile_items.tile_item_with_counter
+    public class TileItemWithCounter : TileItem
     {
-        public class TileItemWithCounter : TileItem
+        private Func<int> _baseIncomeCalculationFunc;
+        private TileItemWithCounter(
+            string name,
+            string description,
+            Rarity rarity,
+            int initialCoinValue,
+            string[] tags
+            )
+            : base(name, description, rarity, initialCoinValue, tags, new(), null) // null because it will be set in the constructor.
         {
-            private readonly Func<int> _baseIncomeCalculationFunc;
+            Counter = 0;
+            base.CalculateIncome = CalculateIncomeWithCounter;
+        }
 
-            public TileItemWithCounter(
-                string name,
-                string description,
-                Rarity rarity,
-                int initialCoinValue,
-                string[] tags,
-                Func<int> baseIncomeCalculationFunc)
-                : base(name, description, rarity, initialCoinValue, tags, new(), null) // null because it will be set in the constructor.
+        public int Counter { get; private set; }
+
+        public void IncrementCounter(int amount) =>
+            Counter += amount;
+
+        public void ResetCounter() =>
+            Counter = 0;
+
+        private int CalculateIncomeWithCounter(IEnumerable<TileItemIncomeBonus> bonuses)
+        {
+            double baseIncome = _baseIncomeCalculationFunc();
+            foreach (var bonus in bonuses.OrderByModifierType())
             {
-                Counter = 0;
-                _baseIncomeCalculationFunc = baseIncomeCalculationFunc;
-                CalculateIncome = CalculateIncomeWithCounter;
+                baseIncome = baseIncome.Apply(bonus.ModifierValue, bonus.ModifierType);
             }
+            return (int)baseIncome;
+        }
+        public TileItemWithCounter WithEffect(BaseTileItemEffect effect)
+        {
+            Effects.Add(effect);
+            return this;
+        }
+        public TileItemWithCounter SetBaseIncomeCalculationFunc(Func<TileItemWithCounter, int> baseIncomeCalculationFunc)
+        {
+            _baseIncomeCalculationFunc = ()=> baseIncomeCalculationFunc(this);
+            return this;
+        }
 
-            public int Counter { get; private set; }
-
-            public void IncrementCounter(int amount)=>
-                Counter += amount;
-
-            public void ResetCounter()=>
-                Counter = 0;
-
-            private int CalculateIncomeWithCounter(IEnumerable<TileItemIncomeBonus> bonuses)
-            {
-                double baseIncome = _baseIncomeCalculationFunc();  
-                foreach (var bonus in bonuses.OrderByModifierType())
-                {
-                    baseIncome = baseIncome.Apply(bonus.ModifierValue, bonus.ModifierType);
-                }
-                return (int)baseIncome;
-            }
+        public static TileItemWithCounter New(string name, string description, Rarity rarity, int initialCoinValue, string[] tags)
+        {
+            var tileItemWithCounter = new TileItemWithCounter(name, description, rarity, initialCoinValue, tags);
+            return tileItemWithCounter;
         }
     }
 }
+

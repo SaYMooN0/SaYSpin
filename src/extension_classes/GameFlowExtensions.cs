@@ -113,7 +113,7 @@ namespace SaYSpin.src.extension_classes
                                 if (adjItem != null && effect.AbsorbingCondition(adjItem))
                                 {
 
-                                    effect.ExecuteOnAbsorbAction(game);
+                                    effect.ExecuteOnAbsorbAction(game, adjItem);
 
                                     game.DestroyTileItem(adjItem, adjI, adjJ);
                                 }
@@ -145,7 +145,7 @@ namespace SaYSpin.src.extension_classes
                     .SelectMany(r => r.Effects.OfType<GameStatRelicEffect>());
             game.StatsTracker.Update(effects);
         }
-             
+
         public static TileItem? TileItemWithId(this GameFlowController game, string id) =>
             game.TileItems.FirstOrDefault(item => item?.Id == id);
         public static Relic? RelicWithId(this GameFlowController game, string id) =>

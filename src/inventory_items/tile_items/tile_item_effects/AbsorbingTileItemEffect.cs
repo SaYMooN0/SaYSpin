@@ -11,6 +11,6 @@ namespace SaYSpin.src.inventory_items.tile_items.tile_item_effects
         }
         public OnAbsorbActionDelegate ExecuteOnAbsorbAction { get; init; }
         public Func<TileItem, bool> AbsorbingCondition{ get; init; }
-        public delegate void OnAbsorbActionDelegate(GameFlowController gameController);
+        public delegate void OnAbsorbActionDelegate(GameFlowController gameController, TileItem absorbedItem);
     }
 }

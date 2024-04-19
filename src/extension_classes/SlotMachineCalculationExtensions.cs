@@ -21,7 +21,10 @@ namespace SaYSpin.src.extension_classes
                     var item = slotMachine.TileItems[i, j];
                     if (item is not null)
                     {
-                        coinValue += item.CalculateIncome(bonuses.GetBonusesFor(i, j));
+                        int income= item.CalculateIncome(bonuses.GetBonusesFor(i, j));
+                        coinValue += income;
+                        item.SetLastIncome(income);
+                        
                     }
                 }
             }

@@ -7,20 +7,19 @@ using SaYSpin.src.extension_classes.factories;
 using SaYSpin.src.in_game_logging_related;
 using SaYSpin.src.static_classes;
 using SaYSpin.src.gameplay_parts.inventory_related.tokens;
+using SaYSpin.src.inventory_items_storages;
 
 namespace SaYSpin.src.singletons
 {
     public class AppController
     {
         public GameFlowController? Game { get; private set; }
-        public TileItem[] AllTileItemsCollection { get; init; }
+        private TileItemsStorage TileItemsStorage { get; init; }
         public Relic[] AllRelicsCollection { get; init; }
         public Difficulty[] PossibleDifficulties { get; init; }
         public AppController()
         {
-
-            AllTileItemsCollection = InitTileItems();
-
+            TileItemsStorage = new();
             AllRelicsCollection = InitRelics();
 
             PossibleDifficulties = InitDifficulties();
@@ -125,101 +124,12 @@ namespace SaYSpin.src.singletons
                 telescope
                 ];
         }
-        private TileItem[] InitTileItems()
-        {
-
-            return [
-                TileItem.Ordinary("Apple", Rarity.Common, 3, ["fruit"]),
-                TileItem.Ordinary("Banana", Rarity.Common, 3, ["fruit"]),
-                TileItem.Ordinary("Dragon Fruit", Rarity.Rare, 7, ["fruit"]),
-                TileItem.Ordinary("Golden Apple", Rarity.Epic, 17, ["fruit", "gold"]),
-                TileItem.Ordinary("Orange", Rarity.Common, 3, ["fruit"]),
-                TileItem.Ordinary("Pineapple", Rarity.Rare, 5, ["fruit"]),
-
-                TileItem.Ordinary("Candy", Rarity.Common, 3, ["sweet"]),
-                TileItem.Ordinary("Chocolate Bar", Rarity.Rare, 5, ["sweet"]),
-                TileItem.Ordinary("Lollipop", Rarity.Common, 3, ["sweet"]),
-                TileItemWithCounter
-                    .New("Sweet Tooth","Gives coins equal to the value of the counter", Rarity.Epic, 0, ["human"])
-                    .SetBaseIncomeCalculationFunc((ti) =>ti.Counter)
-                    .WithAbsorbingTileItemEffect("Eats adjacent sweets and increases the counter depending on the rarity of the eaten sweet",(ti)=>ti.HasTag("sweet"),
-                        (game, absorber, absorbedTI)=>absorber.IncrementCounter((int)absorbedTI.Rarity+1)
-                    ),
-
-                TileItem.Ordinary("Pirate", Rarity.Legendary, 7, ["human"]), //AbsorberTileItem
-                TileItem.Ordinary("Parrot", Rarity.Rare, 5 ,["bird"])
-                    .WithTileItemsEnhancingTileItemEffect("Adjacent pirates give 2 × coins", EffectApplicationArea.Adjacent, ModifierType.Multiply, 2,(ti)=>ti.IdIs("pirate")),
-
-                TileItem.Ordinary("Chest", Rarity.Rare, 1, ["chest"])
-                    .WithOnDestroyTileItemEffect("After opening gives from 20 to 50 coins and from 3 to 7 diamonds",
-                        (game)=>{
-                            game.AddCoins(Randomizer.Int(20,50));
-                            game.Inventory.AddDiamonds(Randomizer.Int(3,7));
-                        }),
-                TileItem.Ordinary("Golden Chest", Rarity.Epic, 3, ["chest", "gold"])
-                    .WithOnDestroyTileItemEffect("After opening gives from 50 to 150 coins and from 10 to 20 diamonds",
-                        (game)=>{
-                            game.AddCoins(Randomizer.Int(50,150));
-                            game.Inventory.AddDiamonds(Randomizer.Int(10,20));
-                        }),
-                TileItem.Ordinary("Gold Bar", Rarity.Rare, 20, ["gold"]),
-
-                TileItem.Ordinary("Pigeon", Rarity.Common, 1 ,["bird"])
-                    .WithTileItemsEnhancingTileItemEffect("Adjacent birds give +2 coins ", EffectApplicationArea.Adjacent, ModifierType.Plus, 2,(ti)=> ti.HasTag("bird") ),
-
-                 TileItem.Ordinary("Owl", Rarity.Rare, 3 ,["bird"])
-                    .WithTileItemsEnhancingTileItemEffect("Adjacent wizards give extra 1.4 × coins ", EffectApplicationArea.Adjacent, ModifierType.Multiply, 1.4,(ti)=> ti.IdIs("wizard")),
-
-
-                TileItem.Ordinary("Magic Ball", Rarity.Epic, 5 ,["magical"])
-                    .WithTileItemsEnhancingTileItemEffect("All adjacent items give 1.5× coins", EffectApplicationArea.Adjacent, ModifierType.Multiply, 1.5,(ti)=>true)
-                    .WithTileItemsEnhancingTileItemEffect("Adjacent wizards give extra 2× coins", EffectApplicationArea.Adjacent, ModifierType.Multiply, 2,(ti)=> ti.IdIs("wizard")),
-
-                TileItem.Ordinary("Wizard", Rarity.Rare, 15 ,["human"]),
-
-                TileItem.Ordinary("Rabbit", Rarity.Rare, 3, ["rabbit"])
-                    .WithAbsorbingTileItemEffect("Eats adjacent carrots and adds 15 coins for each", (tileItem)=>tileItem.IdIs("carrot"), (game, absorbedTI)=>game.AddCoins(15))
-                    .WithAbsorbingTileItemEffect("Eats adjacent golden carrots and adds 150 coins for each", (tileItem)=>tileItem.IdIs("golden_carrot"), (game, absorbedTI)=>game.AddCoins(150)),
-
-                TileItem.Ordinary("Carrot", Rarity.Common, 5, []),
-                TileItem.Ordinary("Golden Carrot", Rarity.Epic, 15, []),
-
-
-                TileItem.Ordinary("Capybara", Rarity.Mythic, 10 ,["animal"])
-                    .WithTileItemsEnhancingTileItemEffect("Adjacent humans, animals and birds give 2× coins ", EffectApplicationArea.Adjacent, ModifierType.Multiply, 2,(ti)=> ti.HasOneOfTags(["bird", "animal", "human"]) ),
-
-                TileItem.Ordinary("Green Alien", Rarity.Rare, 3 ,["alien"])
-                    .WithTileItemsEnhancingTileItemEffect("All aliens give +1 coin", EffectApplicationArea.AllTiles, ModifierType.Plus, 1,(ti)=> ti.IsAlien()),
-                TileItem.Ordinary("Purple Alien", Rarity.Epic, 5 ,["alien"])
-                    .WithTileItemsEnhancingTileItemEffect("All aliens in a 5 by 5 square from give 1.4× coins", EffectApplicationArea.Square5, ModifierType.Multiply, 1.4,(ti)=> ti.IsAlien()),
-                TileItem.Ordinary("Orange Alien", Rarity.Rare, 1 ,["alien"])
-                    .WithTileItemsEnhancingTileItemEffect("All aliens in the same horizontal line give +3 coins", EffectApplicationArea.HorizontalLine, ModifierType.Plus, 3,(ti)=> ti.IsAlien()),
-                TileItem.Ordinary("Cyan Alien", Rarity.Legendary, 2 ,["alien"])
-                    .WithTileItemsEnhancingTileItemEffect("All aliens in the same vertical line give +3 coins", EffectApplicationArea.VerticalLine, ModifierType.Plus, 3,(ti)=> ti.IsAlien())
-                    .WithTileItemsEnhancingTileItemEffect("All aliens in the corner tiles give 2× coins", EffectApplicationArea.CornerTiles, ModifierType.Multiply, 2,(ti)=> ti.IsAlien()),
-                TileItem.Ordinary("Mars", Rarity.Epic, 5, ["planet"])
-                    .WithTileItemsEnhancingTileItemEffect("Adjacent green aliens give 30% more coins", EffectApplicationArea.Adjacent,ModifierType.Multiply, 1.30 , (ti)=> ti.IdIs("green_alien")),
-                TileItem.Ordinary("Saturn", Rarity.Epic, 5, ["planet"])
-                    .WithTileItemsEnhancingTileItemEffect("Purple aliens in the same vertical line give 1.7× coins", EffectApplicationArea.VerticalLine,ModifierType.Multiply,  1.7, (ti)=> ti.IdIs("purple_alien"))
-                    .WithTileItemsEnhancingTileItemEffect("Purple aliens in the same horizontal line give 1.7× coins", EffectApplicationArea.HorizontalLine,ModifierType.Multiply, 1.7, (ti)=> ti.IdIs("purple_alien")),
-                TileItem.Ordinary("Venus", Rarity.Epic, 10, ["planet"])
-                    .WithTileItemsEnhancingTileItemEffect("Orange aliens in a 5 by 5 area give 5 more coins", EffectApplicationArea.Square5,ModifierType.Plus, 5 , (ti)=> ti.IdIs("orange_alien")),
-                TileItem.Ordinary("Neptune", Rarity.Epic, 2, ["planet"])
-                    .WithTileItemsEnhancingTileItemEffect("Cyan aliens in the same horizontal line give 3× coins", EffectApplicationArea.HorizontalLine,ModifierType.Multiply,  3, (ti)=> ti.IdIs("cyan_alien"))
-                    .WithTileItemsEnhancingTileItemEffect("Cyan aliens in the corner tiles give 5 more coins", EffectApplicationArea.CornerTiles,ModifierType.Plus, 5, (ti)=> ti.IdIs("cyan_alien")),
-                TileItem.Ordinary("Artificial Satellite", Rarity.Legendary, 10 , [])
-                    .WithTileItemsEnhancingTileItemEffect("Adjacent planets give 2.5× coins", EffectApplicationArea.Adjacent,ModifierType.Multiply,  2.5, (ti)=> ti.IsPlanet())
-                    ];
-
-
-
-        }
         public bool IsGameRunning() => Game is not null;
         public void InitializeNewGame(Difficulty difficulty, GameLoggingService logger, bool areCheatsEnabled)
         {
             logger.Clear();
 
-            Game = new(LoadInitialStats(), difficulty, AllTileItemsCollection, AllRelicsCollection, areCheatsEnabled);
+            Game = new(LoadInitialStats(), difficulty, TileItemsStorage.GetAvailableItems(), AllRelicsCollection, areCheatsEnabled);
 
             Game.OnNewStageStarted += (newStage) => logger.Log(GameLogModel.New($"Stage #{newStage} has been started", GameLogType.Info));
             Game.OnInventoryItemAdded += logger.LogItemAdded;

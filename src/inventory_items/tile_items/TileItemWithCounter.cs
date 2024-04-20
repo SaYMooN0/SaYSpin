@@ -12,8 +12,7 @@ namespace SaYSpin.src.inventory_items.tile_items
             Rarity rarity,
             int initialCoinValue,
             string[] tags
-            )
-            : base(name, description, rarity, initialCoinValue, tags, new(), null) // null because it will be set in the constructor.
+            ) : base(name, description, rarity, initialCoinValue, tags, new(), null) // null because it will be set in the constructor.
         {
             Counter = 0;
             base.CalculateIncome = CalculateIncomeWithCounter;
@@ -26,7 +25,6 @@ namespace SaYSpin.src.inventory_items.tile_items
 
         public void ResetCounter() =>
             Counter = 0;
-
         private int CalculateIncomeWithCounter(IEnumerable<TileItemIncomeBonus> bonuses)
         {
             double baseIncome = _baseIncomeCalculationFunc();
@@ -43,7 +41,7 @@ namespace SaYSpin.src.inventory_items.tile_items
         }
         public TileItemWithCounter SetBaseIncomeCalculationFunc(Func<TileItemWithCounter, int> baseIncomeCalculationFunc)
         {
-            _baseIncomeCalculationFunc = ()=> baseIncomeCalculationFunc(this);
+            _baseIncomeCalculationFunc = () => baseIncomeCalculationFunc(this);
             return this;
         }
 

@@ -11,7 +11,8 @@ namespace SaYSpin.src.gameplay_parts
 {
     public class GameFlowController
     {
-        public HashSet<TileItem> TileItems { get; init; }
+        public Dictionary<string, Func<TileItem>> TileItemsCollection { get; init; }
+        public List<TileItem> TileItems { get; init; }
         public HashSet<Relic> Relics { get; init; }
         public Difficulty Difficulty { get; init; }
         public SlotMachine SlotMachine { get; private set; }
@@ -23,11 +24,12 @@ namespace SaYSpin.src.gameplay_parts
         public StatsTracker StatsTracker { get; init; }
         public bool AreCheatsEnabled { get; init; }
 
-        public GameFlowController(StatsTracker stats, Difficulty difficulty, IEnumerable<TileItem> accessibleTileItems, IEnumerable<Relic> accessibleRelics, bool areCheatsEnabled)
+        public GameFlowController(StatsTracker stats, Difficulty difficulty, Dictionary<string, Func<TileItem>> accessibleTileItems, IEnumerable<Relic> accessibleRelics, bool areCheatsEnabled)
         {
             StatsTracker = stats;
             Difficulty = difficulty;
-            TileItems = accessibleTileItems.ToHashSet();
+            TileItemsCollection = accessibleTileItems;
+            TileItems = accessibleTileItems.Select(ti => ti.Value()).ToList();
             Relics = accessibleRelics.ToHashSet();
             AreCheatsEnabled = areCheatsEnabled;
         }
@@ -68,7 +70,7 @@ namespace SaYSpin.src.gameplay_parts
 
             OnNewStageStarted?.Invoke(CurrentStage);
 
-            
+
 
             CoinsNeededToCompleteTheStage = this.CalculateCoinsNeededForStage();
 
@@ -84,7 +86,7 @@ namespace SaYSpin.src.gameplay_parts
             itemsPicker.PickItemsFrom(Inventory.TileItems);
             SlotMachine.UpdateItems(itemsPicker);
 
-            IEnumerable<CoinsCalculationRelicEffect> relicEffects =this.GatherCoinsCalculationRelicEffects();
+            IEnumerable<CoinsCalculationRelicEffect> relicEffects = this.GatherCoinsCalculationRelicEffects();
 
             int income = SlotMachine.CalculateCoinValue(relicEffects);
             AddCoins(income);
@@ -104,8 +106,9 @@ namespace SaYSpin.src.gameplay_parts
         }
         public void AddTileItemToInventory(TileItem item)
         {
-            Inventory.TileItems.Add(item);
-            OnInventoryItemAdded?.Invoke(item);
+            var itemToAdd = TileItemsCollection[item.Name]();
+            Inventory.TileItems.Add(itemToAdd);
+            OnInventoryItemAdded?.Invoke(itemToAdd);
         }
         public void AddRelicToInventory(Relic relic)
         {
@@ -118,7 +121,7 @@ namespace SaYSpin.src.gameplay_parts
 
         public bool RemoveTileItemFromInventory(string tileItemId)
         {
-            var ti =Inventory.TileItems.FirstOrDefault(ti=>ti.Id==tileItemId);
+            var ti = Inventory.TileItems.FirstOrDefault(ti => ti.Id == tileItemId);
             if (ti is null)
                 return false;
             Inventory.TileItems.Remove(ti);
@@ -127,7 +130,7 @@ namespace SaYSpin.src.gameplay_parts
         }
         public bool RemoveRelicFromInventory(string relicId)
         {
-            var relic = Inventory.Relics.FirstOrDefault(r=>r.Id== relicId);
+            var relic = Inventory.Relics.FirstOrDefault(r => r.Id == relicId);
             if (relic is null)
                 return false;
 
@@ -143,7 +146,7 @@ namespace SaYSpin.src.gameplay_parts
             CoinsCount += count;
         public bool UseToken(TokenType token)
         {
-            if( Inventory.Tokens.TryUseToken(token))
+            if (Inventory.Tokens.TryUseToken(token))
             {
                 OnTokenUsed?.Invoke(token);
                 foreach (var effect in Inventory.Relics.SelectMany(r => r.Effects.OfType<AfterTokenUsedRelicEffect>()))
@@ -156,7 +159,7 @@ namespace SaYSpin.src.gameplay_parts
         }
 
 
-        public void SetCurrentCoinsCount(int value)=>
+        public void SetCurrentCoinsCount(int value) =>
             CoinsCount = value;
         public event StageStartedDelegate OnNewStageStarted;
         public delegate void StageStartedDelegate(int newStageNumber);

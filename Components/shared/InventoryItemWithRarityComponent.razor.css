@@ -7,9 +7,13 @@
     position: relative;
     overflow: hidden;
 }
-
     .item-to-display:hover img {
-        padding: 1%;
+        padding: calc(1px + 4%);
+    }
+
+    .item-to-display:hover .counter-value {
+        bottom: calc(3px + 3%);
+        opacity: 0;
     }
 
     .item-to-display div {
@@ -22,7 +26,7 @@
 
     .item-to-display img {
         box-sizing: border-box;
-        padding: calc(2px + 4%);
+        padding: calc(3px + 5%);
         z-index: 1;
         height: 100%;
         width: 100%;
@@ -32,13 +36,18 @@
 
     .item-to-display .counter-value {
         position: absolute;
-        top: 0;
-        right: 0;
-        background-color: rgba(255, 255, 255, 0.5); /* Добавить немного прозрачности, если нужно */
-        padding: 5px;
-        border-radius: 0 10px 0 0; /* Скруглить только правый верхний угол */
-        z-index: 2; /* Убедитесь, что счётчик отображается поверх изображения */
-        font-size: 14px; /* Размер шрифта можно настроить по вкусу */
-        color: black; /* Цвет текста */
-        box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3); /* Немного тени для лучшей видимости */
+        bottom: calc(3px + 4%);
+        left: 50%;
+        transform: translateX(-50%);
+        box-sizing: border-box;
+        background-color: white;
+        padding: 4px 8px;
+        border-radius: 8px;
+        z-index: 2;
+        font-size: 16px;
+        font-family: Montserrat;
+        font-weight:bold;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        white-space: nowrap;
+        transition: opacity 0.26s ease-in;
     }

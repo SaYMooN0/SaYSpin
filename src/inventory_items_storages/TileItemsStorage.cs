@@ -59,7 +59,7 @@ namespace SaYSpin.src.inventory_items_storages
         private TileItem Parrot()
         {
             const int pirateIncomeMultyplier = 2;
-            return TileItem.Ordinary("Parrot", Rarity.Rare, 5, ["bird"]).WithTileItemsEnhancingTileItemEffect(
+            return TileItem.Ordinary("Parrot", Rarity.Rare, 3, ["bird"]).WithTileItemsEnhancingTileItemEffect(
                     $"Adjacent pirates give {pirateIncomeMultyplier}× coins",
                     EffectApplicationArea.Adjacent,
                     ModifierType.Multiply,
@@ -120,15 +120,15 @@ namespace SaYSpin.src.inventory_items_storages
         }
         private TileItem Pigeon()
         {
-            const int adjacentBirdBonus = 2;
-            return TileItem.Ordinary("Pigeon", Rarity.Common, 1, ["bird"])
-                .WithTileItemsEnhancingTileItemEffect("Adjacent birds give +2 coins", EffectApplicationArea.Adjacent, ModifierType.Plus, adjacentBirdBonus, (ti) => ti.HasTag("bird"));
+            const int adjacentBirdBonus = 4;
+            return TileItem.Ordinary("Pigeon", Rarity.Common, 2, ["bird"])
+                .WithTileItemsEnhancingTileItemEffect($"Adjacent birds give +{adjacentBirdBonus} coins", EffectApplicationArea.Adjacent, ModifierType.Plus, adjacentBirdBonus, (ti) => ti.HasTag("bird"));
         }
         private TileItem Owl()
         {
-            const double adjacentWizardMultiplier = 1.4;
-            return TileItem.Ordinary("Owl", Rarity.Rare, 3, ["bird"])
-                .WithTileItemsEnhancingTileItemEffect("Adjacent wizards give extra 1.4 × coins", EffectApplicationArea.Adjacent, ModifierType.Multiply, adjacentWizardMultiplier, (ti) => ti.IdIs("wizard"));
+            const double adjacentWizardMultiplier = 1.6;
+            return TileItem.Ordinary("Owl", Rarity.Rare, 5, ["bird"])
+                .WithTileItemsEnhancingTileItemEffect($"Adjacent wizards give extra {adjacentWizardMultiplier}× coins", EffectApplicationArea.Adjacent, ModifierType.Multiply, adjacentWizardMultiplier, (ti) => ti.IdIs("wizard"));
         }
         private TileItem MagicBall()
         {
@@ -143,7 +143,7 @@ namespace SaYSpin.src.inventory_items_storages
             const int bonusMultiplier = 2;
             return TileItem.Ordinary("Capybara", Rarity.Mythic, 10, ["animal"])
                 .WithTileItemsEnhancingTileItemEffect($"Adjacent humans, animals and birds give {bonusMultiplier}× coins",
-                    EffectApplicationArea.Adjacent, ModifierType.Multiply, bonusMultiplier, (ti) => ti.HasOneOfTags(["bird", "animal", "human"]));
+                    EffectApplicationArea.Adjacent, ModifierType.Multiply, bonusMultiplier, (ti) => ti.HasOneOfTags("bird", "animal", "human"));
         }
         private TileItem Rabbit()
         {

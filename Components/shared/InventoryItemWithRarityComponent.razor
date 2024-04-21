@@ -1,11 +1,11 @@
 ﻿@inject ShowItemInfoDialogService showItemInfoDialog
 
 <div class="item-to-display unselectable" @onclick="ShowItemInfo">
-    <img src="@ResourcePathsHelper.ResourcesImages(itemToDisplay.Image)" style="filter: drop-shadow(0 0 calc(0.3vw + 0.4vh) @itemToDisplay.Rarity.ToHexColor());" />
-    <div style="box-shadow: 0px 0px calc(9px + 0.32vw + 0.42vh) calc(8px + 0.2vw + 0.32vh) @itemToDisplay.Rarity.ToHexColor(); background:@itemToDisplay.Rarity.ToHexColor()"></div>
-    @if(itemToDisplay is TileItemWithCounter)
+    <img src="@ResourcePathsHelper.ResourcesImages(itemToDisplay.Image)" style="filter: drop-shadow(0 0 calc(0.26vw + 0.35vh) @itemToDisplay.Rarity.ToHexColor());" />
+    <div style="box-shadow: 0px 0px calc(9px + 0.3vw + 0.4vh) calc(8px + 0.2vw + 0.3vh) @itemToDisplay.Rarity.ToHexColor(); background:@itemToDisplay.Rarity.ToHexColor()"></div>
+    @if(itemToDisplay is IWithCounter)
     {
-        <label class="counter-value">@((itemToDisplay as TileItemWithCounter).Counter)</label>
+        <label class="counter-value">@((itemToDisplay as IWithCounter).Counter)</label>
     }
 </div>
 

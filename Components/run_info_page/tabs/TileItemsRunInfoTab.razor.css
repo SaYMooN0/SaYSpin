@@ -22,10 +22,14 @@
     .tile-items-grid div {
         flex: 0 1 auto;
         aspect-ratio: 1/1;
-        height: 96px;
+        height: 110px;
         transition: all 0.2s ease;
     }
-
+@media (max-width: 1280px), (max-height:800px) {
+    .tile-items-grid div {
+        height: 96px;
+    }
+}
 @media (max-width: 850px), (max-height:600px) {
     .tile-items-grid div {
         height: 76px;

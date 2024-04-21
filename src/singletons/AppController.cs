@@ -103,10 +103,32 @@ namespace SaYSpin.src.singletons
                         },
                     ti => ti.IsAlien()
                 );
+            var globe = new Relic("Globe", Rarity.Epic)
+                .WithOnStageStartedRelicEffect(
+                    "On the start of each stage receive 10 coins for each animal and bird in the inventory",
+                    (game) =>
+                    {
+                        int coins=game.Inventory.TileItems.Where(ti=>ti.HasOneOfTags("animal","bird")).Count()*10;
+                        game.AddCoins(coins);
+                    } 
+                );
+            var alarm = new Relic("Alarm", Rarity.Rare)
+               .WithNonConstantCalculationRelicEffect(
+                   "All humans in the first spins of each stage give ×3 coins",
+                   (game) =>
+                   {
+                       if(game.SpinsLeft==game.StatsTracker.StageSpinsCount)
+                           return new(ModifierType.Multiply, 3);
+                       return new(ModifierType.Plus, 0);
+                   },
+                   ti => ti.HasTag("human")
+               );
             var clover = new Relic("Four Leaf Clover", Rarity.Rare)
                 .WithGameStatRelicEffect("Gives +5 to luck", GameStat.Luck, ModifierType.Plus, 5);
-            var milk = new Relic("Milk", Rarity.Common)
-                .WithCoinsCalculationRelicEffect("All humans give 15% more coins", ModifierType.Multiply, 1.15, (ti) => ti.HasTag("human"));
+            var milk = new Relic("Milk", Rarity.Rare)
+                .WithCoinsCalculationRelicEffect("All humans give 15% more coins", ModifierType.Multiply, 1.15, (ti) => ti.HasTag("human")); 
+            var orange_juice = new Relic("Orange Juice", Rarity.Common)
+                .WithCoinsCalculationRelicEffect("All humans give +2 coins", ModifierType.Plus, 2, (ti) => ti.HasTag("human"));
 
             var telescope = new Relic("Telescope", Rarity.Rare)
                 .WithCoinsCalculationRelicEffect("All planets give 1.25 × coins", ModifierType.Multiply, 1.15, (ti) => ti.HasTag("planet"));
@@ -121,7 +143,10 @@ namespace SaYSpin.src.singletons
                 ufo,
                 clover,
                 milk,
-                telescope
+                telescope,
+                alarm,
+                orange_juice,
+                globe
                 ];
         }
         public bool IsGameRunning() => Game is not null;

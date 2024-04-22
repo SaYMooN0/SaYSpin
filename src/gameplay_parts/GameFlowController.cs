@@ -11,9 +11,10 @@ namespace SaYSpin.src.gameplay_parts
 {
     public class GameFlowController
     {
-        public Dictionary<string, Func<TileItem>> TileItemsCollection { get; init; }
+        private Dictionary<string, Func<TileItem>> _tileItemsCollection { get; init; }
         public List<TileItem> TileItems { get; init; }
-        public HashSet<Relic> Relics { get; init; }
+        private Dictionary<string, Func<Relic>> _relicsCollection { get; init; }
+        public List<Relic> Relics { get; init; }
         public Difficulty Difficulty { get; init; }
         public SlotMachine SlotMachine { get; private set; }
         public Inventory Inventory { get; private set; }
@@ -24,13 +25,22 @@ namespace SaYSpin.src.gameplay_parts
         public StatsTracker StatsTracker { get; init; }
         public bool AreCheatsEnabled { get; init; }
 
-        public GameFlowController(StatsTracker stats, Difficulty difficulty, Dictionary<string, Func<TileItem>> accessibleTileItems, IEnumerable<Relic> accessibleRelics, bool areCheatsEnabled)
+        public GameFlowController(
+            StatsTracker stats,
+            Difficulty difficulty,
+            Dictionary<string, Func<TileItem>> accessibleTileItems,
+            Dictionary<string, Func<Relic>> accessibleRelics,
+            bool areCheatsEnabled)
         {
             StatsTracker = stats;
             Difficulty = difficulty;
-            TileItemsCollection = accessibleTileItems;
+
+            _tileItemsCollection = accessibleTileItems;
             TileItems = accessibleTileItems.Select(ti => ti.Value()).ToList();
-            Relics = accessibleRelics.ToHashSet();
+
+            _relicsCollection= accessibleRelics;
+            Relics= accessibleRelics.Select(r => r.Value()).ToList();
+
             AreCheatsEnabled = areCheatsEnabled;
         }
         public void Start(GameStarterKit chosenStarterKit)
@@ -44,7 +54,7 @@ namespace SaYSpin.src.gameplay_parts
         public StageCompletionResult CompleteStage()
         {
             int extraCoins = CoinsCount - CoinsNeededToCompleteTheStage;
-            int diamondsFromCoins = (int)(extraCoins / (CurrentStage + 4) * 1.4 * StatsTracker.AfterStageCoinsToDiamondsCoefficient);
+            int diamondsFromCoins = (int)(extraCoins / (CurrentStage + 4) * 1.25 * StatsTracker.AfterStageCoinsToDiamondsCoefficient);
             int diamondsFromSpins = (int)((CurrentStage + 4) / 4.5 * SpinsLeft);
 
             var rewards = this.GatherAllAfterStageRewards();
@@ -106,16 +116,19 @@ namespace SaYSpin.src.gameplay_parts
         }
         public void AddTileItemToInventory(TileItem item)
         {
-            var itemToAdd = TileItemsCollection[item.Name]();
+            TileItem itemToAdd = _tileItemsCollection[item.Name]();
+
             Inventory.TileItems.Add(itemToAdd);
             OnInventoryItemAdded?.Invoke(itemToAdd);
         }
         public void AddRelicToInventory(Relic relic)
         {
-            Inventory.Relics.Add(relic);
-            OnInventoryItemAdded?.Invoke(relic);
+            Relic relicToAdd= _relicsCollection[relic.Name]();
 
-            if (relic.Effects.Any(e => e is GameStatRelicEffect))
+            Inventory.Relics.Add(relicToAdd);
+            OnInventoryItemAdded?.Invoke(relicToAdd);
+
+            if (relicToAdd.Effects.Any(e => e is GameStatRelicEffect))
                 StatsTracker.SetChanged();
         }
 

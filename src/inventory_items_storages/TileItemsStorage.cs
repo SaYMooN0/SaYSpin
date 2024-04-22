@@ -1,5 +1,4 @@
-﻿
-using SaYSpin.src.enums;
+﻿using SaYSpin.src.enums;
 using SaYSpin.src.extension_classes;
 using SaYSpin.src.extension_classes.factories;
 using SaYSpin.src.gameplay_parts;
@@ -8,13 +7,13 @@ using SaYSpin.src.static_classes;
 
 namespace SaYSpin.src.inventory_items_storages
 {
-    internal class TileItemsStorage
+    internal class TileItemsStorage : IInventoryItemStorage<TileItem>
     {
-        public Dictionary<string, Func<TileItem>> Items { get; private set; }
-        private readonly HashSet<string> _avaliableTileItems;
+        Dictionary<string, Func<TileItem>> _storedItems { get; set; }
+        HashSet<string> _avaliableTileItems;
         public TileItemsStorage()
         {
-            Items = new Dictionary<string, Func<TileItem>>
+            _storedItems = new Dictionary<string, Func<TileItem>>
             {
                 ["Apple"] = () => TileItem.Ordinary("Apple", Rarity.Common, 3, ["fruit"]),
                 ["Banana"] = () => TileItem.Ordinary("Banana", Rarity.Common, 3, ["fruit"]),
@@ -50,12 +49,28 @@ namespace SaYSpin.src.inventory_items_storages
                 ["Neptune"] = Neptune,
                 ["Artificial Satellite"] = ArtificialSatellite
             };
-            _avaliableTileItems = Items.Keys.ToHashSet();
+            //_avaliableTileItems = InitAvailable();
+            _avaliableTileItems = _storedItems.Keys.ToHashSet();
         }
         public Dictionary<string, Func<TileItem>> GetAvailableItems() =>
-            Items
+        _storedItems
             .Where(nameItemPair => _avaliableTileItems.Contains(nameItemPair.Key))
-            .ToDictionary();
+            .ToDictionary(pair => pair.Key, pair => pair.Value);
+
+        public void Update()
+        {
+            throw new NotImplementedException();
+        }
+
+        public HashSet<string> InitAvailable()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SaveToFile()
+        {
+            throw new NotImplementedException();
+        }
         private TileItem Parrot()
         {
             const int pirateIncomeMultyplier = 2;
@@ -214,6 +229,5 @@ namespace SaYSpin.src.inventory_items_storages
             return TileItem.Ordinary("Artificial Satellite", Rarity.Legendary, 10, [])
                 .WithTileItemsEnhancingTileItemEffect($"Adjacent planets give {adjacentPlanetMultiplier}× coins", EffectApplicationArea.Adjacent, ModifierType.Multiply, adjacentPlanetMultiplier, (ti) => ti.IsPlanet());
         }
-
     }
 }

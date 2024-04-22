@@ -46,7 +46,7 @@ namespace SaYSpin.src.extension_classes
         public static int CalculateCoinsNeededForStage(this GameFlowController game)
         {
             return (int)(
-                Math.Pow(game.CurrentStage * 1.4 + 3, 1.8)
+                Math.Pow(game.CurrentStage * 1.65 + 2, 1.85)
                 * (game.Difficulty.NeededCoinsMultiplier + 0.2)
                 * 2
                 ) - 10;

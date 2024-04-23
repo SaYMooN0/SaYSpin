@@ -38,8 +38,8 @@ namespace SaYSpin.src.gameplay_parts
             _tileItemsCollection = accessibleTileItems;
             TileItems = accessibleTileItems.Select(ti => ti.Value()).ToList();
 
-            _relicsCollection= accessibleRelics;
-            Relics= accessibleRelics.Select(r => r.Value()).ToList();
+            _relicsCollection = accessibleRelics;
+            Relics = accessibleRelics.Select(r => r.Value()).ToList();
 
             AreCheatsEnabled = areCheatsEnabled;
         }
@@ -123,7 +123,7 @@ namespace SaYSpin.src.gameplay_parts
         }
         public void AddRelicToInventory(Relic relic)
         {
-            Relic relicToAdd= _relicsCollection[relic.Name]();
+            Relic relicToAdd = _relicsCollection[relic.Name]();
 
             Inventory.Relics.Add(relicToAdd);
             OnInventoryItemAdded?.Invoke(relicToAdd);
@@ -161,11 +161,8 @@ namespace SaYSpin.src.gameplay_parts
         {
             if (Inventory.Tokens.TryUseToken(token))
             {
+                this.TriggerOnTokenUsedEffects(token);
                 OnTokenUsed?.Invoke(token);
-                foreach (var effect in Inventory.Relics.SelectMany(r => r.Effects.OfType<AfterTokenUsedRelicEffect>()))
-                {
-                    effect.PerformAfterTokenUsedAction(this);
-                }
                 return true;
             }
             return false;
@@ -174,6 +171,7 @@ namespace SaYSpin.src.gameplay_parts
 
         public void SetCurrentCoinsCount(int value) =>
             CoinsCount = value;
+
         public event StageStartedDelegate OnNewStageStarted;
         public delegate void StageStartedDelegate(int newStageNumber);
 

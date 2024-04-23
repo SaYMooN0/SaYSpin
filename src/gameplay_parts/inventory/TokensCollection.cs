@@ -15,7 +15,7 @@ namespace SaYSpin.src.gameplay_parts.inventory_related.tokens
             _tokens[TokenType.InventoryItemRemoval] = tileItemRemovalTokensCount;
             _tokens[TokenType.NewStageItemsRefresh] = newStageItemsRefreshTokensCount;
         }
-        public int GetTokenCount(TokenType tokenType) => _tokens[tokenType];
+        public int Count(TokenType tokenType) => _tokens[tokenType];
 
         public bool TryUseToken(TokenType tokenType)
         {

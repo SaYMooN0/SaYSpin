@@ -7,17 +7,7 @@ namespace SaYSpin.src.inventory_items.relics
     {
         public HashSet<BaseRelicEffect> Effects { get; init; } = new HashSet<BaseRelicEffect>();
         public override string ImageFolderPath => "relics";
-        public Relic(string name, Rarity rarity, IEnumerable<BaseRelicEffect> effects = null)
-            : base(name, effects != null ? string.Join("\n", effects.Select(e => e.Description)) : string.Empty, rarity)
-        {
-            if (effects is not null)
-            {
-                foreach (var effect in effects)
-                {
-                    Effects.Add(effect);
-                }
-            }
-        }
+        public Relic(string name, Rarity rarity) : base(name, string.Empty, rarity) { }
 
         public Relic WithEffect(BaseRelicEffect effect)
         {

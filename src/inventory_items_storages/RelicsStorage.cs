@@ -4,6 +4,7 @@ using SaYSpin.src.extension_classes.factories;
 using SaYSpin.src.gameplay_parts;
 using SaYSpin.src.gameplay_parts.inventory_related.tokens;
 using SaYSpin.src.inventory_items.relics;
+using SaYSpin.src.inventory_items.tile_items;
 using SaYSpin.src.static_classes;
 
 namespace SaYSpin.src.inventory_items_storages
@@ -30,10 +31,14 @@ namespace SaYSpin.src.inventory_items_storages
                 ["Four Leaf Clover"] = FourLeafClover,
                 ["Milk"] = Milk,
                 ["Orange Juice"] = OrangeJuice,
-                ["Telescope"] = Telescope
+                ["Telescope"] = Telescope,
+                ["Bowl Of Candies"] = BowlOfCandies,
+                ["Diamond Pass"] = DiamondPass,
             };
             _availableRelics = new HashSet<string>(_storedItems.Keys);
         }
+
+
 
         public Dictionary<string, Func<Relic>> GetAvailableItems() =>
             _storedItems
@@ -66,7 +71,6 @@ namespace SaYSpin.src.inventory_items_storages
             return new Relic("Bird Guide", Rarity.Common)
                 .WithCoinsCalculationRelicEffect($"All birds give +{birdBonus} coin", ModifierType.Plus, birdBonus, i => i.HasTag("bird"));
         }
-
         private Relic TreasureMap()
         {
             const int chestChance = 50; // 50%
@@ -78,7 +82,6 @@ namespace SaYSpin.src.inventory_items_storages
                 Randomizer.Percent(goldenChestChance) ? game.TileItemWithId("golden_chest") : null
                     ]);
         }
-
         private Relic GoldenKey()
         {
             const int openChance = 30; // 30%
@@ -99,7 +102,6 @@ namespace SaYSpin.src.inventory_items_storages
                         }
                     });
         }
-
         private Relic AppleTree()
         {
             const int appleBonus = 1;
@@ -111,14 +113,12 @@ namespace SaYSpin.src.inventory_items_storages
                 .WithAfterStageRewardRelicEffect("After every fifth stage receive a golden apple tile item",
                     (stageNumber, game) => [stageNumber % 5 == 0 ? game.TileItemWithId("golden_apple") : null]);
         }
-
         private Relic RandomToken()
         {
             return new Relic("Random Token", Rarity.Epic)
                 .WithOnStageStartedRelicEffect("At the beginning of each stage, receive 1 random token",
                     (game) => game.Inventory.Tokens.AddToken(TokensCollection.RandomTokenType()));
         }
-
         private Relic DiamondToken()
         {
             const int minDiamonds = 5;
@@ -126,10 +126,9 @@ namespace SaYSpin.src.inventory_items_storages
             const int extraCoinsForDiamonds = 5;
             return new Relic("Diamond Token", Rarity.Rare)
                 .WithAfterTokenUsedRelicEffect("When using any token, receive from 5 to 7 diamonds",
-                    (game) => game.Inventory.AddDiamonds(Randomizer.Int(minDiamonds, maxDiamonds)))
+                    (game, token) => game.Inventory.AddDiamonds(Randomizer.Int(minDiamonds, maxDiamonds)))
                 .WithGameStatRelicEffect($"Receive {extraCoinsForDiamonds}% more diamonds for extra coins after each stage", GameStat.AfterStageCoinsToDiamondsCoefficient, ModifierType.Plus, extraCoinsForDiamonds * 0.01);
         }
-
         private Relic UFO()
         {
             const double alienBonus = 0.5;
@@ -142,7 +141,6 @@ namespace SaYSpin.src.inventory_items_storages
                     },
                     ti => ti.IsAlien());
         }
-
         private Relic Globe()
         {
             const int coinsPerAnimal = 10;
@@ -196,5 +194,30 @@ namespace SaYSpin.src.inventory_items_storages
             return new Relic("Telescope", Rarity.Rare)
                 .WithCoinsCalculationRelicEffect($"All planets give {planetMultiplier} × coins", ModifierType.Multiply, planetMultiplier, (ti) => ti.HasTag("planet"));
         }
+        private Relic BowlOfCandies()
+        {
+            const int minCandies = 2;
+            const int maxCandies = 4;
+            return new Relic("Bowl Of Candies", Rarity.Epic)
+                .WithOnStageStartedRelicEffect(
+                $"With start of each stage receive from {minCandies} to {maxCandies} candy tile items",
+                (game) =>
+                {
+                    TileItem candy = game.TileItemWithId("candy");
+                    for (int i = 0; i < Randomizer.Int(minCandies, maxCandies); i++)
+                    {
+                        game.AddTileItemToInventory(candy);
+                    }
+                });
+        }
+        private Relic DiamondPass()
+        {
+            const int diamondsCount = 15;
+            return new Relic("Diamond Pass", Rarity.Legendary)
+                .WithOnNewStageChoosingSkippedRelicEffect(
+                    $"Skipping tile item or relic on the before stage items choosing phase gives {diamondsCount} diamonds",
+                    (game) => game.Inventory.AddDiamonds(diamondsCount));
+        }
+
     }
 }

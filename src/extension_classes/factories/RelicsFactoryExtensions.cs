@@ -6,9 +6,10 @@ using SaYSpin.src.inventory_items.tile_items.tile_item_effects;
 using System;
 using static SaYSpin.src.inventory_items.relics.relic_effects.AfterSpinRelicEffect;
 using static SaYSpin.src.inventory_items.relics.relic_effects.AfterStageRewardRelicEffect;
-using static SaYSpin.src.inventory_items.relics.relic_effects.AfterTokenUsedRelicEffect;
+using static SaYSpin.src.inventory_items.relics.relic_effects.OnTokenUsedRelicEffect;
 using static SaYSpin.src.inventory_items.relics.relic_effects.OnStageStartedRelicEffect;
 using static SaYSpin.src.inventory_items.tile_items.tile_item_effects.NonConstantCalculationRelicEffect;
+using static SaYSpin.src.inventory_items.relics.relic_effects.OnNewStageChoosingSkippedRelicEffect;
 
 namespace SaYSpin.src.extension_classes.factories
 {
@@ -27,11 +28,12 @@ namespace SaYSpin.src.extension_classes.factories
 
         public static Relic WithOnStageStartedRelicEffect(this Relic relic, string description, OnStageStartedAction action) =>
             relic.WithEffect(new OnStageStartedRelicEffect(description, action));
-        public static Relic WithAfterTokenUsedRelicEffect(this Relic relic, string description, AfterTokenUsedAction action) =>
-            relic.WithEffect(new AfterTokenUsedRelicEffect(description, action));
-
+        public static Relic WithAfterTokenUsedRelicEffect(this Relic relic, string description, OnTokenUsedAction action) =>
+            relic.WithEffect(new OnTokenUsedRelicEffect(description, action));
         public static Relic WithGameStatRelicEffect(this Relic relic, string description, GameStat gameStat, ModifierType modifierType, double modificationValue) =>
             relic.WithEffect(new GameStatRelicEffect(description, gameStat, modifierType, modificationValue));
+        public static Relic WithOnNewStageChoosingSkippedRelicEffect(this Relic relic, string description, OnNewStageChoosingSkippedAction action) =>
+            relic.WithEffect(new OnNewStageChoosingSkippedRelicEffect(description, action));
 
     }
 }

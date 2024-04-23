@@ -10,7 +10,7 @@
                     <NewStageItemChoosingCard item="tileItem" OnChosen="ItemChosen" />
                 }
             </div>
-            <ItemsChoosingDialogBottomButtons onRefresh="RefreshTileItems" onSkip="()=>{_pickingStageTileItem=false;}" />
+            <ItemsChoosingDialogBottomButtons onRefresh="RefreshTileItemsWithToken" onSkip="TileItemSkipped" tokensCount="game.Inventory.Tokens.Count(TokenType.NewStageItemsRefresh)" />
         }
         else
         {
@@ -22,7 +22,7 @@
                     <NewStageItemChoosingCard item="relic" OnChosen="ItemChosen" />
                 }
             </div>
-            <ItemsChoosingDialogBottomButtons onRefresh="RefreshRelics" onSkip="()=> Close()" />
+            <ItemsChoosingDialogBottomButtons onRefresh="RefreshRelicsWithToken" onSkip="RelicSkipped" tokensCount="game.Inventory.Tokens.Count(TokenType.NewStageItemsRefresh)" />
         }
     </div>
 </dialog>
@@ -55,7 +55,21 @@
         await JSRuntime.InvokeVoidAsync("blazorDialogFunctions.closeDialog", "newStagePickingDialog");
     }
 
+    private void TileItemSkipped()
+    {
+        game.TriggerOnNewStageChoosingSkippedEffects();
+        refreshInventory();
+        StateHasChanged();
+        _pickingStageTileItem = false;
 
+    }
+    private void RelicSkipped()
+    {
+        game.TriggerOnNewStageChoosingSkippedEffects();
+        refreshInventory();
+        StateHasChanged();
+        Close();
+    }
     private void ItemChosen(BaseInventoryItem chosenItem)
     {
         if (chosenItem is TileItem)
@@ -72,17 +86,25 @@
             Close();
         }
         else
-        {
             throw new Exception("Invalid type of chose item");
-        }
+
 
     }
-    private void RefreshTileItems()
+    private void RefreshTileItemsWithToken()
     {
-        TileItemsToPick = game.GenerateTileItemsForNewStageChoosing();
+        if (game.UseToken(TokenType.NewStageItemsRefresh))
+            RefreshTileItems();
     }
-    private void RefreshRelics()
+    private void RefreshRelicsWithToken()
     {
-        RelicsToPick = game.GenerateRelicsForNewStageChoosing();
+        if (game.UseToken(TokenType.NewStageItemsRefresh))
+            RefreshRelics();
     }
+
+    private void RefreshTileItems() =>
+            TileItemsToPick = game.GenerateTileItemsForNewStageChoosing();
+
+    private void RefreshRelics() =>
+            RelicsToPick = game.GenerateRelicsForNewStageChoosing();
+
 }

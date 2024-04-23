@@ -1,4 +1,5 @@
 ﻿using SaYSpin.src.gameplay_parts;
+using SaYSpin.src.gameplay_parts.inventory_related.tokens;
 using SaYSpin.src.inventory_items;
 using SaYSpin.src.inventory_items.relics;
 using SaYSpin.src.inventory_items.relics.relic_effects;
@@ -144,6 +145,23 @@ namespace SaYSpin.src.extension_classes
             var effects = game.Inventory.Relics
                     .SelectMany(r => r.Effects.OfType<GameStatRelicEffect>());
             game.StatsTracker.Update(effects);
+        }
+
+        public static void TriggerOnNewStageChoosingSkippedEffects(this GameFlowController game)
+        {
+            var effects = game.Inventory.Relics.SelectMany(r => r.Effects).OfType<OnNewStageChoosingSkippedRelicEffect>();
+            foreach (var effect in effects)
+            {
+                effect.PerformOnNewStageChoosingSkippedAction(game);
+            }
+        }
+        public static void TriggerOnTokenUsedEffects(this GameFlowController game, TokenType token)
+        {
+            var effects = game.Inventory.Relics.SelectMany(r => r.Effects).OfType<OnTokenUsedRelicEffect>();
+            foreach (var effect in effects)
+            {
+                effect.PerformOnTokenUsedAction(game, token);
+            }
         }
 
         public static TileItem? TileItemWithId(this GameFlowController game, string id) =>

@@ -2,17 +2,17 @@
     <button class="skip-button" @onclick="onSkip">
         Skip
     </button>
-    <button @onclick="onRefresh" class="refresh-button">
+    <button @onclick="onRefresh" class='refresh-button @(tokensCount<1 ? "refresh-disabled" : "")'>
         <label>
-            Refresh
+            Refresh (@tokensCount  <img src="@TokenType.NewStageItemsRefresh.ImageFullPath()" />)
         </label>
-        <img src="@TokenType.NewStageItemsRefresh.ImageFullPath()" />
-
     </button>
 </div>
 
 
 @code {
+    [Parameter]
+    public int tokensCount { get; set; }
     [Parameter]
     public Action onRefresh { get; set; }
     [Parameter]

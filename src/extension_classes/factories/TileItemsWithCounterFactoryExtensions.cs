@@ -17,7 +17,7 @@ namespace SaYSpin.src.extension_classes.factories
         public static TileItemWithCounter WithTileItemsEnhancingTileItemEffect(
             this TileItemWithCounter tileItem,
             string description,
-            EffectApplicationArea area,
+            SlotMachineArea area,
             ModifierType modifierType,
             Func<TileItemWithCounter, double> modificationValue,
             Func<TileItem, bool> condition) =>

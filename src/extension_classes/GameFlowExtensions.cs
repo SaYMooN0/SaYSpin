@@ -1,4 +1,5 @@
-﻿using SaYSpin.src.gameplay_parts;
+﻿using SaYSpin.src.enums;
+using SaYSpin.src.gameplay_parts;
 using SaYSpin.src.gameplay_parts.inventory_related.tokens;
 using SaYSpin.src.inventory_items;
 using SaYSpin.src.inventory_items.relics;
@@ -78,6 +79,63 @@ namespace SaYSpin.src.extension_classes
                     rEffect.PerformAfterSpinAction(game);
                 }
             }
+        }
+        public static void HandleTileItemsWithAreaScanningEffects(this GameFlowController game)
+        {
+
+            for (int i = 0; i < game.SlotMachine.TileItems.GetLength(0); i++)
+            {
+                for (int j = 0; j < game.SlotMachine.TileItems.GetLength(1); j++)
+                {
+                    var tI = game.SlotMachine.TileItems[i, j];
+                    if (tI is null) continue;
+                    foreach (var effect in tI.Effects.OfType<AreaScanningTileItemEffect>())
+                    {
+                        List<TileItem> tileItemsInArea = new();
+                        switch (effect.Area)
+                        {
+
+                            case SlotMachineArea.Adjacent:
+                                {
+                                    var offsets = new[] { (-1, 0), (1, 0), (0, -1), (0, 1), (1, 1), (1, -1), (-1, 1), (-1, -1) };
+                                    foreach (var (di, dj) in offsets)
+                                    {
+                                        int newI = i + di, newJ = j + dj;
+                                        if (newI >= 0 && newI < game.SlotMachine.TileItems.GetLength(0) && newJ >= 0 && newJ < game.SlotMachine.TileItems.GetLength(1))
+                                        {
+                                            var tileItem = game.SlotMachine.TileItems[newI, newJ];
+                                            if (effect.Condition(tileItem))
+                                                tileItemsInArea.Add(tileItem);
+                                        }
+                                    }
+                                }
+                                break;
+                            default:
+                                throw new NotImplementedException($"EffectApplicationArea {effect.Area} in method `HandleTileItemsWithAreaScanningEffect` is not implemented.");
+                        }
+                        effect.PerformOnScannedAction(game, tileItemsInArea);
+                    }
+
+                }
+            }
+        }
+
+        public static void HandleTransformationEffects(this GameFlowController game)
+        {
+            List<Action> replacements = new();
+            foreach (TileItem ti in game.Inventory.TileItems)
+            {
+                foreach (var effect in ti.Effects.OfType<TransformationTileItemEffect>())
+                {
+                    if (effect.TransformationCondition(game))
+                    {
+                        replacements.Add(() => game.ReplaceTileItem(ti, effect.TileItemToTransformInto));
+                        break;
+                    }
+                }
+            }
+            foreach (Action replace in replacements)
+                replace();
         }
         public static void HandleTileItemsWithAbsorbingEffects(this GameFlowController game)
         {

@@ -1,6 +1,6 @@
 ﻿namespace SaYSpin.src.enums
 {
-    public enum EffectApplicationArea
+    public enum SlotMachineArea
     {
         Self,
         Adjacent,

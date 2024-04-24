@@ -102,6 +102,8 @@ namespace SaYSpin.src.gameplay_parts
             AddCoins(income);
             SpinsLeft -= 1;
             this.HandleAfterSpinRelicEffects();
+            this.HandleTileItemsWithAreaScanningEffects();
+            this.HandleTransformationEffects();
             this.HandleTileItemsWithAbsorbingEffects();
         }
         public void DestroyTileItem(TileItem tileItemToDestroy, int row, int col)
@@ -131,29 +133,47 @@ namespace SaYSpin.src.gameplay_parts
             if (relicToAdd.Effects.Any(e => e is GameStatRelicEffect))
                 StatsTracker.SetChanged();
         }
-
-        public bool RemoveTileItemFromInventory(string tileItemId)
+        public bool RemoveTileItemFromInventory(TileItem tileItem)
         {
-            var ti = Inventory.TileItems.FirstOrDefault(ti => ti.Id == tileItemId);
-            if (ti is null)
+            if (!Inventory.TileItems.Contains(tileItem))
                 return false;
-            Inventory.TileItems.Remove(ti);
-            OnInventoryItemRemoved?.Invoke(ti);
+            Inventory.TileItems.Remove(tileItem);
+            OnInventoryItemRemoved?.Invoke(tileItem);
             return true;
         }
-        public bool RemoveRelicFromInventory(string relicId)
+        public bool RemoveRelicFromInventory(Relic relic)
         {
-            var relic = Inventory.Relics.FirstOrDefault(r => r.Id == relicId);
-            if (relic is null)
+            if (!Inventory.Relics.Contains(relic))
                 return false;
+
+            if (relic.Effects.Any(e => e is GameStatRelicEffect))
+                StatsTracker.SetChanged();
 
             Inventory.Relics.Remove(relic);
             OnInventoryItemRemoved?.Invoke(relic);
 
-            if (relic.Effects.Any(e => e is GameStatRelicEffect))
-                StatsTracker.SetChanged();
             return true;
+        }
+        public bool RemoveTileItemFromInventoryById(string tileItemId)
+        {
+            TileItem item = Inventory.TileItems.FirstOrDefault(ti => ti.Id == tileItemId);
+            if (item == null)
+                return false;
 
+            return RemoveTileItemFromInventory(item);
+        }
+        public bool RemoveRelicFromInventoryById(string relicId)
+        {
+            Relic relic = Inventory.Relics.FirstOrDefault(r => r.Id == relicId);
+            if (relic == null)
+                return false;
+
+            return RemoveRelicFromInventory(relic);
+        }
+        public void ReplaceTileItem(TileItem oldTileItem, TileItem newTileItem)
+        {
+            int index = Inventory.TileItems.IndexOf(oldTileItem);
+            Inventory.TileItems[index] = newTileItem;
         }
         public void AddCoins(int count) =>
             CoinsCount += count;

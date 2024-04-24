@@ -111,7 +111,7 @@ namespace SaYSpin.src.static_classes
             if (args.Length == 0) return NotEnoughArgs("delI", 1, 0);
 
             string tileItemId = args[0];
-            bool success = game.RemoveTileItemFromInventory(tileItemId);
+            bool success = game.RemoveTileItemFromInventoryById(tileItemId);
             return success ? GameLogModel.CommandSuccess($"Removed '{tileItemId}' from inventory") : GameLogModel.CommandError($"Could not remove '{tileItemId}' from inventory");
         }
 
@@ -120,7 +120,7 @@ namespace SaYSpin.src.static_classes
             if (args.Length == 0) return NotEnoughArgs("delR", 1, 0);
 
             string relicId = args[0];
-            bool success = game.RemoveRelicFromInventory(relicId);
+            bool success = game.RemoveRelicFromInventoryById(relicId);
             return success ? GameLogModel.CommandSuccess($"Removed relic '{relicId}' from inventory") : GameLogModel.CommandError($"Could not remove relic '{relicId}' from inventory");
         }
 
@@ -135,7 +135,7 @@ namespace SaYSpin.src.static_classes
 
             do
             {
-                removed = game.RemoveRelicFromInventory(relicId);
+                removed = game.RemoveRelicFromInventoryById(relicId);
                 if (removed) countRemoved++;
             }
             while (removed);
@@ -156,7 +156,7 @@ namespace SaYSpin.src.static_classes
 
             do
             {
-                removed = game.RemoveTileItemFromInventory(tileItemId);
+                removed = game.RemoveTileItemFromInventoryById(tileItemId);
                 if (removed) countRemoved++;
             }
             while (removed);

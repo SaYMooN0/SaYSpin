@@ -61,29 +61,29 @@ namespace SaYSpin.src.extension_classes
         {
             switch (effect.Area)
             {
-                case EffectApplicationArea.Self:
+                case SlotMachineArea.Self:
                     if (effect.Condition(slotMachine.TileItems[i, j]))
                     {
                         bonusesGrid.AddBonus(i, j, new TileItemIncomeBonus(effect.ModifierType, effect.ModificationValue));
                     }
                     break;
-                case EffectApplicationArea.Adjacent:
+                case SlotMachineArea.Adjacent:
                     slotMachine.AddBonusToAdjacent(bonusesGrid, i, j, effect);
                     break;
-                case EffectApplicationArea.Square3:
-                case EffectApplicationArea.Square5:
-                    slotMachine.AddBonusToSquare(bonusesGrid, i, j, effect, effect.Area == EffectApplicationArea.Square3 ? 3 : 5);
+                case SlotMachineArea.Square3:
+                case SlotMachineArea.Square5:
+                    slotMachine.AddBonusToSquare(bonusesGrid, i, j, effect, effect.Area == SlotMachineArea.Square3 ? 3 : 5);
                     break;
-                case EffectApplicationArea.AllTiles:
+                case SlotMachineArea.AllTiles:
                     slotMachine.AddBonusToAllTiles(bonusesGrid, effect);
                     break;
-                case EffectApplicationArea.HorizontalLine:
+                case SlotMachineArea.HorizontalLine:
                     slotMachine.AddBonusToHorizontalLine(bonusesGrid, i, j, effect);
                     break;
-                case EffectApplicationArea.VerticalLine:
+                case SlotMachineArea.VerticalLine:
                     slotMachine.AddBonusToVerticalLine(bonusesGrid, i, j, effect);
                     break;
-                case EffectApplicationArea.CornerTiles:
+                case SlotMachineArea.CornerTiles:
                     slotMachine.AddBonusToCornerTiles(bonusesGrid, effect);
                     break;
                 default:

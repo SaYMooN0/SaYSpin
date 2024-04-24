@@ -47,7 +47,9 @@ namespace SaYSpin.src.inventory_items_storages
                 ["Saturn"] = Saturn,
                 ["Venus"] = Venus,
                 ["Neptune"] = Neptune,
-                ["Artificial Satellite"] = ArtificialSatellite
+                ["Artificial Satellite"] = ArtificialSatellite,
+                ["Waffle"] = Waffle,
+                ["Waffle With Apples"] = WaffleWithApples,
             };
             //_avaliableTileItems = InitAvailable();
             _avaliableTileItems = _storedItems.Keys.ToHashSet();
@@ -76,7 +78,7 @@ namespace SaYSpin.src.inventory_items_storages
             const int pirateIncomeMultyplier = 2;
             return TileItem.Ordinary("Parrot", Rarity.Rare, 3, ["bird"]).WithTileItemsEnhancingTileItemEffect(
                     $"Adjacent pirates give {pirateIncomeMultyplier}× coins",
-                    EffectApplicationArea.Adjacent,
+                    SlotMachineArea.Adjacent,
                     ModifierType.Multiply,
                     pirateIncomeMultyplier,
                     (ti) => ti.IdIs("pirate"));
@@ -137,28 +139,28 @@ namespace SaYSpin.src.inventory_items_storages
         {
             const int adjacentBirdBonus = 4;
             return TileItem.Ordinary("Pigeon", Rarity.Common, 2, ["bird"])
-                .WithTileItemsEnhancingTileItemEffect($"Adjacent birds give +{adjacentBirdBonus} coins", EffectApplicationArea.Adjacent, ModifierType.Plus, adjacentBirdBonus, (ti) => ti.HasTag("bird"));
+                .WithTileItemsEnhancingTileItemEffect($"Adjacent birds give +{adjacentBirdBonus} coins", SlotMachineArea.Adjacent, ModifierType.Plus, adjacentBirdBonus, (ti) => ti.HasTag("bird"));
         }
         private TileItem Owl()
         {
             const double adjacentWizardMultiplier = 1.6;
             return TileItem.Ordinary("Owl", Rarity.Rare, 5, ["bird"])
-                .WithTileItemsEnhancingTileItemEffect($"Adjacent wizards give extra {adjacentWizardMultiplier}× coins", EffectApplicationArea.Adjacent, ModifierType.Multiply, adjacentWizardMultiplier, (ti) => ti.IdIs("wizard"));
+                .WithTileItemsEnhancingTileItemEffect($"Adjacent wizards give extra {adjacentWizardMultiplier}× coins", SlotMachineArea.Adjacent, ModifierType.Multiply, adjacentWizardMultiplier, (ti) => ti.IdIs("wizard"));
         }
         private TileItem MagicBall()
         {
             const double adjacentAllMultiplier = 1.5;
             const double adjacentWizardMultiplier = 2;
             return TileItem.Ordinary("Magic Ball", Rarity.Epic, 5, ["magical"])
-                .WithTileItemsEnhancingTileItemEffect($"All adjacent items give {adjacentAllMultiplier}× coins", EffectApplicationArea.Adjacent, ModifierType.Multiply, adjacentAllMultiplier, (ti) => true)
-                .WithTileItemsEnhancingTileItemEffect($"Adjacent wizards give extra {adjacentWizardMultiplier} coins", EffectApplicationArea.Adjacent, ModifierType.Multiply, adjacentWizardMultiplier, (ti) => ti.IdIs("wizard"));
+                .WithTileItemsEnhancingTileItemEffect($"All adjacent items give {adjacentAllMultiplier}× coins", SlotMachineArea.Adjacent, ModifierType.Multiply, adjacentAllMultiplier, (ti) => true)
+                .WithTileItemsEnhancingTileItemEffect($"Adjacent wizards give extra {adjacentWizardMultiplier} coins", SlotMachineArea.Adjacent, ModifierType.Multiply, adjacentWizardMultiplier, (ti) => ti.IdIs("wizard"));
         }
         private TileItem Capybara()
         {
             const int bonusMultiplier = 2;
             return TileItem.Ordinary("Capybara", Rarity.Mythic, 10, ["animal"])
                 .WithTileItemsEnhancingTileItemEffect($"Adjacent humans, animals and birds give {bonusMultiplier}× coins",
-                    EffectApplicationArea.Adjacent, ModifierType.Multiply, bonusMultiplier, (ti) => ti.HasOneOfTags("bird", "animal", "human"));
+                    SlotMachineArea.Adjacent, ModifierType.Multiply, bonusMultiplier, (ti) => ti.HasOneOfTags("bird", "animal", "human"));
         }
         private TileItem Rabbit()
         {
@@ -174,60 +176,80 @@ namespace SaYSpin.src.inventory_items_storages
         {
             const int alienBonus = 1;
             return TileItem.Ordinary("Green Alien", Rarity.Rare, 3, ["alien"])
-                .WithTileItemsEnhancingTileItemEffect($"All aliens give +{alienBonus} coin", EffectApplicationArea.AllTiles, ModifierType.Plus, alienBonus, (ti) => ti.IsAlien());
+                .WithTileItemsEnhancingTileItemEffect($"All aliens give +{alienBonus} coin", SlotMachineArea.AllTiles, ModifierType.Plus, alienBonus, (ti) => ti.IsAlien());
         }
         private TileItem PurpleAlien()
         {
             const double areaMultiplier = 1.4;
             return TileItem.Ordinary("Purple Alien", Rarity.Epic, 5, ["alien"])
-                .WithTileItemsEnhancingTileItemEffect($"All aliens in a 5 by 5 square from give {areaMultiplier}× coins", EffectApplicationArea.Square5, ModifierType.Multiply, areaMultiplier, (ti) => ti.IsAlien());
+                .WithTileItemsEnhancingTileItemEffect($"All aliens in a 5 by 5 square from give {areaMultiplier}× coins", SlotMachineArea.Square5, ModifierType.Multiply, areaMultiplier, (ti) => ti.IsAlien());
         }
         private TileItem OrangeAlien()
         {
             const int lineBonus = 3;
             return TileItem.Ordinary("Orange Alien", Rarity.Rare, 1, ["alien"])
-                .WithTileItemsEnhancingTileItemEffect($"All aliens in the same horizontal line give +{lineBonus} coins", EffectApplicationArea.HorizontalLine, ModifierType.Plus, lineBonus, (ti) => ti.IsAlien());
+                .WithTileItemsEnhancingTileItemEffect($"All aliens in the same horizontal line give +{lineBonus} coins", SlotMachineArea.HorizontalLine, ModifierType.Plus, lineBonus, (ti) => ti.IsAlien());
         }
         private TileItem CyanAlien()
         {
             const int verticalLineBonus = 3;
             const double cornerMultiplier = 2;
             return TileItem.Ordinary("Cyan Alien", Rarity.Legendary, 2, ["alien"])
-                .WithTileItemsEnhancingTileItemEffect($"All aliens in the same vertical line give +{verticalLineBonus} coins", EffectApplicationArea.VerticalLine, ModifierType.Plus, verticalLineBonus, (ti) => ti.IsAlien())
-                .WithTileItemsEnhancingTileItemEffect($"All aliens in the corner tiles give {cornerMultiplier}× coins", EffectApplicationArea.CornerTiles, ModifierType.Multiply, cornerMultiplier, (ti) => ti.IsAlien());
+                .WithTileItemsEnhancingTileItemEffect($"All aliens in the same vertical line give +{verticalLineBonus} coins", SlotMachineArea.VerticalLine, ModifierType.Plus, verticalLineBonus, (ti) => ti.IsAlien())
+                .WithTileItemsEnhancingTileItemEffect($"All aliens in the corner tiles give {cornerMultiplier}× coins", SlotMachineArea.CornerTiles, ModifierType.Multiply, cornerMultiplier, (ti) => ti.IsAlien());
         }
         private TileItem Mars()
         {
             const double adjacentGreenAlienBonus = 1.3;
             return TileItem.Ordinary("Mars", Rarity.Epic, 5, ["planet"])
-                .WithTileItemsEnhancingTileItemEffect($"Adjacent green aliens give {adjacentGreenAlienBonus} more coins", EffectApplicationArea.Adjacent, ModifierType.Multiply, adjacentGreenAlienBonus, (ti) => ti.IdIs("green_alien"));
+                .WithTileItemsEnhancingTileItemEffect($"Adjacent green aliens give {adjacentGreenAlienBonus} more coins", SlotMachineArea.Adjacent, ModifierType.Multiply, adjacentGreenAlienBonus, (ti) => ti.IdIs("green_alien"));
         }
         private TileItem Saturn()
         {
             const double lineMultiplier = 1.7;
             return TileItem.Ordinary("Saturn", Rarity.Epic, 5, ["planet"])
-                .WithTileItemsEnhancingTileItemEffect($"Purple aliens in the same vertical line give {lineMultiplier}× coins", EffectApplicationArea.VerticalLine, ModifierType.Multiply, lineMultiplier, (ti) => ti.IdIs("purple_alien"))
-                .WithTileItemsEnhancingTileItemEffect($"Purple aliens in the same horizontal line give {lineMultiplier}× coins", EffectApplicationArea.HorizontalLine, ModifierType.Multiply, lineMultiplier, (ti) => ti.IdIs("purple_alien"));
+                .WithTileItemsEnhancingTileItemEffect($"Purple aliens in the same vertical line give {lineMultiplier}× coins", SlotMachineArea.VerticalLine, ModifierType.Multiply, lineMultiplier, (ti) => ti.IdIs("purple_alien"))
+                .WithTileItemsEnhancingTileItemEffect($"Purple aliens in the same horizontal line give {lineMultiplier}× coins", SlotMachineArea.HorizontalLine, ModifierType.Multiply, lineMultiplier, (ti) => ti.IdIs("purple_alien"));
         }
         private TileItem Venus()
         {
             const int areaBonus = 5;
             return TileItem.Ordinary("Venus", Rarity.Epic, 10, ["planet"])
-                .WithTileItemsEnhancingTileItemEffect($"Orange aliens in a 5 by 5 area give {areaBonus} more coins", EffectApplicationArea.Square5, ModifierType.Plus, areaBonus, (ti) => ti.IdIs("orange_alien"));
+                .WithTileItemsEnhancingTileItemEffect($"Orange aliens in a 5 by 5 area give {areaBonus} more coins", SlotMachineArea.Square5, ModifierType.Plus, areaBonus, (ti) => ti.IdIs("orange_alien"));
         }
         private TileItem Neptune()
         {
             const double horizontalMultiplier = 3;
             const int cornerBonus = 5;
             return TileItem.Ordinary("Neptune", Rarity.Epic, 2, ["planet"])
-                .WithTileItemsEnhancingTileItemEffect($"Cyan aliens in the same horizontal line give {horizontalMultiplier}× coins", EffectApplicationArea.HorizontalLine, ModifierType.Multiply, horizontalMultiplier, (ti) => ti.IsAlien())
-                .WithTileItemsEnhancingTileItemEffect($"Cyan aliens in the corner tiles give {cornerBonus} more coins", EffectApplicationArea.CornerTiles, ModifierType.Plus, cornerBonus, (ti) => ti.IsAlien());
+                .WithTileItemsEnhancingTileItemEffect($"Cyan aliens in the same horizontal line give {horizontalMultiplier}× coins", SlotMachineArea.HorizontalLine, ModifierType.Multiply, horizontalMultiplier, (ti) => ti.IsAlien())
+                .WithTileItemsEnhancingTileItemEffect($"Cyan aliens in the corner tiles give {cornerBonus} more coins", SlotMachineArea.CornerTiles, ModifierType.Plus, cornerBonus, (ti) => ti.IsAlien());
         }
         private TileItem ArtificialSatellite()
         {
             const double adjacentPlanetMultiplier = 2.5;
             return TileItem.Ordinary("Artificial Satellite", Rarity.Legendary, 10, [])
-                .WithTileItemsEnhancingTileItemEffect($"Adjacent planets give {adjacentPlanetMultiplier}× coins", EffectApplicationArea.Adjacent, ModifierType.Multiply, adjacentPlanetMultiplier, (ti) => ti.IsPlanet());
+                .WithTileItemsEnhancingTileItemEffect($"Adjacent planets give {adjacentPlanetMultiplier}× coins", SlotMachineArea.Adjacent, ModifierType.Multiply, adjacentPlanetMultiplier, (ti) => ti.IsPlanet());
         }
+        private TileItem Waffle()
+        {
+            bool readyToTransform = false;
+            return TileItem.UnavailableInBeforeStageChoosingPhase("Waffle", Rarity.Rare, 5, ["sweet"])
+                .WithAreaScanningTileItemEffect("If there are two adjacent apples, absorbs them", SlotMachineArea.Adjacent, (ti) => ti.IdIs("apple"), (game, tileItems) =>
+                {
+                    if (tileItems.Count >= 2)
+                    {
+                        game.RemoveTileItemFromInventory(tileItems[0]);
+                        game.RemoveTileItemFromInventory(tileItems[1]);
+                        readyToTransform = true;
+                    }
+                }
+                )
+                .WithTransformationEffect("When absorbing apples transforms into waffle with apples tile item", (game) => readyToTransform, WaffleWithApples());
+        }
+        private TileItem WaffleWithApples() =>
+            TileItem.UnavailableInBeforeStageChoosingPhase("Waffle With Apples", Rarity.Legendary, 15, ["sweet"]);
+
+
     }
 }

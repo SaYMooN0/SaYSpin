@@ -34,6 +34,7 @@ namespace SaYSpin.src.inventory_items_storages
                 ["Telescope"] = Telescope,
                 ["Bowl Of Candies"] = BowlOfCandies,
                 ["Diamond Pass"] = DiamondPass,
+                ["Waffle Iron"] = WaffleIron,
             };
             _availableRelics = new HashSet<string>(_storedItems.Keys);
         }
@@ -217,6 +218,19 @@ namespace SaYSpin.src.inventory_items_storages
                 .WithOnNewStageChoosingSkippedRelicEffect(
                     $"Skipping tile item or relic on the before stage items choosing phase gives {diamondsCount} diamonds",
                     (game) => game.Inventory.AddDiamonds(diamondsCount));
+        }
+        private Relic WaffleIron()
+        {
+            const int waffleChance = 30; //50%
+            return new Relic("Waffle Iron", Rarity.Epic)
+                .WithAfterSpinRelicEffect(
+                $"After each spin have a {waffleChance} chance to add 1 waffle to inventory",
+                (game) =>
+                {
+                    if (Randomizer.Percent(waffleChance))
+                        game.AddTileItemToInventory(game.TileItemWithId("waffle"));
+                }
+                );
         }
 
     }

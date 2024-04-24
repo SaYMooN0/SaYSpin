@@ -10,14 +10,18 @@ namespace SaYSpin.src.inventory_items
         public string Description { get; protected set; } = "";
         public string Image { get; init; }
         public Rarity Rarity { get; init; }
+        public bool IsUnique{get;init;}
+        public bool IsAvailableInBeforeStageChoosingPhase{get;init;}
         public abstract string ImageFolderPath { get; }
-        protected BaseInventoryItem(string name, string description, Rarity rarity)
+        protected BaseInventoryItem(string name, string description, Rarity rarity, bool isAvailableInBeforeStageChoosingPhase=true, bool isUnique=false)
         {
             Id = name.ToLower().Replace(" ", "_");
             Name = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(name.ToLower());
             Image = Path.Combine(ImageFolderPath, Id + ".png");
             Description = description;
             Rarity = rarity;
+            IsUnique = isUnique;
+            IsAvailableInBeforeStageChoosingPhase = isAvailableInBeforeStageChoosingPhase;
         }
         public abstract string TextInfo();
 

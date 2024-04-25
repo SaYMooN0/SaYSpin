@@ -235,12 +235,17 @@ namespace SaYSpin.src.inventory_items_storages
         {
             bool readyToTransform = false;
             return TileItem.UnavailableInBeforeStageChoosingPhase("Waffle", Rarity.Rare, 5, ["sweet"])
-                .WithAreaScanningTileItemEffect("If there are two adjacent apples, absorbs them", SlotMachineArea.Adjacent, (ti) => ti.IdIs("apple"), (game, tileItems) =>
+                .WithAreaScanningTileItemEffect("If there are two adjacent apples, absorbs them", SlotMachineArea.Adjacent, (ti) => ti.IdIs("apple"), (game, tiWithCoords) =>
                 {
-                    if (tileItems.Count >= 2)
+                    var tileItems = tiWithCoords.Where(ti => !ti.TileItem.Markers.Contains(Marker.WillBeAbsorbed)).Take(2).ToArray();
+                    if (tileItems.Count() >= 2)
                     {
-                        game.RemoveTileItemFromInventory(tileItems[0]);
-                        game.RemoveTileItemFromInventory(tileItems[1]);
+                        var ti1= tileItems[0];
+                        var ti2 = tileItems[1];
+                        ti1.TileItem.AddMarker(Marker.WillBeAbsorbed);
+                        ti2.TileItem.AddMarker(Marker.WillBeAbsorbed);
+                        game.DestroyTileItem(ti1.TileItem, ti1.row, ti1.column);
+                        game.DestroyTileItem(ti2.TileItem, ti2.row, ti2.column);
                         readyToTransform = true;
                     }
                 }

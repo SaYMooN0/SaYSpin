@@ -105,6 +105,7 @@ namespace SaYSpin.src.gameplay_parts
             this.HandleTileItemsWithAreaScanningEffects();
             this.HandleTransformationEffects();
             this.HandleTileItemsWithAbsorbingEffects();
+            this.ClearTileItemsMarkers();
         }
         public void DestroyTileItem(TileItem tileItemToDestroy, int row, int col)
         {

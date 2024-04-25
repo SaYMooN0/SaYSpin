@@ -20,13 +20,13 @@ namespace SaYSpin.src.extension_classes.factories
             SlotMachineArea area,
             ModifierType modifierType,
             Func<TileItemWithCounter, double> modificationValue,
-            Func<TileItem, bool> condition) =>
+            Func<TileItem?, bool> condition) =>
                 tileItem.WithEffect(new TileItemsEnhancingTileItemEffect(description, area, modifierType, modificationValue(tileItem), condition));
 
         public static TileItemWithCounter WithAbsorbingTileItemEffect(
             this TileItemWithCounter tileItem,
             string description,
-            Func<TileItem, bool> absorbingCondition,
+            Func<TileItem?, bool> absorbingCondition,
             Action<GameFlowController, TileItemWithCounter, TileItem> onAbsorbAction) =>
             tileItem.WithEffect(
                 new AbsorbingTileItemEffect(

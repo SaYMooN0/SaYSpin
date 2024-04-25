@@ -1,4 +1,5 @@
 ﻿using SaYSpin.src.enums;
+using SaYSpin.src.extension_classes.slot_machine;
 using SaYSpin.src.gameplay_parts;
 using SaYSpin.src.gameplay_parts.inventory_related.tokens;
 using SaYSpin.src.inventory_items;
@@ -6,6 +7,7 @@ using SaYSpin.src.inventory_items.relics;
 using SaYSpin.src.inventory_items.relics.relic_effects;
 using SaYSpin.src.inventory_items.tile_items;
 using SaYSpin.src.inventory_items.tile_items.tile_item_effects;
+using SaYSpin.src.secondary_classes;
 
 namespace SaYSpin.src.extension_classes
 {
@@ -70,6 +72,13 @@ namespace SaYSpin.src.extension_classes
                 .SelectMany(effect => effect.AfterStageReward(game.CurrentStage, game))
                 .Where(reward => reward is not null)
                 .ToList();
+        public static void ClearTileItemsMarkers(this GameFlowController game)
+        {
+            foreach (TileItem ti in game.Inventory.TileItems)
+            {
+                ti.ClearMarkers();
+            }
+        }
         public static void HandleAfterSpinRelicEffects(this GameFlowController game)
         {
             foreach (Relic r in game.Inventory.Relics)
@@ -82,40 +91,20 @@ namespace SaYSpin.src.extension_classes
         }
         public static void HandleTileItemsWithAreaScanningEffects(this GameFlowController game)
         {
-
             for (int i = 0; i < game.SlotMachine.TileItems.GetLength(0); i++)
             {
                 for (int j = 0; j < game.SlotMachine.TileItems.GetLength(1); j++)
                 {
-                    var tI = game.SlotMachine.TileItems[i, j];
-                    if (tI is null) continue;
-                    foreach (var effect in tI.Effects.OfType<AreaScanningTileItemEffect>())
-                    {
-                        List<TileItem> tileItemsInArea = new();
-                        switch (effect.Area)
-                        {
+                    var tileItem = game.SlotMachine.TileItems[i, j];
+                    if (tileItem is null) continue;
 
-                            case SlotMachineArea.Adjacent:
-                                {
-                                    var offsets = new[] { (-1, 0), (1, 0), (0, -1), (0, 1), (1, 1), (1, -1), (-1, 1), (-1, -1) };
-                                    foreach (var (di, dj) in offsets)
-                                    {
-                                        int newI = i + di, newJ = j + dj;
-                                        if (newI >= 0 && newI < game.SlotMachine.TileItems.GetLength(0) && newJ >= 0 && newJ < game.SlotMachine.TileItems.GetLength(1))
-                                        {
-                                            var tileItem = game.SlotMachine.TileItems[newI, newJ];
-                                            if (effect.Condition(tileItem))
-                                                tileItemsInArea.Add(tileItem);
-                                        }
-                                    }
-                                }
-                                break;
-                            default:
-                                throw new NotImplementedException($"EffectApplicationArea {effect.Area} in method `HandleTileItemsWithAreaScanningEffect` is not implemented.");
-                        }
+                    foreach (var effect in tileItem.Effects.OfType<AreaScanningTileItemEffect>())
+                    {
+                        var tileItemsInArea = game.SlotMachine.GetTileItemCoordinates(i, j, effect.Area, effect.Condition)
+                            .Select(coords => new TileItemWithCoordinates(game.SlotMachine.TileItems[coords.row, coords.col], coords.row, coords.col))
+                            .ToList();
                         effect.PerformOnScannedAction(game, tileItemsInArea);
                     }
-
                 }
             }
         }
@@ -147,41 +136,22 @@ namespace SaYSpin.src.extension_classes
                     if (item is null) continue;
 
                     var absorbingEffects = item.Effects.OfType<AbsorbingTileItemEffect>();
-                    if (!absorbingEffects.Any()) continue;
-
-                    (int, int)[] adjacentPositions = [
-                        (i - 1, j),
-                        (i + 1, j),
-                        (i, j - 1),
-                        (i, j + 1),
-                        (i - 1, j - 1),
-                        (i - 1, j + 1),
-                        (i + 1, j - 1),
-                        (i + 1, j + 1)
-                    ];
-
                     foreach (var effect in absorbingEffects)
                     {
-                        foreach (var (adjI, adjJ) in adjacentPositions)
+                        foreach (var (adjI, adjJ) in game.SlotMachine.GetTileItemCoordinates(i, j, SlotMachineArea.Adjacent, effect.AbsorbingCondition))
                         {
-                            if (adjI >= 0 && adjI < game.SlotMachine.TileItems.GetLength(0) &&
-                                adjJ >= 0 && adjJ < game.SlotMachine.TileItems.GetLength(1))
+                            var adjItem = game.SlotMachine.TileItems[adjI, adjJ];
+                            if (adjItem != null)
                             {
-                                var adjItem = game.SlotMachine.TileItems[adjI, adjJ];
-
-                                if (adjItem != null && effect.AbsorbingCondition(adjItem))
-                                {
-
-                                    effect.ExecuteOnAbsorbAction(game, adjItem);
-
-                                    game.DestroyTileItem(adjItem, adjI, adjJ);
-                                }
+                                effect.ExecuteOnAbsorbAction(game, adjItem);
+                                game.DestroyTileItem(adjItem, adjI, adjJ);
                             }
                         }
                     }
                 }
             }
         }
+
 
         public static IEnumerable<CoinsCalculationRelicEffect> GatherCoinsCalculationRelicEffects(this GameFlowController game)
         {

@@ -5,7 +5,7 @@ namespace SaYSpin.src.tile_item_effects
 {
     internal class TileItemsEnhancingTileItemEffect : BaseTileItemEffect
     {
-        public TileItemsEnhancingTileItemEffect(string description, SlotMachineArea area, ModifierType modifierType, double modificationValue, Func<TileItem, bool> condition):base(description)
+        public TileItemsEnhancingTileItemEffect(string description, SlotMachineArea area, ModifierType modifierType, double modificationValue, Func<TileItem?, bool> condition):base(description)
         {
             Area = area;
             ModifierType = modifierType;
@@ -16,6 +16,6 @@ namespace SaYSpin.src.tile_item_effects
         public SlotMachineArea Area { get; init; }
         public ModifierType ModifierType { get; init; }
         public double ModificationValue { get; init; }
-        public Func<TileItem, bool> Condition { get; init; }
+        public Func<TileItem?, bool> Condition { get; init; }
     }
 }

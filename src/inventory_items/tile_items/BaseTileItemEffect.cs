@@ -3,6 +3,11 @@
     public abstract class BaseTileItemEffect
     {
         public string Description { get; init; }
-        protected BaseTileItemEffect(string description) { Description = description; }
+        public TileItem SourceTileItem { get; init; }
+        protected BaseTileItemEffect(string description, TileItem sourceTileItem)
+        {
+            Description = description;
+            SourceTileItem = sourceTileItem;
+        }
     }
 }

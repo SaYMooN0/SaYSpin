@@ -25,8 +25,8 @@ namespace SaYSpin.src.inventory_items.tile_items
             LastIncome = 0;
         public void SetLastIncome(int value) =>
             LastIncome = value;
-        internal HashSet<Marker> Markers { get; init; } = new();
-        internal void AddMarker(Marker marker) =>
+        internal HashSet<Markers> Markers { get; init; } = new();
+        internal void AddMarker(Markers marker) =>
             Markers.Add(marker);
         internal void ClearMarkers() =>
             Markers.Clear();
@@ -39,7 +39,8 @@ namespace SaYSpin.src.inventory_items.tile_items
         public TileItem WithEffect(BaseTileItemEffect effect)
         {
             Effects.Add(effect);
-            Description += (string.IsNullOrEmpty(Description) ? "" : "\n") + effect.Description;
+            if (!string.IsNullOrEmpty(effect.Description))
+                Description += (string.IsNullOrEmpty(Description) ? "" : "\n") + effect.Description;
             return this;
         }
         public static TileItem Ordinary(string name, Rarity rarity, int initialCoinValue, string[] tags) =>

@@ -8,7 +8,7 @@ namespace SaYSpin.src.extension_classes
             tileItem is not null && tileItem.Tags.Contains(tag);
         public static bool HasOneOfTags(this TileItem? tileItem,params string[] tags) =>
             tileItem is not null && tileItem.Tags.Any(t => tags.Contains(t));
-        public static bool IsConsumableByPirate(this TileItem tileItem) =>
+        public static bool IsConsumableByPirate(this TileItem? tileItem) =>
             tileItem is not null && tileItem.Tags.Any(t => t == "gold" || t == "chest");
         public static bool IsChest(this TileItem? tileItem) =>
             tileItem.HasTag("chest");

@@ -4,7 +4,8 @@ namespace SaYSpin.src.inventory_items.tile_items.tile_item_effects
 {
     internal class TransformationTileItemEffect : BaseTileItemEffect
     {
-        public TransformationTileItemEffect(string description, Func< GameFlowController,bool> transformationCondition, TileItem tileItemToTransformInto) : base(description)
+        public TransformationTileItemEffect(string description, TileItem sourceTileItem, Func<GameFlowController, bool> transformationCondition, TileItem tileItemToTransformInto)
+            : base(description, sourceTileItem)
         {
             TransformationCondition = transformationCondition;
             TileItemToTransformInto = tileItemToTransformInto;

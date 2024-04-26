@@ -34,11 +34,8 @@ namespace SaYSpin.src.inventory_items.tile_items
             }
             return (int)baseIncome;
         }
-        public TileItemWithCounter WithEffect(BaseTileItemEffect effect)
-        {
-            Effects.Add(effect);
-            return this;
-        }
+        public TileItemWithCounter WithEffect(BaseTileItemEffect effect)=>
+            base.WithEffect(effect) as TileItemWithCounter;
         public TileItemWithCounter SetBaseIncomeCalculationFunc(Func<TileItemWithCounter, int> baseIncomeCalculationFunc)
         {
             _baseIncomeCalculationFunc = () => baseIncomeCalculationFunc(this);

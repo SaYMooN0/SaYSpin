@@ -8,7 +8,8 @@ namespace SaYSpin.src.inventory_items.tile_items.tile_item_effects
 {
     internal class AreaScanningTileItemEffect : BaseTileItemEffect
     {
-        public AreaScanningTileItemEffect(string description, SlotMachineArea area, Func<TileItem, bool> condition, Action<GameFlowController, List<TileItemWithCoordinates>> onScannedAction) : base(description)
+        public delegate void AreaScanningDelegate(GameFlowController game, List<TileItemWithCoordinates> tIWithCoordinates);
+        public AreaScanningTileItemEffect(string description,TileItem sourceTileItem, SlotMachineArea area, Func<TileItem, bool> condition, AreaScanningDelegate onScannedAction) : base(description , sourceTileItem)
         {
             Area = area;
             Condition = condition;
@@ -16,6 +17,6 @@ namespace SaYSpin.src.inventory_items.tile_items.tile_item_effects
         }
         public SlotMachineArea Area { get; init; }
         public Func<TileItem, bool> Condition { get; init; }
-        public Action<GameFlowController, List<TileItemWithCoordinates>> PerformOnScannedAction { get; init; }
+        public AreaScanningDelegate PerformOnScannedAction { get; init; }
     }
 }

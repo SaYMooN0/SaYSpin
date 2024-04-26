@@ -35,6 +35,7 @@ namespace SaYSpin.src.inventory_items_storages
                 ["Bowl Of Candies"] = BowlOfCandies,
                 ["Diamond Pass"] = DiamondPass,
                 ["Waffle Iron"] = WaffleIron,
+                ["Galactic Assembly Medal"] = GalacticAssemblyMedal
             };
             _availableRelics = new HashSet<string>(_storedItems.Keys);
         }
@@ -161,7 +162,7 @@ namespace SaYSpin.src.inventory_items_storages
                 .WithNonConstantCalculationRelicEffect($"All humans in the first spins of each stage give ×{humansIncomeBonus} coins",
                     (game) =>
                     {
-                        if (game.SpinsLeft == game.StatsTracker.StageSpinsCount)
+                        if (game.SpinsLeft == game.StatsTracker.StageSpinsCount - 1)
                             return new(ModifierType.Multiply, humansIncomeBonus);
                         return new(ModifierType.Plus, 0);
                     },
@@ -232,6 +233,21 @@ namespace SaYSpin.src.inventory_items_storages
                 }
                 );
         }
+        private Relic GalacticAssemblyMedal()
+        {
+            const int aliensFromPlanetsBonus = 1;
+            const int planetsFromAliensBonus = 1;
+            return new Relic("Galactic Assembly Medal", Rarity.Legendary)
+                .WithNonConstantCalculationRelicEffect(
+                    $"Aliens give +{aliensFromPlanetsBonus} coin for every planet variant in the inventory",
+                    (game) => new(ModifierType.Plus, game.Inventory.TileItems.Count(ti => ti.IsPlanet()) * aliensFromPlanetsBonus),
+                    ti => ti.IsAlien())
+                .WithNonConstantCalculationRelicEffect(
+                    $"Planets give +{planetsFromAliensBonus} coin for every alien variant in the inventory",
+                    (game) => new(ModifierType.Plus, game.Inventory.TileItems.Count(ti => ti.IsAlien()) * planetsFromAliensBonus),
+                    ti => ti.IsPlanet());
+        }
+
 
     }
 }

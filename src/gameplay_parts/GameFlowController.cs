@@ -92,17 +92,19 @@ namespace SaYSpin.src.gameplay_parts
         }
         public void SpinSlotMachine()
         {
+            SpinsLeft -= 1;
+
             TileItemsPicker itemsPicker = new(SlotMachine.TotalSlots);
             itemsPicker.PickItemsFrom(Inventory.TileItems);
             SlotMachine.UpdateItems(itemsPicker);
 
-            IEnumerable<CoinsCalculationRelicEffect> relicEffects = this.GatherCoinsCalculationRelicEffects();
+            this.HandleTileItemsWithAreaScanningEffects();
 
+            IEnumerable<CoinsCalculationRelicEffect> relicEffects = this.GatherCoinsCalculationRelicEffects();
             int income = SlotMachine.CalculateCoinValue(relicEffects);
             AddCoins(income);
-            SpinsLeft -= 1;
+         
             this.HandleAfterSpinRelicEffects();
-            this.HandleTileItemsWithAreaScanningEffects();
             this.HandleTransformationEffects();
             this.HandleTileItemsWithAbsorbingEffects();
             this.ClearTileItemsMarkers();

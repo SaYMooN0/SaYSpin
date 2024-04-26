@@ -4,6 +4,8 @@ using SaYSpin.src.extension_classes.factories;
 using SaYSpin.src.gameplay_parts;
 using SaYSpin.src.inventory_items.tile_items;
 using SaYSpin.src.static_classes;
+using SaYSpin.src.secondary_classes;
+
 
 namespace SaYSpin.src.inventory_items_storages
 {
@@ -32,7 +34,6 @@ namespace SaYSpin.src.inventory_items_storages
                 ["Owl"] = Owl,
                 ["Magic Ball"] = MagicBall,
                 ["Wizard"] = () => TileItem.Ordinary("Wizard", Rarity.Rare, 15, ["human"]),
-                ["Rabbit"] = () => TileItem.Ordinary("Rabbit", Rarity.Rare, 3, ["rabbit"]),
                 ["Carrot"] = () => TileItem.Ordinary("Carrot", Rarity.Common, 5, []),
                 ["Golden Carrot"] = () => TileItem.Ordinary("Golden Carrot", Rarity.Epic, 15, []),
                 ["Sweet Tooth"] = SweetTooth,
@@ -50,6 +51,8 @@ namespace SaYSpin.src.inventory_items_storages
                 ["Artificial Satellite"] = ArtificialSatellite,
                 ["Waffle"] = Waffle,
                 ["Waffle With Apples"] = WaffleWithApples,
+                ["Zookeeper"] = Zookeeper,
+                ["Tiger"] = Tiger,
             };
             //_avaliableTileItems = InitAvailable();
             _avaliableTileItems = _storedItems.Keys.ToHashSet();
@@ -83,28 +86,34 @@ namespace SaYSpin.src.inventory_items_storages
                     pirateIncomeMultyplier,
                     (ti) => ti.IdIs("pirate"));
         }
-        private TileItem SweetTooth() =>
-            TileItemWithCounter
+        private TileItem SweetTooth()
+        {
+            TileItemWithCounter t = TileItemWithCounter
                 .New("Sweet Tooth", "Gives coins equal to the value of the counter", Rarity.Epic, 0, ["human"])
-                .SetBaseIncomeCalculationFunc(ti => ti.Counter)
-                .WithAbsorbingTileItemEffect(
-                    "Eats adjacent sweets and increases the counter depending on the rarity of the eaten sweet",
-                    ti => ti.HasTag("sweet"),
-                    (game, absorber, absorbedTI) => absorber.IncrementCounter((int)absorbedTI.Rarity + 1)
-                );
-        private TileItem Pirate() =>
-            TileItemWithCounter
+                .SetBaseIncomeCalculationFunc(ti => ti.Counter);
+            t = t.WithAbsorbingTileItemEffect(
+                "Eats adjacent sweets and increases the counter depending on the rarity of the eaten sweet",
+                t => t.HasTag("sweet"),
+                (game, absorbedTI) => t.IncrementCounter((int)absorbedTI.Rarity + 1));
+            return t;
+        }
+
+        private TileItem Pirate()
+        {
+            TileItemWithCounter t = TileItemWithCounter
                 .New("Pirate", "Gives (7 + value of counter) coins ", Rarity.Legendary, 7, ["human"])
-                .SetBaseIncomeCalculationFunc(ti => ti.Counter + 7)
-                .WithAbsorbingTileItemEffect(
-                    "Absorbs adjacent chests and golden tile items giving 3 times of their basic income",
-                    ti => ti.IsConsumableByPirate(),
-                    (game, absorber, absorbedTI) =>
+                .SetBaseIncomeCalculationFunc(t => t.Counter + 7);
+            t = t.WithAbsorbingTileItemEffect(
+                "Absorbs adjacent chests and golden tile items giving 3 times of their basic income",
+                tiToAbsorb => tiToAbsorb.IsConsumableByPirate(),
+                (game, absorbedTI) =>
                     {
-                        absorber.IncrementCounter(1);
+                        t.IncrementCounter(1);
                         game.AddCoins(absorbedTI.InitialCoinValue * 3);
-                    }
-                );
+                    });
+            return t;
+        }
+
         private TileItem Chest()
         {
             const int minCoins = 20;
@@ -166,7 +175,7 @@ namespace SaYSpin.src.inventory_items_storages
         {
             const int carrotBonus = 15;
             const int goldenCarrotBonus = 150;
-            return TileItem.Ordinary("Rabbit", Rarity.Rare, 3, ["rabbit"])
+            return TileItem.Ordinary("Rabbit", Rarity.Rare, 3, ["animal"])
                 .WithAbsorbingTileItemEffect($"Eats adjacent carrots and adds {carrotBonus} coins for each", (ti) => ti.IdIs("carrot"),
                     (game, absorbedTI) => game.AddCoins(carrotBonus))
                 .WithAbsorbingTileItemEffect($"Eats adjacent golden carrots and adds {goldenCarrotBonus} coins for each", (ti) => ti.IdIs("golden_carrot"),
@@ -233,28 +242,69 @@ namespace SaYSpin.src.inventory_items_storages
         }
         private TileItem Waffle()
         {
-            bool readyToTransform = false;
-            return TileItem.UnavailableInBeforeStageChoosingPhase("Waffle", Rarity.Rare, 5, ["sweet"])
+            var tileItem = TileItem.UnavailableInBeforeStageChoosingPhase("Waffle", Rarity.Rare, 5, ["sweet"]);
+            tileItem = tileItem
                 .WithAreaScanningTileItemEffect("If there are two adjacent apples, absorbs them", SlotMachineArea.Adjacent, (ti) => ti.IdIs("apple"), (game, tiWithCoords) =>
-                {
-                    var tileItems = tiWithCoords.Where(ti => !ti.TileItem.Markers.Contains(Marker.WillBeAbsorbed)).Take(2).ToArray();
-                    if (tileItems.Count() >= 2)
                     {
-                        var ti1= tileItems[0];
-                        var ti2 = tileItems[1];
-                        ti1.TileItem.AddMarker(Marker.WillBeAbsorbed);
-                        ti2.TileItem.AddMarker(Marker.WillBeAbsorbed);
-                        game.DestroyTileItem(ti1.TileItem, ti1.row, ti1.column);
-                        game.DestroyTileItem(ti2.TileItem, ti2.row, ti2.column);
-                        readyToTransform = true;
-                    }
-                }
-                )
-                .WithTransformationEffect("When absorbing apples transforms into waffle with apples tile item", (game) => readyToTransform, WaffleWithApples());
+                        var tileItems = tiWithCoords.Where(ti => !ti.TileItem.Markers.Contains(Markers.WillBeAbsorbed)).Take(2).ToArray();
+                        if (tileItems.Count() >= 2)
+                        {
+                            var ti1 = tileItems[0];
+                            var ti2 = tileItems[1];
+                            ti1.TileItem.AddMarker(Markers.WillBeAbsorbed);
+                            ti2.TileItem.AddMarker(Markers.WillBeAbsorbed);
+                            game.DestroyTileItem(ti1.TileItem, ti1.row, ti1.column);
+                            game.DestroyTileItem(ti2.TileItem, ti2.row, ti2.column);
+                            tileItem.AddMarker(Markers.ReadyToPerformAction);
+                        }
+                    })
+                .WithTransformationEffect(
+                "When absorbing apples transforms into waffle with apples tile item",
+                (game) => tileItem.Markers.Contains(Markers.ReadyToPerformAction),
+                WaffleWithApples());
+            return tileItem;
+
         }
         private TileItem WaffleWithApples() =>
             TileItem.UnavailableInBeforeStageChoosingPhase("Waffle With Apples", Rarity.Legendary, 15, ["sweet"]);
 
+        private TileItem Zookeeper()
+        {
+            TileItemWithCounter t = TileItemWithCounter
+                .New("Zookeeper", "Gives coins equal to the value of the counter", Rarity.Legendary, 0, ["human"])
+                .SetBaseIncomeCalculationFunc(ti => ti.Counter);
+            t = t.WithAreaScanningTileItemEffect(
+                "Each spin increases the counter by the number of adjacent animals and birds",
+                SlotMachineArea.Adjacent,
+                (ti) => ti.HasTag("animal") || ti.HasTag("bird"),
+                (game, tiWithCoords) => t.IncrementCounter(tiWithCoords.Count())
+            );
+            return t;
+        }
+
+        private TileItem Tiger()
+        {
+            const int adjacentAnimalBonus = 2;
+
+            var newTI = TileItem.Ordinary("Tiger", Rarity.Epic, 8, ["animal"]);
+            newTI = newTI
+                .WithAreaScanningTileItemEffect(
+                    $"If there any adjacent zookeeper increases income of adjacent animal tiles by {adjacentAnimalBonus} coins",
+                    SlotMachineArea.Adjacent,
+                    (ti) => ti.IdIs("zookeeper"),
+                    (game, tiWithCoords) =>
+                    {
+                        if (tiWithCoords.Count() > 0)
+                            newTI.AddMarker(Markers.ReadyToPerformAction);
+                    }
+                )
+                .WithTileItemsEnhancingTileItemEffect(
+                    string.Empty, SlotMachineArea.Adjacent, ModifierType.Plus, adjacentAnimalBonus,
+                    (ti) => ti.HasTag("animal") && newTI.Markers.Contains(Markers.ReadyToPerformAction)
+                );
+
+            return newTI;
+        }
 
     }
 }

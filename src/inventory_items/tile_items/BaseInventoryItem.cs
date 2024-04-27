@@ -11,7 +11,7 @@ namespace SaYSpin.src.inventory_items
         public string Image { get; init; }
         public Rarity Rarity { get; init; }
         public bool IsUnique{get;init;}
-        public bool IsAvailableInBeforeStageChoosingPhase{get;init;}
+        public bool ObtainableInRegularCases{get;init;}
         public abstract string ImageFolderPath { get; }
         protected BaseInventoryItem(string name, string description, Rarity rarity, bool isAvailableInBeforeStageChoosingPhase=true, bool isUnique=false)
         {
@@ -21,7 +21,7 @@ namespace SaYSpin.src.inventory_items
             Description = description;
             Rarity = rarity;
             IsUnique = isUnique;
-            IsAvailableInBeforeStageChoosingPhase = isAvailableInBeforeStageChoosingPhase;
+            ObtainableInRegularCases = isAvailableInBeforeStageChoosingPhase;
         }
         public abstract string TextInfo();
 

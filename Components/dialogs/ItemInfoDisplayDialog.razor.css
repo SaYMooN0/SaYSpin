@@ -1,15 +1,13 @@
 #itemInfoDisplayDialog {
     border: none;
     outline: none;
-    border-radius: 30px;
+    border-radius: 32px;
 }
 
     #itemInfoDisplayDialog .dialog-content {
-        width: 560px;
-        height: calc(300px + 40vh);
+        width: min-content;
         display: grid;
-        grid-template-rows: 60px 300px 40px auto;
-        gap: 6px;
+        grid-template-rows: 360px auto auto 1fr;
         justify-content: center;
         position: relative;
     }
@@ -40,70 +38,131 @@
     transform: scale(1.05);
 }
 
-.rarity-label {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Montserrat';
-    font-weight: bolder;
-    font-size: 30px;
-    gap: 12px;
+#itemInfoDisplayDialog .item-img {
+    margin: 0 120px;
+    height: 100%;
+    aspect-ratio: 1/1;
+    justify-self: center;
 }
 
 #itemInfoDisplayDialog .item-name {
     width: 100%;
     text-align: center;
     font-family: "Montserrat";
-    font-size: 28px;
+    font-size: 34px;
     font-weight: bold;
+    margin-bottom: 20px;
 }
 
-#itemInfoDisplayDialog .item-img {
-    height: 100%;
-    aspect-ratio: 1/1;
-    justify-self: center;
+.basic-info-container {
+    width: 100%;
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 6px;
 }
+
+    .basic-info-container label {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        padding: 0px 40px;
+        gap: 10px;
+        box-sizing: border-box;
+        font-family: "Montserrat";
+        font-size: 18px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+    }
+
+
+
 #itemInfoDisplayDialog .description {
     width: 100%;
-    padding: 10px;
-    padding-left: 20px;
+    padding: 12px;
+    padding-left: 40px;
     box-sizing: border-box;
 }
+
     #itemInfoDisplayDialog .description li {
         width: 100%;
-        margin-top: 2px;
-        font-size: 18px;
+        font-size: 21px;
         font-family: Arial;
-     
-    }
-#itemInfoDisplayDialog .description li img {
-    margin-top: 2px;
-    font-size: 16px;
-    font-family: "Montserrat";
-}
-@media (max-width: 1100px), (max-height: 900px) {
-    .rarity-label {
-        font-size: 26px;
-        gap: 10px;
     }
 
-    #itemInfoDisplayDialog .dialog-content {
-        width: 500px;
-        height: calc(200px + 55vh);
-        grid-template-rows: 60px 260px 40px auto;
+        #itemInfoDisplayDialog .description li img {
+            font-size: 16px;
+            font-family: "Montserrat";
+        }
+
+@media (max-width: 1400px) {
+
+    #itemInfoDisplayDialog {
+        border-radius: 30px;
+    }
+
+        #itemInfoDisplayDialog .dialog-content {
+            grid-template-rows: 320px auto auto 1fr;
+        }
+
+        #itemInfoDisplayDialog .item-name {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+}
+
+@media (max-width: 1100px), (max-height: 900px) {
+    #itemInfoDisplayDialog {
+        border-radius: 26px;
+    }
+
+        #itemInfoDisplayDialog .dialog-content {
+            grid-template-rows: 280px auto auto 1fr;
+        }
+        #itemInfoDisplayDialog .item-img {
+            margin: 0 80px;
+        }
+        #itemInfoDisplayDialog .item-name {
+            font-size: 30px;
+            margin-bottom: 18px;
+        }
+
+    .basic-info-container label {
+        padding: 0px 38px;
+    }
+
+    #itemInfoDisplayDialog .description {
+        padding-left: 38px;
     }
 }
 
 @media (max-width: 850px), (max-height:600px) {
-    .rarity-label {
-        font-size: 24px;
+    #itemInfoDisplayDialog {
+        border-radius: 24px;
     }
 
-    #itemInfoDisplayDialog .dialog-content {
-        width: 400px;
-        height: calc(180px + 40vh);
-        grid-template-rows: 50px 130px 40px auto;
+        #itemInfoDisplayDialog .dialog-content {
+            grid-template-rows: 240px auto auto 1fr;
+        }
+        #itemInfoDisplayDialog .item-img {
+            margin: 0 60px;
+        }
+        #itemInfoDisplayDialog .item-name {
+            font-size: 28px;
+            margin-bottom: 16px;
+        }
+
+
+    .basic-info-container label {
+        padding: 0px 36px;
+        font-size: 15px;
     }
+
+    #itemInfoDisplayDialog .description {
+        padding-left: 36px;
+    }
+
+        #itemInfoDisplayDialog .description li {
+            font-size: 18px;
+        }
 }

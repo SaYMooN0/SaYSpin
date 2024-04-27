@@ -1,4 +1,5 @@
-﻿using SaYSpin.src.enums;
+﻿using Microsoft.Maui.Animations;
+using SaYSpin.src.enums;
 using SaYSpin.src.extension_classes;
 using SaYSpin.src.extension_classes.factories;
 using SaYSpin.src.gameplay_parts;
@@ -6,6 +7,7 @@ using SaYSpin.src.gameplay_parts.inventory_related.tokens;
 using SaYSpin.src.inventory_items.relics;
 using SaYSpin.src.inventory_items.tile_items;
 using SaYSpin.src.static_classes;
+using System.Net.NetworkInformation;
 
 namespace SaYSpin.src.inventory_items_storages
 {
@@ -35,7 +37,10 @@ namespace SaYSpin.src.inventory_items_storages
                 ["Bowl Of Candies"] = BowlOfCandies,
                 ["Diamond Pass"] = DiamondPass,
                 ["Waffle Iron"] = WaffleIron,
-                ["Galactic Assembly Medal"] = GalacticAssemblyMedal
+                ["Galactic Assembly Medal"] = GalacticAssemblyMedal,
+                ["Hourglass"] = Hourglass,
+                ["Zoo Tickets"] = ZooTickets,
+                ["Piggy Bank"] = PiggyBank,
             };
             _availableRelics = new HashSet<string>(_storedItems.Keys);
         }
@@ -246,6 +251,46 @@ namespace SaYSpin.src.inventory_items_storages
                     $"Planets give +{planetsFromAliensBonus} coin for every alien variant in the inventory",
                     (game) => new(ModifierType.Plus, game.Inventory.TileItems.Count(ti => ti.IsAlien()) * planetsFromAliensBonus),
                     ti => ti.IsPlanet());
+        }
+        private Relic Hourglass()
+        {
+            const int coinsBonus = 2;
+            return new Relic("Hourglass", Rarity.Epic, true, true )
+                .WithNonConstantCalculationRelicEffect(
+                    $"In the last 3 spins of every stage all tile items give +{coinsBonus} coins",
+                    (game) =>
+                    {
+                        if (game.SpinsLeft < 3)
+                            return new(ModifierType.Plus, coinsBonus);
+                        else
+                            return new(ModifierType.Plus, 0);
+                    },
+                    _ => true
+                );
+        }                                           
+        private Relic ZooTickets()
+        {
+            const int coinsBonus = 1;
+            return new Relic("Zoo Tickets", Rarity.Legendary,true, true )
+                .WithNonConstantCalculationRelicEffect(
+                    $"All people (except zookeeper) give +{coinsBonus} coins for every bird and animal variants in the inventory",
+                    (game) =>
+                    {
+                        int count = game.Inventory.TileItems.Where(ti => ti.HasOneOfTags("animal", "bird")).DistinctBy(ti => ti.Id).Count();
+                        return new(ModifierType.Plus, count * coinsBonus);
+                    },
+                    (ti) => ti.HasTag("human") && !ti.IdIs("zookeeper")
+                );
+        }
+        private Relic PiggyBank()
+        {
+            const int coinsForRemainingSpins = 3;
+            return new Relic("Piggy Bank", Rarity.Legendary, true, true)
+                .WithNonConstantCalculationRelicEffect(
+                    $"All humans give +{coinsForRemainingSpins} coins for every remaining spin",
+                    (game) => new(ModifierType.Plus, (game.SpinsLeft+1) * coinsForRemainingSpins),
+                    ti => ti.HasTag("human")
+            );
         }
 
 

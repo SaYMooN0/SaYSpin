@@ -38,7 +38,7 @@ namespace SaYSpin.src.static_classes
 
         public static GameLogModel HandleCommand(string command, GameFlowController game)
         {
-            if (string.IsNullOrEmpty(command) || !command.StartsWith("/") || game is null)
+            if (string.IsNullOrEmpty(command) || !command.StartsWith('/') || game is null)
                 return GameLogModel.CommandError("Unable to handle");
 
             var parts = command.Remove(0, 1).Split("--");

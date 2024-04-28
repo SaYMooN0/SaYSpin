@@ -25,7 +25,7 @@ namespace SaYSpin.src.gameplay_parts
 
         private void UpdateItems(List<TileItem> newItems)
         {
-            Random rand = new Random();
+            Random rand = new();
             var positions = Enumerable.Range(0, TotalSlots)
                                       .OrderBy(x => rand.Next())
                                       .ToList();
@@ -76,7 +76,7 @@ namespace SaYSpin.src.gameplay_parts
         }
         public override string ToString()
         {
-            StringBuilder sB = new StringBuilder();
+            StringBuilder sB = new();
 
             int emptyCount = 0;
             int filledCount = 0;

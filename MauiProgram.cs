@@ -1,7 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using SaYSpin.src.gameplay_parts;
-using SaYSpin.src.in_game_logging_related;
-using SaYSpin.src.singletons;
+﻿using SaYSpin.src.singletons;
 
 namespace SaYSpin
 {
@@ -25,7 +22,7 @@ namespace SaYSpin
 
             AppController mainController = new();
 
-            
+
             builder.Services.AddSingleton(provider => mainController);
             builder.Services.AddSingleton<ShowItemInfoDialogService>();
             builder.Services.AddSingleton<GameLoggingService>();

@@ -4,7 +4,6 @@ using SaYSpin.src.extension_classes.factories;
 using SaYSpin.src.gameplay_parts;
 using SaYSpin.src.inventory_items.tile_items;
 using SaYSpin.src.static_classes;
-using SaYSpin.src.secondary_classes;
 
 
 namespace SaYSpin.src.inventory_items_storages
@@ -253,8 +252,8 @@ namespace SaYSpin.src.inventory_items_storages
                             var ti2 = tileItems[1];
                             ti1.TileItem.AddMarker(Markers.WillBeAbsorbed);
                             ti2.TileItem.AddMarker(Markers.WillBeAbsorbed);
-                            game.DestroyTileItem(ti1.TileItem, ti1.row, ti1.column);
-                            game.DestroyTileItem(ti2.TileItem, ti2.row, ti2.column);
+                            game.DestroyTileItem(ti1.TileItem, ti1.Row, ti1.Column);
+                            game.DestroyTileItem(ti2.TileItem, ti2.Row, ti2.Column);
                             tileItem.AddMarker(Markers.ReadyToPerformAction);
                         }
                     })

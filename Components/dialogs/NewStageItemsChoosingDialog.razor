@@ -3,14 +3,14 @@
     <div>
         @if (_pickingStageTileItem)
         {
-            <label class="choose-label">Choose new item</label>
+            <label class="choose-label unselectable">New stage rewards</label>
             <div class="options-container">
                 @foreach (TileItem tileItem in TileItemsToPick)
                 {
                     <NewStageItemChoosingCard item="tileItem" OnChosen="ItemChosen" />
                 }
             </div>
-            <ItemsChoosingDialogBottomButtons onRefresh="RefreshTileItemsWithToken" onSkip="TileItemSkipped" tokensCount="game.Inventory.Tokens.Count(TokenType.NewStageItemsRefresh)" />
+
         }
         else
         {
@@ -22,8 +22,9 @@
                     <NewStageItemChoosingCard item="relic" OnChosen="ItemChosen" />
                 }
             </div>
-            <ItemsChoosingDialogBottomButtons onRefresh="RefreshRelicsWithToken" onSkip="RelicSkipped" tokensCount="game.Inventory.Tokens.Count(TokenType.NewStageItemsRefresh)" />
+
         }
+        <ItemsChoosingDialogBottomButtons onRefresh="OnRefreshPressed" onSkip="OnSkipPressed" tokensCount="game.Inventory.Tokens.Count(TokenType.NewStageItemsRefresh)" />
     </div>
 </dialog>
 
@@ -50,25 +51,29 @@
         await JSRuntime.InvokeVoidAsync("blazorDialogFunctions.openDialog", "newStagePickingDialog");
     }
 
-    private async Task Close()
-    {
+    private async Task Close() =>
         await JSRuntime.InvokeVoidAsync("blazorDialogFunctions.closeDialog", "newStagePickingDialog");
-    }
 
-    private void TileItemSkipped()
+    private void OnSkipPressed()
     {
         game.TriggerOnNewStageChoosingSkippedEffects();
         refreshInventory();
         StateHasChanged();
-        _pickingStageTileItem = false;
 
+        if (_pickingStageTileItem)
+            _pickingStageTileItem = false;
+        else
+            Close();
     }
-    private void RelicSkipped()
+    private void OnRefreshPressed()
     {
-        game.TriggerOnNewStageChoosingSkippedEffects();
-        refreshInventory();
-        StateHasChanged();
-        Close();
+        if (_pickingStageTileItem)
+        {
+            if (game.UseToken(TokenType.NewStageItemsRefresh))
+                RefreshTileItems();
+        }
+        else if (game.UseToken(TokenType.NewStageItemsRefresh))
+            RefreshRelics();
     }
     private void ItemChosen(BaseInventoryItem chosenItem)
     {
@@ -87,20 +92,7 @@
         }
         else
             throw new Exception("Invalid type of chose item");
-
-
     }
-    private void RefreshTileItemsWithToken()
-    {
-        if (game.UseToken(TokenType.NewStageItemsRefresh))
-            RefreshTileItems();
-    }
-    private void RefreshRelicsWithToken()
-    {
-        if (game.UseToken(TokenType.NewStageItemsRefresh))
-            RefreshRelics();
-    }
-
     private void RefreshTileItems() =>
             TileItemsToPick = game.GenerateTileItemsForNewStageChoosing();
 

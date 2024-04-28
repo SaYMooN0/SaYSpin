@@ -83,8 +83,8 @@
 
             return new Difficulty(
                 name,
-                negatives.ToArray(),
-                positives.ToArray(),
+                [.. negatives],
+                [.. positives],
                 neededCoinsMultiplier,
                 shopPricesMultiplier,
                 startingDiamondsCount,

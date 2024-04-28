@@ -11,9 +11,9 @@ namespace SaYSpin.src.gameplay_parts
 {
     public class GameFlowController
     {
-        private Dictionary<string, Func<TileItem>> _tileItemsCollection { get; init; }
+        private Dictionary<string, Func<TileItem>> tileItemsCollection { get; init; }
         public List<TileItem> TileItems { get; init; }
-        private Dictionary<string, Func<Relic>> _relicsCollection { get; init; }
+        private Dictionary<string, Func<Relic>> relicsCollection { get; init; }
         public List<Relic> Relics { get; init; }
         public Difficulty Difficulty { get; init; }
         public SlotMachine SlotMachine { get; private set; }
@@ -35,10 +35,10 @@ namespace SaYSpin.src.gameplay_parts
             StatsTracker = stats;
             Difficulty = difficulty;
 
-            _tileItemsCollection = accessibleTileItems;
+            tileItemsCollection = accessibleTileItems;
             TileItems = accessibleTileItems.Select(ti => ti.Value()).ToList();
 
-            _relicsCollection = accessibleRelics;
+            relicsCollection = accessibleRelics;
             Relics = accessibleRelics.Select(r => r.Value()).ToList();
 
             AreCheatsEnabled = areCheatsEnabled;
@@ -121,14 +121,14 @@ namespace SaYSpin.src.gameplay_parts
         }
         public void AddTileItemToInventory(TileItem item)
         {
-            TileItem itemToAdd = _tileItemsCollection[item.Name]();
+            TileItem itemToAdd = tileItemsCollection[item.Name]();
 
             Inventory.TileItems.Add(itemToAdd);
             OnInventoryItemAdded?.Invoke(itemToAdd);
         }
         public void AddRelicToInventory(Relic relic)
         {
-            Relic relicToAdd = _relicsCollection[relic.Name]();
+            Relic relicToAdd = relicsCollection[relic.Name]();
 
             Inventory.Relics.Add(relicToAdd);
             OnInventoryItemAdded?.Invoke(relicToAdd);

@@ -7,7 +7,7 @@
         <div class="log-container">
             @foreach (var log in logs)
             {
-                <LogComponent log="@log" />
+                <LogComponent log="@log" pasteText="(text)=>{consoleInput=text; StateHasChanged();} " />
             }
         </div>
     }
@@ -38,6 +38,12 @@
 
         if (consoleInput.StartsWith('/'))
         {
+            if (consoleInput.Trim()== "/clear")
+            {
+                loggingService.Clear();
+                consoleInput = "";
+                return;
+            }
 
             var commandRes = CommandHandler.HandleCommand(consoleInput, allGameController.Game);
             loggingService.Log(commandRes);

@@ -52,6 +52,9 @@ namespace SaYSpin.src.inventory_items_storages
                 ["Waffle With Apples"] = WaffleWithApples,
                 ["Zookeeper"] = Zookeeper,
                 ["Tiger"] = Tiger,
+                ["First Place Medal"] = FirstPlaceMedal,
+                ["Second Place Medal"] = SecondPlaceMedal,
+                ["Third Place Medal"] = ThirdPlaceMedal
             };
             //_avaliableTileItems = InitAvailable();
             _avaliableTileItems = _storedItems.Keys.ToHashSet();
@@ -258,9 +261,9 @@ namespace SaYSpin.src.inventory_items_storages
                         }
                     })
                 .WithTransformationEffect(
-                "When absorbing apples transforms into waffle with apples tile item",
-                (game) => tileItem.Markers.Contains(Markers.ReadyToPerformAction),
-                WaffleWithApples());
+                    "When absorbing apples transforms into waffle with apples tile item",
+                    (game) => tileItem.Markers.Contains(Markers.ReadyToPerformAction),
+                    WaffleWithApples());
             return tileItem;
 
         }
@@ -304,6 +307,75 @@ namespace SaYSpin.src.inventory_items_storages
 
             return newTI;
         }
+        private TileItem ThirdPlaceMedal()
+        {
+            const double adjacentHumansMultiplier = 2;
+            var newTI = TileItem.Ordinary("Third Place Medal", Rarity.Rare, 3, ["medal"])
+                .WithTileItemsEnhancingTileItemEffect(
+                    $"Adjacent humans give {adjacentHumansMultiplier}× coins",
+                    SlotMachineArea.Adjacent,
+                    ModifierType.Multiply, adjacentHumansMultiplier,
+                    (ti) => ti.IdIs("human"));
+            newTI = newTI.WithAreaScanningTileItemEffect(
+                        $"If there two more third place medals in adjacent tiles combine into one second place medal",
+                        SlotMachineArea.Adjacent, (ti) => ti.IdIs("third_place_medal"),
+                        (game, tiWithCoords) =>
+                        {
+                            var medals = tiWithCoords.Where(ti => !ti.TileItem.Markers.Contains(Markers.WillBeAbsorbed)).Take(2).ToArray();
+                            if (medals.Count() < 2)
+                                return;
+                            var ti1 = medals[0];
+                            var ti2 = medals[1];
+                            ti1.TileItem.AddMarker(Markers.WillBeAbsorbed);
+                            ti2.TileItem.AddMarker(Markers.WillBeAbsorbed);
+                            game.DestroyTileItem(ti1.TileItem, ti1.Row, ti1.Column);
+                            game.DestroyTileItem(ti2.TileItem, ti2.Row, ti2.Column);
+                            newTI.AddMarker(Markers.ReadyToPerformAction);
+                        }
+                    );
+            newTI = newTI.WithTransformationEffect(string.Empty, (_) => newTI.Markers.Contains(Markers.ReadyToPerformAction), SecondPlaceMedal());
+            return newTI;
+        }
 
+        private TileItem SecondPlaceMedal()
+        {
+            const double adjacentHumansMultiplier = 3;
+            var newTI = TileItem.Ordinary("Second Place Medal", Rarity.Epic, 5, ["medal"])
+                .WithTileItemsEnhancingTileItemEffect(
+                    $"Adjacent humans give {adjacentHumansMultiplier}× coins",
+                    SlotMachineArea.Adjacent,
+                    ModifierType.Multiply, adjacentHumansMultiplier,
+                    (ti) => ti.IdIs("human"));
+            newTI = newTI.WithAreaScanningTileItemEffect(
+                       $"If there two more second place medals in adjacent tiles combine into one first place medal",
+                       SlotMachineArea.Adjacent, (ti) => ti.IdIs("second_place_medal"),
+                       (game, tiWithCoords) =>
+                       {
+                           var medals = tiWithCoords.Where(ti => !ti.TileItem.Markers.Contains(Markers.WillBeAbsorbed)).Take(2).ToArray();
+                           if (medals.Count() < 2)
+                               return;
+                           var ti1 = medals[0];
+                           var ti2 = medals[1];
+                           ti1.TileItem.AddMarker(Markers.WillBeAbsorbed);
+                           ti2.TileItem.AddMarker(Markers.WillBeAbsorbed);
+                           game.DestroyTileItem(ti1.TileItem, ti1.Row, ti1.Column);
+                           game.DestroyTileItem(ti2.TileItem, ti2.Row, ti2.Column);
+                           newTI.AddMarker(Markers.ReadyToPerformAction);
+                       }
+                   );
+            newTI = newTI.WithTransformationEffect(string.Empty, (_) => newTI.Markers.Contains(Markers.ReadyToPerformAction), FirstPlaceMedal());
+            return newTI;
+        }
+        private TileItem FirstPlaceMedal()
+        {
+            const double adjacentHumansMultiplier = 5;
+            var newTI = TileItem.Ordinary("First Place Medal", Rarity.Legendary, 15, ["medal"])
+                .WithTileItemsEnhancingTileItemEffect(
+                    $"Adjacent humans give {adjacentHumansMultiplier}× coins",
+                    SlotMachineArea.Adjacent,
+                    ModifierType.Multiply, adjacentHumansMultiplier,
+                    (ti) => ti.IdIs("human"));
+            return newTI;
+        }
     }
 }

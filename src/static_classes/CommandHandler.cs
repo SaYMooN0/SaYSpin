@@ -186,7 +186,6 @@ namespace SaYSpin.src.static_classes
 
         private static GameLogModel HandleGetStats(GameFlowController game) =>
             GameLogModel.CommandSuccess(string.Join("\n", game.StatsTracker.Values.Select(kvp => $"{kvp.Key}: {kvp.Value}")));
-
     }
 
 }

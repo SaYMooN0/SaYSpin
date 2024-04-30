@@ -57,7 +57,7 @@ namespace SaYSpin.src.inventory_items_storages
                 ["Third Place Medal"] = ThirdPlaceMedal
             };
             //_avaliableTileItems = InitAvailable();
-            _avaliableTileItems = _storedItems.Keys.ToHashSet();
+            _avaliableTileItems = [.. _storedItems.Keys];
         }
         public Dictionary<string, Func<TileItem>> GetAvailableItems() =>
         _storedItems
@@ -88,7 +88,7 @@ namespace SaYSpin.src.inventory_items_storages
                     pirateIncomeMultyplier,
                     (ti) => ti.IdIs("pirate"));
         }
-        private TileItem SweetTooth()
+        private TileItemWithCounter SweetTooth()
         {
             TileItemWithCounter t = TileItemWithCounter
                 .New("Sweet Tooth", "Gives coins equal to the value of the counter", Rarity.Epic, 0, ["human"])
@@ -100,7 +100,7 @@ namespace SaYSpin.src.inventory_items_storages
             return t;
         }
 
-        private TileItem Pirate()
+        private TileItemWithCounter Pirate()
         {
             TileItemWithCounter t = TileItemWithCounter
                 .New("Pirate", "Gives (7 + value of counter) coins ", Rarity.Legendary, 7, ["human"])
@@ -249,7 +249,7 @@ namespace SaYSpin.src.inventory_items_storages
                 .WithAreaScanningTileItemEffect("If there are two adjacent apples, absorbs them", SlotMachineArea.Adjacent, (ti) => ti.IdIs("apple"), (game, tiWithCoords) =>
                     {
                         var tileItems = tiWithCoords.Where(ti => !ti.TileItem.Markers.Contains(Markers.WillBeAbsorbed)).Take(2).ToArray();
-                        if (tileItems.Count() >= 2)
+                        if (tileItems.Length >= 2)
                         {
                             var ti1 = tileItems[0];
                             var ti2 = tileItems[1];
@@ -270,7 +270,7 @@ namespace SaYSpin.src.inventory_items_storages
         private TileItem WaffleWithApples() =>
             TileItem.UnavailableInBeforeStageChoosingPhase("Waffle With Apples", Rarity.Legendary, 15, ["sweet"]);
 
-        private TileItem Zookeeper()
+        private TileItemWithCounter Zookeeper()
         {
             TileItemWithCounter t = TileItemWithCounter
                 .New("Zookeeper", "Gives coins equal to the value of the counter", Rarity.Legendary, 0, ["human"])
@@ -279,7 +279,7 @@ namespace SaYSpin.src.inventory_items_storages
                 "Each spin increases the counter by the number of adjacent animals and birds",
                 SlotMachineArea.Adjacent,
                 (ti) => ti.HasTag("animal") || ti.HasTag("bird"),
-                (game, tiWithCoords) => t.IncrementCounter(tiWithCoords.Count())
+                (game, tiWithCoords) => t.IncrementCounter(tiWithCoords.Count)
             );
             return t;
         }
@@ -296,7 +296,7 @@ namespace SaYSpin.src.inventory_items_storages
                     (ti) => ti.IdIs("zookeeper"),
                     (game, tiWithCoords) =>
                     {
-                        if (tiWithCoords.Count() > 0)
+                        if (tiWithCoords.Count > 0)
                             newTI.AddMarker(Markers.ReadyToPerformAction);
                     }
                 )
@@ -322,7 +322,7 @@ namespace SaYSpin.src.inventory_items_storages
                         (game, tiWithCoords) =>
                         {
                             var medals = tiWithCoords.Where(ti => !ti.TileItem.Markers.Contains(Markers.WillBeAbsorbed)).Take(2).ToArray();
-                            if (medals.Count() < 2)
+                            if (medals.Length < 2)
                                 return;
                             var ti1 = medals[0];
                             var ti2 = medals[1];
@@ -340,7 +340,7 @@ namespace SaYSpin.src.inventory_items_storages
         private TileItem SecondPlaceMedal()
         {
             const double adjacentHumansMultiplier = 3;
-            var newTI = TileItem.Ordinary("Second Place Medal", Rarity.Epic, 5, ["medal"])
+            var newTI = TileItem.UnavailableInBeforeStageChoosingPhase("Second Place Medal", Rarity.Epic, 5, ["medal"])
                 .WithTileItemsEnhancingTileItemEffect(
                     $"Adjacent humans give {adjacentHumansMultiplier}× coins",
                     SlotMachineArea.Adjacent,
@@ -352,7 +352,7 @@ namespace SaYSpin.src.inventory_items_storages
                        (game, tiWithCoords) =>
                        {
                            var medals = tiWithCoords.Where(ti => !ti.TileItem.Markers.Contains(Markers.WillBeAbsorbed)).Take(2).ToArray();
-                           if (medals.Count() < 2)
+                           if (medals.Length < 2)
                                return;
                            var ti1 = medals[0];
                            var ti2 = medals[1];
@@ -369,7 +369,7 @@ namespace SaYSpin.src.inventory_items_storages
         private TileItem FirstPlaceMedal()
         {
             const double adjacentHumansMultiplier = 5;
-            var newTI = TileItem.Ordinary("First Place Medal", Rarity.Legendary, 15, ["medal"])
+            var newTI = TileItem.UnavailableInBeforeStageChoosingPhase("First Place Medal", Rarity.Legendary, 15, ["medal"])
                 .WithTileItemsEnhancingTileItemEffect(
                     $"Adjacent humans give {adjacentHumansMultiplier}× coins",
                     SlotMachineArea.Adjacent,

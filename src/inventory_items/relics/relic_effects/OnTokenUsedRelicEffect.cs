@@ -1,4 +1,4 @@
-﻿using SaYSpin.src.gameplay_parts;
+﻿using SaYSpin.src.gameplay_parts.game_flow_controller;
 using SaYSpin.src.gameplay_parts.inventory_related.tokens;
 
 namespace SaYSpin.src.inventory_items.relics.relic_effects

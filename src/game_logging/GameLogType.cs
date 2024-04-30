@@ -1,4 +1,4 @@
-﻿namespace SaYSpin.src.in_game_logging_related
+﻿namespace SaYSpin.src.game_logging
 {
     public enum GameLogType
     {

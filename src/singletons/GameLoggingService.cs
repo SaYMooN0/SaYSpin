@@ -1,5 +1,5 @@
 ﻿using SaYSpin.src.gameplay_parts.inventory_related.tokens;
-using SaYSpin.src.in_game_logging_related;
+using SaYSpin.src.game_logging;
 using SaYSpin.src.inventory_items;
 using System.Collections.Concurrent;
 

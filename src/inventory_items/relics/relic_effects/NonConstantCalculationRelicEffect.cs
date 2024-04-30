@@ -1,5 +1,5 @@
 ﻿using SaYSpin.src.enums;
-using SaYSpin.src.gameplay_parts;
+using SaYSpin.src.gameplay_parts.game_flow_controller;
 using SaYSpin.src.inventory_items.relics;
 using SaYSpin.src.inventory_items.relics.relic_effects;
 

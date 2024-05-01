@@ -2,6 +2,7 @@
 using SaYSpin.src.game_logging;
 using SaYSpin.src.inventory_items_storages;
 using SaYSpin.src.gameplay_parts.game_flow_controller;
+using SaYSpin.src.gameplay_parts.shop;
 
 namespace SaYSpin.src.singletons
 {
@@ -33,7 +34,13 @@ namespace SaYSpin.src.singletons
         {
             logger.Clear();
 
-            Game = new(LoadInitialStats(), difficulty, TileItemsStorage.GetAvailableItems(), RelicsStorage.GetAvailableItems(), areCheatsEnabled);
+            Game = new(
+                LoadInitialStats(),
+                difficulty,
+                TileItemsStorage.GetAvailableItems(),
+                RelicsStorage.GetAvailableItems(),
+                LoadSpecialMerchants(),
+                areCheatsEnabled);
 
             Game.OnNewStageStarted += (newStage) => logger.Log(GameLogModel.New($"Stage #{newStage} has been started", GameLogType.Info));
             Game.OnInventoryItemAdded += logger.LogItemAdded;
@@ -48,10 +55,20 @@ namespace SaYSpin.src.singletons
             //only then null
             Game = null;
         }
+        private ISpecialMerchant[] LoadSpecialMerchants() => [];
         private StatsTracker LoadInitialStats()
         {
             //will be load from file
-            return new(1, 4, 4, 7, 1, 1);
+            return new StatsTracker(
+                initLuck: 1,
+                initNewStageTileItemsForChoiceCount: 4,
+                initNewStageRelicsForChoiceCount: 4,
+                initStageSpinsCount: 7,
+                initAfterStageCoinsToDiamondsCoefficient: 1,
+                initShopPriceCoefficient: 1,
+                initTileItemsInShopCount: 4,
+                initRelicsInShopCount: 2
+                );
         }
 
 

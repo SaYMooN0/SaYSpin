@@ -6,14 +6,16 @@ using SaYSpin.src.inventory_items.relics;
 using SaYSpin.src.inventory_items.relics.relic_effects;
 using SaYSpin.src.inventory_items;
 using SaYSpin.src.gameplay_parts.inventory_related.tokens;
+using System.Collections.ObjectModel;
+using SaYSpin.src.gameplay_parts.shop;
 namespace SaYSpin.src.gameplay_parts.game_flow_controller
 {
     public partial class GameFlowController
     {
-        private Dictionary<string, Func<TileItem>> tileItemsCollection { get; init; }
-        public List<TileItem> TileItems { get; init; }
-        private Dictionary<string, Func<Relic>> relicsCollection { get; init; }
-        public List<Relic> Relics { get; init; }
+        private ReadOnlyDictionary<string, Func<TileItem>> allTileItemsConstructors { get; init; }
+        public TileItem[] AllTileItemsCollection { get; init; }
+        private ReadOnlyDictionary<string, Func<Relic>> allRelicsConstructors { get; init; }
+        public Relic[] AllRelicsCollection { get; init; }
         public Difficulty Difficulty { get; init; }
         public SlotMachine SlotMachine { get; private set; }
         public Inventory Inventory { get; private set; }
@@ -30,20 +32,31 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
             Difficulty difficulty,
             Dictionary<string, Func<TileItem>> accessibleTileItems,
             Dictionary<string, Func<Relic>> accessibleRelics,
+            ISpecialMerchant[] possibleSpecialMerchants,
             bool areCheatsEnabled)
         {
             StatsTracker = stats;
             Difficulty = difficulty;
 
-            tileItemsCollection = accessibleTileItems;
-            TileItems = accessibleTileItems.Select(ti => ti.Value()).ToList();
+            allTileItemsConstructors = new ReadOnlyDictionary<string, Func<TileItem>>(accessibleTileItems); 
+            AllTileItemsCollection = accessibleTileItems.Select(ti => ti.Value()).ToArray();
 
-            relicsCollection = accessibleRelics;
-            Relics = accessibleRelics.Select(r => r.Value()).ToList();
+            allRelicsConstructors = new ReadOnlyDictionary<string, Func<Relic>>(accessibleRelics);
+            AllRelicsCollection = accessibleRelics.Select(r => r.Value()).ToArray();
 
             AreCheatsEnabled = areCheatsEnabled;
 
-            Shop = new();
+            Shop = new(possibleSpecialMerchants);
+
+            this.OnInventoryItemAdded += (item) =>
+            {
+                if (item.IsUnique) SetPossibleInventoryItemsReinitNeeded(item);
+            };
+            this.OnInventoryItemRemoved += (item) =>
+            {
+                if (item.IsUnique) SetPossibleInventoryItemsReinitNeeded(item);
+            };
+
         }
         internal void Start(GameStarterKit chosenStarterKit)
         {
@@ -88,7 +101,7 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
             {
                 effect.PerformOnStageStartedAction(this);
             }
-            RefreshShop();
+            EveryStageShopUpdate();
         }
         public void SpinSlotMachine()
         {
@@ -127,11 +140,13 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
         public void RefreshShopWithToken()
         {
             if (UseToken(TokenType.FreeShopRefresh))
-                RefreshShop();
+                UpdateShopItems();
         }
-        private void RefreshShop()
+        private void EveryStageShopUpdate()
         {
-            Shop.RefreshShop();
+            UpdateShopItems();
+            if (CurrentStage % 5 == 0)
+                Shop.UpdateSpecialMerchant();
         }
         private void ClearTileItemsMarkers() =>
            Inventory.TileItems.ForEach(ti => ti.ClearMarkers());

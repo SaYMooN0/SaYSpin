@@ -7,7 +7,9 @@
         NewStageRelicsForChoiceCount,
         StageSpinsCount,
         AfterStageCoinsToDiamondsCoefficient,
-        ShopPriceCoefficient
+        ShopPriceCoefficient,
+        TileItemsInShopCount,
+        RelicsInShopCount,
     }
 
 }

@@ -27,18 +27,18 @@
     </svg>
     <div class="items-container">
         <div class="tile-items-zone">
-            @foreach (var item in appController.Game.Shop.TileItems)
+            @foreach (var item in appController.Game.Shop.TileItemsForSale)
             {
-                
+                <ItemForSaleCard itemForSale="@item.Item" price="@item.Price"></ItemForSaleCard>
             }
         </div>
         <div class="relics-zone">
-            @foreach (var item in appController.Game.Shop.Relics)
+            @foreach (var item in appController.Game.Shop.RelicsForSale)
             {
-
+                <ItemForSaleCard itemForSale="@item.Item" price="@item.Price"></ItemForSaleCard>
             }
         </div>
-@*         refresh button
+        @*         refresh button
         special merchant *@
     </div>
 </div>

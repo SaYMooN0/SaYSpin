@@ -2,7 +2,7 @@
 
 <div class="relics-container">
     <div class="relics-grid">
-        @foreach (var relic in gameController.Game.Relics)
+        @foreach (var relic in gameController.Game.AllRelicsCollection)
         {
             <div>
                 <InventoryItemWithRarityComponent itemToDisplay="@relic" />

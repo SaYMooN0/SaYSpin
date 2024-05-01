@@ -1,0 +1,10 @@
+﻿<div class="item-card">
+    @itemForSale.Name
+    @price
+</div>
+@code {
+    [Parameter]
+    public BaseInventoryItem itemForSale { get; set; }
+    [Parameter]
+    public int price { get; set; }  
+}

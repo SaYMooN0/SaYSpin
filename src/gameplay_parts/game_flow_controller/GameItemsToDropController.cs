@@ -1,31 +1,63 @@
-﻿using SaYSpin.src.gameplay_parts.inventory_related;
-using SaYSpin.src.secondary_classes;
-using SaYSpin.src.extension_classes;
-using SaYSpin.src.inventory_items.tile_items;
+﻿using SaYSpin.src.inventory_items.tile_items;
 using SaYSpin.src.inventory_items.relics;
-using SaYSpin.src.inventory_items.relics.relic_effects;
 using SaYSpin.src.inventory_items;
-using SaYSpin.src.gameplay_parts.inventory_related.tokens;
+using SaYSpin.src.gameplay_parts.shop;
+using SaYSpin.src.static_classes;
 namespace SaYSpin.src.gameplay_parts.game_flow_controller
 {
     public partial class GameFlowController
     {
-        private IEnumerable<TileItem> ShopAndRewardsPossibleTileItems()
+        private bool _possibleRelicsReinitNeeded = true;
+        private Relic[] _possibleToDropRelics;
+        public IEnumerable<Relic> RelicsPossibleToDrop
         {
-            //will be changed
-            return TileItems;
+            get
+            {
+                if (_possibleRelicsReinitNeeded)
+                {
+                    var takenUniqueRelics = Inventory.Relics.Where(r => r.IsUnique);
+                    _possibleToDropRelics = AllRelicsCollection
+                        .Where(r => r.ObtainableInRegularCases)
+                        .Except(takenUniqueRelics)
+                        .ToArray();
+                    _possibleRelicsReinitNeeded = false;
+                }
+                return _possibleToDropRelics;
+            }
         }
-        private IEnumerable<Relic> ShopAndRewardsPossibleRelics()
+
+        private bool _possibleTileItemsReinitNeeded = true;
+        private TileItem[] _possibleToDropTileItems;
+        public IEnumerable<TileItem> TileItemsPossibleToDrop
         {
-            //will be changed
-            return Relics;
+            get
+            {
+                if (_possibleTileItemsReinitNeeded)
+                {
+                    var takenUniqueTileItems = Inventory.TileItems.Where(ti => ti.IsUnique);
+                    _possibleToDropTileItems = AllTileItemsCollection
+                        .Where(ti => ti.ObtainableInRegularCases)
+                        .Except(takenUniqueTileItems)
+                        .ToArray();
+                    _possibleTileItemsReinitNeeded = false;
+                }
+                return _possibleToDropTileItems;
+            }
+        }
+
+        private void SetPossibleInventoryItemsReinitNeeded(BaseInventoryItem item)
+        {
+            if (item is Relic)
+                _possibleRelicsReinitNeeded = true;
+            if (item is TileItem)
+                _possibleTileItemsReinitNeeded = true;
         }
         public List<GameStarterKit> GenerateStarterKits()
         {
             List<GameStarterKit> kits = new();
-            var commonItems = TileItems.Where(i => i.Rarity == Rarity.Common).OrderBy(x => Guid.NewGuid()).ToList();
-            var rareItems = TileItems.Where(i => i.Rarity == Rarity.Rare).OrderBy(x => Guid.NewGuid()).ToList();
-            var relics = Relics.Where(r => r.Rarity <= Rarity.Rare).OrderBy(x => Guid.NewGuid()).ToList();
+            var commonItems = AllTileItemsCollection.Where(i => i.Rarity == Rarity.Common && i.ObtainableInRegularCases).OrderBy(x => Guid.NewGuid()).ToList();
+            var rareItems = AllTileItemsCollection.Where(i => i.Rarity == Rarity.Rare && i.ObtainableInRegularCases).OrderBy(x => Guid.NewGuid()).ToList();
+            var relics = AllRelicsCollection.Where(r => r.Rarity <= Rarity.Rare && r.ObtainableInRegularCases).OrderBy(x => Guid.NewGuid()).ToList();
 
             int totalKits = 4;
             int commonItemsPerKit = Difficulty.StartingTileItemsCount;
@@ -55,13 +87,60 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
         public TileItem[] GenerateTileItemsForNewStageChoosing()
         {
 
-            return TileItems.OrderBy(x => Guid.NewGuid()).Take(StatsTracker.NewStageTileItemsForChoiceCount).ToArray();
-            //will be changed
+            return TileItemsPossibleToDrop.OrderBy(x => Guid.NewGuid()).Take(StatsTracker.NewStageTileItemsForChoiceCount).ToArray();
+            //will be changed  based on luck
         }
         public Relic[] GenerateRelicsForNewStageChoosing()
         {
-            return Relics.OrderBy(x => Guid.NewGuid()).Take(StatsTracker.NewStageRelicsForChoiceCount).ToArray();
-            //will be changed
+            return RelicsPossibleToDrop.OrderBy(x => Guid.NewGuid()).Take(StatsTracker.NewStageRelicsForChoiceCount).ToArray();
+            //will be changed based on luck
         }
+        private void UpdateShopItems()
+        {
+            double luckParam = CalculateCurrentLuckPoints();
+            var tileItems = GenerateNewTileItemsForShop(luckParam);
+            var relics = GenerateNewRelicsForShop(luckParam);
+            //will be changed based on rarity
+            Shop.Update(
+                tileItems.Select(ti => new ItemForSale<TileItem>(ti, Randomizer.Int(20, 100))).ToArray(),
+                relics.Select(r => new ItemForSale<Relic>(r, Randomizer.Int(20, 100))).ToArray()
+                );
+        }
+        private double CalculateCurrentLuckPoints() =>
+            CurrentStage % 10 == 0 ? StatsTracker.Luck + 2
+            : CurrentStage % 5 == 0 ? StatsTracker.Luck + 1
+            : StatsTracker.Luck;
+
+        private TileItem[] GenerateNewTileItemsForShop(double currentLuckPoints)
+        {
+            Random rnd = new();
+
+            TileItem[] tileItemsToReturn = new TileItem[StatsTracker.TileItemsInShopCount];
+            var tileItems = TileItemsPossibleToDrop.ToArray();
+   
+       
+            for (int i = 0; i < StatsTracker.TileItemsInShopCount; i++)
+            {
+                int index = rnd.Next(tileItems.Length);
+                tileItemsToReturn[i] = tileItems[index];
+            }
+            return tileItemsToReturn;
+        }
+        private Relic[] GenerateNewRelicsForShop(double currentLuckPoints)
+        {
+            Random rnd = new();
+
+            Relic[] relicsToReturn = new Relic[StatsTracker.RelicsInShopCount];
+            var relics = RelicsPossibleToDrop.ToArray();
+
+
+            for (int i = 0; i < StatsTracker.RelicsInShopCount; i++)
+            {
+                int index = rnd.Next(relics.Length);
+                relicsToReturn[i] = relics[index];
+            }
+            return relicsToReturn;
+        }
+
     }
 }

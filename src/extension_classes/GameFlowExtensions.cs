@@ -30,9 +30,9 @@ namespace SaYSpin.src.extension_classes
             game.StatsTracker.Update(effects);
         }
         public static TileItem? TileItemWithId(this GameFlowController game, string id) =>
-            game.TileItems.FirstOrDefault(item => item?.Id == id);
+            game.AllTileItemsCollection.FirstOrDefault(item => item?.Id == id);
         public static Relic? RelicWithId(this GameFlowController game, string id) =>
-            game.Relics.FirstOrDefault(relic => relic?.Id == id);
+            game.AllRelicsCollection.FirstOrDefault(relic => relic?.Id == id);
         public static bool CoinsEnoughToCompleteTheStage(this GameFlowController game) =>
             game.CoinsCount >= game.CoinsNeededToCompleteTheStage;
     }

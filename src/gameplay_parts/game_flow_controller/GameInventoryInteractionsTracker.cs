@@ -19,14 +19,14 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
         }
         internal void AddTileItemToInventory(TileItem item)
         {
-            TileItem itemToAdd = tileItemsCollection[item.Name]();
+            TileItem itemToAdd = allTileItemsConstructors[item.Name]();
 
             Inventory.TileItems.Add(itemToAdd);
             OnInventoryItemAdded?.Invoke(itemToAdd);
         }
         internal void AddRelicToInventory(Relic relic)
         {
-            Relic relicToAdd = relicsCollection[relic.Name]();
+            Relic relicToAdd = allRelicsConstructors[relic.Name]();
 
             Inventory.Relics.Add(relicToAdd);
             OnInventoryItemAdded?.Invoke(relicToAdd);

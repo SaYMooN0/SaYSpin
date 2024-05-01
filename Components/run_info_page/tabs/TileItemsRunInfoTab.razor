@@ -3,7 +3,7 @@
 <div class="tile-items-container">
     <div class="tile-items-grid ">
 
-        @foreach (var tileItem in gameController.Game.TileItems)
+        @foreach (var tileItem in gameController.Game.AllTileItemsCollection)
         {
             <div>
                 <InventoryItemWithRarityComponent itemToDisplay="@tileItem" />

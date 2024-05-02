@@ -1,0 +1,25 @@
+.label-with-diamonds {
+    justify-self: center;
+    background-image: linear-gradient(to bottom, #566cff, #596cff, #5c6cff, #5e6cff, #616cff, #606aff, #6067ff, #5f65ff, #5b5fff, #565aff, #5254ff, #4e4eff);
+    color: white;
+    padding: 10px;
+    gap: 8px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Montserrat;
+    font-size: 20px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    width: fit-content;
+}
+
+@media (max-width: 850px), (max-height:600px) {
+
+    .label-with-diamonds {
+        padding: 8px;
+        gap: 6px;
+        font-size: 18px;
+    }
+}

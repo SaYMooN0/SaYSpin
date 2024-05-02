@@ -1,12 +1,4 @@
-﻿@font-face {
-    font-family: 'Montserrat';
-    src: url('/resources/fonts/Montserrat-VariableFont_wght.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Overload';
-    src: url('/resources/fonts/OverloadBurn.ttf') format('truetype');
-}
+﻿
 
 html {
     margin: 0 !important;
@@ -18,24 +10,11 @@ body {
     padding: 0 !important;
 }
 
-.unselectable {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-.coin-img-inline {
-    height: 1.4em;
-    vertical-align: middle;
-    aspect-ratio: 1/1;
-    padding-bottom:4px;
-}
 
 #blazor-error-ui {
     background: lightyellow;
     bottom: 0;
-    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 -1px 2px rgb(239, 88, 88, 0,50);
     display: none;
     left: 0;
     padding: 0.6rem 1.25rem 0.7rem 1.25rem;

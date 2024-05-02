@@ -1,0 +1,14 @@
+﻿.unselectable {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.coin-img-inline {
+    height: 1.4em;
+    vertical-align: middle;
+    aspect-ratio: 1/1;
+    padding-bottom: 4px;
+}
+

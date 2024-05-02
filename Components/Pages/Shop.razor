@@ -1,7 +1,7 @@
 ﻿@page "/shop"
 @inject AppController appController
 <div class="shop-page-container">
-    <svg class="shop-roof" viewBox="1000 200 1000 1000">
+    <svg class="shop-roof" viewBox="0 200 3000 800" preserveAspectRatio="none">
         <path fill-rule="evenodd" fill="rgb(100%, 52.929688%, 40.405273%)" fill-opacity="1" d="M 567.273438 714.539062 L 876.308594 300 L 737.710938 300 L 360 714.539062 L 567.273438 714.539062 " />
         <path fill-rule="evenodd" fill="rgb(100%, 52.929688%, 40.405273%)" fill-opacity="1" d="M 2262.289062 300 L 2123.691406 300 L 2432.730469 714.539062 L 2640 714.539062 L 2262.289062 300 " />
         <path fill-rule="evenodd" fill="rgb(100%, 100%, 100%)" fill-opacity="1" d="M 774.546875 714.539062 L 1014.910156 300 L 876.308594 300 L 567.273438 714.539062 L 774.546875 714.539062 " />
@@ -25,26 +25,37 @@
         <path fill-rule="evenodd" fill="rgb(87.889099%, 88.28125%, 88.671875%)" fill-opacity="1" d="M 2432.730469 714.539062 L 2225.460938 714.539062 C 2225.460938 714.539062 2225.460938 816.648438 2225.460938 899.371094 C 2225.460938 926.851562 2236.371094 953.210938 2255.808594 972.648438 C 2275.238281 992.078125 2301.601562 1003 2329.089844 1003 C 2356.578125 1003 2382.941406 992.078125 2402.371094 972.648438 C 2421.808594 953.210938 2432.730469 926.851562 2432.730469 899.371094 C 2432.730469 816.648438 2432.730469 714.539062 2432.730469 714.539062 " />
         <path fill-rule="evenodd" fill="rgb(87.5%, 40.795898%, 29.710388%)" fill-opacity="1" d="M 2640 714.539062 L 2432.730469 714.539062 C 2432.730469 714.539062 2432.730469 816.648438 2432.730469 899.371094 C 2432.730469 926.851562 2443.648438 953.210938 2463.078125 972.648438 C 2482.519531 992.078125 2508.878906 1003 2536.359375 1003 C 2536.359375 1003 2536.359375 1003 2536.371094 1003 C 2563.851562 1003 2590.210938 992.078125 2609.648438 972.648438 C 2629.078125 953.210938 2640 926.851562 2640 899.371094 C 2640 816.648438 2640 714.539062 2640 714.539062 " />
     </svg>
-    <div class="items-container">
-        <div class="tile-items-zone">
-            @foreach (var item in appController.Game.Shop.TileItemsForSale)
-            {
-                <ItemForSaleCard itemForSale="@item.Item" price="@item.Price"></ItemForSaleCard>
-            }
+    <div class="shop-zone">
+        <div class="main-items-zone">
+            <div class="tile-items-for-sale">
+                <LabelWithDiamonds text="Tile Items" />
+                @foreach (var item in appController.Game.Shop.TileItemsForSale)
+                {
+                    <ItemForSaleCard itemForSale="@item.Item" price="@item.Price"></ItemForSaleCard>
+                }
+            </div>
+            <div class="relics-for-sale">
+                <LabelWithDiamonds text="Relics" />
+                @foreach (var item in appController.Game.Shop.RelicsForSale)
+                {
+                    <ItemForSaleCard itemForSale="@item.Item" price="@item.Price"></ItemForSaleCard>
+                }
+            </div>
+            <div class="refresh-button" @onclick=RefreshButtonClicked>
+                Refresh
+            </div>
         </div>
-        <div class="relics-zone">
-            @foreach (var item in appController.Game.Shop.RelicsForSale)
-            {
-                <ItemForSaleCard itemForSale="@item.Item" price="@item.Price"></ItemForSaleCard>
-            }
+        <div class="special-merchant-container">
+            Special Merchant
         </div>
-        @*         refresh button
-        special merchant *@
+
     </div>
 </div>
 
 
 
 @code {
-
+    private void RefreshButtonClicked()
+    {
+    }
 }

@@ -17,7 +17,7 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
                 {
                     var takenUniqueRelics = Inventory.Relics.Where(r => r.IsUnique);
                     _possibleToDropRelics = AllRelicsCollection
-                        .Where(r => r.ObtainableInRegularCases)
+                        .Where(r => r.IsSpecial)
                         .Except(takenUniqueRelics)
                         .ToArray();
                     _possibleRelicsReinitNeeded = false;
@@ -36,7 +36,7 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
                 {
                     var takenUniqueTileItems = Inventory.TileItems.Where(ti => ti.IsUnique);
                     _possibleToDropTileItems = AllTileItemsCollection
-                        .Where(ti => ti.ObtainableInRegularCases)
+                        .Where(ti => ti.IsSpecial)
                         .Except(takenUniqueTileItems)
                         .ToArray();
                     _possibleTileItemsReinitNeeded = false;
@@ -55,9 +55,9 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
         public List<GameStarterKit> GenerateStarterKits()
         {
             List<GameStarterKit> kits = new();
-            var commonItems = AllTileItemsCollection.Where(i => i.Rarity == Rarity.Common && i.ObtainableInRegularCases).OrderBy(x => Guid.NewGuid()).ToList();
-            var rareItems = AllTileItemsCollection.Where(i => i.Rarity == Rarity.Rare && i.ObtainableInRegularCases).OrderBy(x => Guid.NewGuid()).ToList();
-            var relics = AllRelicsCollection.Where(r => r.Rarity <= Rarity.Rare && r.ObtainableInRegularCases).OrderBy(x => Guid.NewGuid()).ToList();
+            var commonItems = AllTileItemsCollection.Where(i => i.Rarity == Rarity.Common && !i.IsSpecial).OrderBy(x => Guid.NewGuid()).ToList();
+            var rareItems = AllTileItemsCollection.Where(i => i.Rarity == Rarity.Rare && !i.IsSpecial).OrderBy(x => Guid.NewGuid()).ToList();
+            var relics = AllRelicsCollection.Where(r => r.Rarity <= Rarity.Rare && !r.IsSpecial).OrderBy(x => Guid.NewGuid()).ToList();
 
             int totalKits = 4;
             int commonItemsPerKit = Difficulty.StartingTileItemsCount;
@@ -117,8 +117,8 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
 
             TileItem[] tileItemsToReturn = new TileItem[StatsTracker.TileItemsInShopCount];
             var tileItems = TileItemsPossibleToDrop.ToArray();
-   
-       
+
+
             for (int i = 0; i < StatsTracker.TileItemsInShopCount; i++)
             {
                 int index = rnd.Next(tileItems.Length);

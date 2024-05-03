@@ -54,6 +54,12 @@
     margin-bottom: 20px;
 }
 
+.property-name{
+    display:flex;
+    flex-direction:row;
+    gap:6px;
+    align-items:center;
+}
 .basic-info-container {
     width: 100%;
     display: grid;
@@ -73,6 +79,7 @@
         font-weight: bold;
         display: flex;
         align-items: center;
+
     }
 
 

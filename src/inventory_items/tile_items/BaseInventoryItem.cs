@@ -11,9 +11,9 @@ namespace SaYSpin.src.inventory_items
         public string Image { get; init; }
         public Rarity Rarity { get; init; }
         public bool IsUnique{get;init;}
-        public bool ObtainableInRegularCases{get;init;}
+        public bool IsSpecial{get;init;}
         public abstract string ImageFolderPath { get; }
-        protected BaseInventoryItem(string name, string description, Rarity rarity, bool isAvailableInBeforeStageChoosingPhase=true, bool isUnique=false)
+        protected BaseInventoryItem(string name, string description, Rarity rarity, bool isSpecial=false, bool isUnique=false)
         {
             Id = name.ToLower().Replace(" ", "_");
             Name = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(name.ToLower());
@@ -21,7 +21,7 @@ namespace SaYSpin.src.inventory_items
             Description = description;
             Rarity = rarity;
             IsUnique = isUnique;
-            ObtainableInRegularCases = isAvailableInBeforeStageChoosingPhase;
+            IsSpecial = isSpecial;
         }
         public abstract string TextInfo();
 

@@ -244,7 +244,7 @@ namespace SaYSpin.src.inventory_items_storages
         }
         private TileItem Waffle()
         {
-            var tileItem = TileItem.UnavailableInBeforeStageChoosingPhase("Waffle", Rarity.Rare, 5, ["sweet"]);
+            var tileItem = TileItem.Special("Waffle", Rarity.Rare, 5, ["sweet"]);
             tileItem = tileItem
                 .WithAreaScanningTileItemEffect("If there are two adjacent apples, absorbs them", SlotMachineArea.Adjacent, (ti) => ti.IdIs("apple"), (game, tiWithCoords) =>
                     {
@@ -268,7 +268,7 @@ namespace SaYSpin.src.inventory_items_storages
 
         }
         private TileItem WaffleWithApples() =>
-            TileItem.UnavailableInBeforeStageChoosingPhase("Waffle With Apples", Rarity.Legendary, 15, ["sweet"]);
+            TileItem.Special("Waffle With Apples", Rarity.Legendary, 15, ["sweet"]);
 
         private TileItemWithCounter Zookeeper()
         {
@@ -340,7 +340,7 @@ namespace SaYSpin.src.inventory_items_storages
         private TileItem SecondPlaceMedal()
         {
             const double adjacentHumansMultiplier = 3;
-            var newTI = TileItem.UnavailableInBeforeStageChoosingPhase("Second Place Medal", Rarity.Epic, 5, ["medal"])
+            var newTI = TileItem.Special("Second Place Medal", Rarity.Epic, 5, ["medal"])
                 .WithTileItemsEnhancingTileItemEffect(
                     $"Adjacent humans give {adjacentHumansMultiplier}× coins",
                     SlotMachineArea.Adjacent,
@@ -369,7 +369,7 @@ namespace SaYSpin.src.inventory_items_storages
         private TileItem FirstPlaceMedal()
         {
             const double adjacentHumansMultiplier = 5;
-            var newTI = TileItem.UnavailableInBeforeStageChoosingPhase("First Place Medal", Rarity.Legendary, 15, ["medal"])
+            var newTI = TileItem.Special("First Place Medal", Rarity.Legendary, 15, ["medal"])
                 .WithTileItemsEnhancingTileItemEffect(
                     $"Adjacent humans give {adjacentHumansMultiplier}× coins",
                     SlotMachineArea.Adjacent,

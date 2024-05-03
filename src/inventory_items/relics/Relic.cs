@@ -7,7 +7,7 @@ namespace SaYSpin.src.inventory_items.relics
     {
         public HashSet<BaseRelicEffect> Effects { get; init; } = new HashSet<BaseRelicEffect>();
         public override string ImageFolderPath => "relics";
-        public Relic(string name, Rarity rarity, bool isAvailableInBeforeStageChoosingPhase =true, bool isUnique=false) : base(name, string.Empty, rarity, isAvailableInBeforeStageChoosingPhase, isUnique) { }
+        public Relic(string name, Rarity rarity, bool isSpecial = false, bool isUnique=false) : base(name, string.Empty, rarity, isSpecial, isUnique) { }
 
         public Relic WithEffect(BaseRelicEffect effect)
         {

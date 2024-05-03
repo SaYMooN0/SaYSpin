@@ -7,8 +7,8 @@ namespace SaYSpin.src.inventory_items.tile_items
     public class TileItem : BaseInventoryItem
     {
         public TileItem(string name, string description, Rarity rarity, int initialCoinValue, string[] tags, HashSet<BaseTileItemEffect> effects, CalculateIncomeDelegate incomeCalculationFunc,
-            bool isAvailableInBeforeStageChoosingPhase = true, bool isUnique = false)
-            : base(name, description, rarity, isAvailableInBeforeStageChoosingPhase, isUnique)
+            bool isSpecial = false, bool isUnique = false)
+            : base(name, description, rarity, isSpecial, isUnique)
         {
             Tags = tags;
             InitialCoinValue = initialCoinValue;
@@ -45,8 +45,8 @@ namespace SaYSpin.src.inventory_items.tile_items
         }
         public static TileItem Ordinary(string name, Rarity rarity, int initialCoinValue, string[] tags) =>
            new(name, $"Gives {initialCoinValue} coins", rarity, initialCoinValue, tags, [], (bonuses) => _basciIncomeCalculationFunc(bonuses, initialCoinValue));
-        public static TileItem UnavailableInBeforeStageChoosingPhase(string name, Rarity rarity, int initialCoinValue, string[] tags) =>
-           new(name, $"Gives {initialCoinValue} coins", rarity, initialCoinValue, tags, [], (bonuses) => _basciIncomeCalculationFunc(bonuses, initialCoinValue), false);
+        public static TileItem Special(string name, Rarity rarity, int initialCoinValue, string[] tags) =>
+           new(name, $"Gives {initialCoinValue} coins", rarity, initialCoinValue, tags, [], (bonuses) => _basciIncomeCalculationFunc(bonuses, initialCoinValue), true);
         public override string TextInfo()
         {
             StringBuilder sb = new();

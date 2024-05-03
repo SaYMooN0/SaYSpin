@@ -1,10 +1,6 @@
 ﻿@inject NavigationManager NavigationManager
 <div class="starter-kits-container">
-    <label class="choose-starter-kit-label unselectable">
-        <span>◆</span>
-        Choose your starter kit
-        <span>◆</span>
-    </label>
+    <LabelWithDiamonds text="Choose your starter kit" />
 
     <div class="starter-kits">
         @foreach (var sK in game.GenerateStarterKits())

@@ -15,12 +15,18 @@
                     <span style="color:@item.Rarity.ToHexColor()"> @item.Rarity.ToString()</span>
                 </label>
                 <label>
-                    <span>Is Unique: </span>
+                    <span class="property-name">
+                        Is Unique:
+                        <BasicTooltip onHoverText="Inventory item called unique if it can only be obtained once" />
+                    </span>
                     <span>@(item.IsUnique ? "yes" : "no")</span>
                 </label>
                 <label>
-                    <span>Obtainable in regular cases: </span>
-                    <span>@(item.ObtainableInRegularCases ? "yes" : "no")</span>
+                    <span class="property-name">
+                        Is Special:
+                        <BasicTooltip onHoverText="Inventory item called special if it cannot be obtained through shop or in before stage rewards" />
+                    </span>
+                    <span>@(item.IsSpecial ? "yes" : "no")</span>
                 </label>
             </div>
             <ul class="description">

@@ -1,0 +1,14 @@
+﻿<div class="item-card">
+    <InventoryItemWithRarityComponent itemToDisplay="@itemForSale" />
+
+    <label class="item-price unselectable">
+        @price
+        <img src="/resources/images/inventory/diamond.png" />
+    </label>
+</div>
+@code {
+    [Parameter]
+    public BaseInventoryItem itemForSale { get; set; }
+    [Parameter]
+    public int price { get; set; }
+}

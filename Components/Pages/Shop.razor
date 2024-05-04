@@ -27,19 +27,24 @@
     </svg>
     <div class="shop-zone">
         <div class="main-items-zone">
-            <div class="tile-items-for-sale">
+            <div class="ti-zone">
                 <LabelWithDiamonds text="Tile Items" />
-                @foreach (var item in appController.Game.Shop.TileItemsForSale)
-                {
-                    <ItemForSaleCard itemForSale="@item.Item" price="@item.Price"></ItemForSaleCard>
-                }
+                <div class="items-for-sale-container">
+                    @foreach (var item in appController.Game.Shop.TileItemsForSale)
+                    {
+                        <ShopItemCard itemForSale="@item.Item" price="@item.Price"></ShopItemCard>
+                    }
+                </div>
+
             </div>
-            <div class="relics-for-sale">
+            <div class="r-zone">
                 <LabelWithDiamonds text="Relics" />
-                @foreach (var item in appController.Game.Shop.RelicsForSale)
-                {
-                    <ItemForSaleCard itemForSale="@item.Item" price="@item.Price"></ItemForSaleCard>
-                }
+                <div class="items-for-sale-container">
+                    @foreach (var item in appController.Game.Shop.RelicsForSale)
+                    {
+                        <ShopItemCard itemForSale="@item.Item" price="@item.Price"></ShopItemCard>
+                    }
+                </div>
             </div>
             <div class="refresh-button" @onclick=RefreshButtonClicked>
                 Refresh

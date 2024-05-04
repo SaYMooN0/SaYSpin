@@ -1,0 +1,59 @@
+.item-card {
+    height: 100%;
+    width: fit-content;
+    display: grid;
+    grid-template-rows: calc(60px + 4vw) min-content;
+    background: white;
+    border-radius:10px;
+}
+
+    .item-card .item-price {
+        justify-self: center;
+        margin-top: -6px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Montserrat';
+        font-size: 20px;
+        font-weight: bold;
+        letter-spacing: 2px;
+        width: fit-content;
+    }
+
+        .item-card .item-price img {
+            height: 2em;
+            margin-right: -10px;
+        }
+@media (max-width: 1800px){
+    .item-card {
+        grid-template-rows: calc(50px + 3.6vw)
+    }
+}
+@media (max-width: 1600px) {
+    .item-card {
+        grid-template-rows: calc(38px + 4vw)
+    }
+}
+@media (max-width: 1000px), (max-height:800px) {
+    .item-card .item-price {
+        font-size: 18px;
+        letter-spacing: 1px;
+    }
+        .item-card .item-price img {
+            height: 1.6em;
+            margin-right: -10px;
+        }
+}
+
+@media (max-width: 850px), (max-height:670px) {
+    .item-card .item-price {
+        font-size: 16px;
+        letter-spacing: 1px;
+    }
+
+        .item-card .item-price img {
+            height: 1.2em;
+            margin-right: -10px;
+        }
+}

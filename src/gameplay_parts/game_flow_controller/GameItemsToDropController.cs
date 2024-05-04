@@ -17,7 +17,7 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
                 {
                     var takenUniqueRelics = Inventory.Relics.Where(r => r.IsUnique);
                     _possibleToDropRelics = AllRelicsCollection
-                        .Where(r => r.IsSpecial)
+                        .Where(r => !r.IsSpecial)
                         .Except(takenUniqueRelics)
                         .ToArray();
                     _possibleRelicsReinitNeeded = false;
@@ -36,7 +36,7 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
                 {
                     var takenUniqueTileItems = Inventory.TileItems.Where(ti => ti.IsUnique);
                     _possibleToDropTileItems = AllTileItemsCollection
-                        .Where(ti => ti.IsSpecial)
+                        .Where(ti => !ti.IsSpecial)
                         .Except(takenUniqueTileItems)
                         .ToArray();
                     _possibleTileItemsReinitNeeded = false;

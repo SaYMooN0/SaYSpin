@@ -5,9 +5,9 @@ namespace SaYSpin.src.inventory_items.relics
     public class RelicWithCounter : Relic, IWithCounter
     {
         private int _counter;
-        public RelicWithCounter(string name, Rarity rarity) : base(name, rarity)
+        public RelicWithCounter(string name, Rarity rarity, int startingCounterValue = 0, bool isSpecial = false, bool isUnique = false) : base(name, rarity, isSpecial, isUnique)
         {
-            _counter = 0;
+            _counter = startingCounterValue;
         }
 
         public int Counter => _counter;

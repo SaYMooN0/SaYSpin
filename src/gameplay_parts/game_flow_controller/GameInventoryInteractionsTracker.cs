@@ -74,7 +74,10 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
         internal void ReplaceTileItem(TileItem oldTileItem, TileItem newTileItem)
         {
             int index = Inventory.TileItems.IndexOf(oldTileItem);
-            Inventory.TileItems[index] = newTileItem;
+            if (newTileItem is null)
+                Inventory.TileItems.RemoveAt(index);
+            else
+                Inventory.TileItems[index] = newTileItem;
         }
     }
 }

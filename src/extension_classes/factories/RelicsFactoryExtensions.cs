@@ -10,6 +10,7 @@ using static SaYSpin.src.inventory_items.relics.relic_effects.OnTokenUsedRelicEf
 using static SaYSpin.src.inventory_items.relics.relic_effects.OnStageStartedRelicEffect;
 using static SaYSpin.src.inventory_items.tile_items.tile_item_effects.NonConstantCalculationRelicEffect;
 using static SaYSpin.src.inventory_items.relics.relic_effects.OnNewStageChoosingSkippedRelicEffect;
+using SaYSpin.src.gameplay_parts.game_flow_controller;
 
 namespace SaYSpin.src.extension_classes.factories
 {
@@ -34,6 +35,8 @@ namespace SaYSpin.src.extension_classes.factories
             relic.WithEffect(new GameStatRelicEffect(description, gameStat, modifierType, modificationValue));
         public static Relic WithOnNewStageChoosingSkippedRelicEffect(this Relic relic, string description, OnNewStageChoosingSkippedAction action) =>
             relic.WithEffect(new OnNewStageChoosingSkippedRelicEffect(description, action));
+        public static Relic WithTransformationRelicEffect(this Relic relic, string description, Func<GameFlowController, bool> condition, Relic relicToTransformInto) =>
+            relic.WithEffect(new TransformationRelicEffect(description, condition, relicToTransformInto));
 
     }
 }

@@ -13,7 +13,7 @@ namespace SaYSpin.src.extension_classes.factories
             this TileItemWithCounter tileItem,
             string description,
             Action<GameFlowController> onDestroyAction) =>
-                tileItem.WithEffect(new OnDestroyTileItemEffect(description, tileItem, (game) => onDestroyAction(game)));
+                tileItem.WithEffect(new OnDestroyTileItemEffect(description, (game) => onDestroyAction(game)));
 
         public static TileItemWithCounter WithTileItemsEnhancingTileItemEffect(
             this TileItemWithCounter tileItem,
@@ -22,7 +22,7 @@ namespace SaYSpin.src.extension_classes.factories
             ModifierType modifierType,
             double modificationValue,
             Func<TileItem?, bool> condition) =>
-                tileItem.WithEffect(new TileItemsEnhancingTileItemEffect(description, tileItem, area, modifierType, modificationValue, condition));
+                tileItem.WithEffect(new TileItemsEnhancingTileItemEffect(description, area, modifierType, modificationValue, condition));
 
         public static TileItemWithCounter WithAbsorbingTileItemEffect(
             this TileItemWithCounter tileItem,
@@ -32,7 +32,6 @@ namespace SaYSpin.src.extension_classes.factories
             tileItem.WithEffect(
                 new AbsorbingTileItemEffect(
                     description,
-                    tileItem,
                     absorbingCondition,
                     (game, ti) => onAbsorbAction(game, ti)
                     )
@@ -43,7 +42,7 @@ namespace SaYSpin.src.extension_classes.factories
             Func<TileItem?, bool> condition,
             Action<GameFlowController, List<TileItemWithCoordinates>> onScanAction) =>
             tileItem.WithEffect(
-                new AreaScanningTileItemEffect(description,tileItem, area, condition, (game, scannedTileItems) => onScanAction(game, scannedTileItems))
+                new AreaScanningTileItemEffect(description, area, condition, (game, scannedTileItems) => onScanAction(game, scannedTileItems))
             );
     }
 }

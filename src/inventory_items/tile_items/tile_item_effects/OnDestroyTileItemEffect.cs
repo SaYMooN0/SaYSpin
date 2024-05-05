@@ -4,7 +4,7 @@ namespace SaYSpin.src.inventory_items.tile_items.tile_item_effects
 {
     public class OnDestroyTileItemEffect : BaseTileItemEffect
     {
-        public OnDestroyTileItemEffect(string description,TileItem sourceTileItem, Action<GameFlowController> onDestroyAction) : base(description, sourceTileItem)
+        public OnDestroyTileItemEffect(string description, Action<GameFlowController> onDestroyAction) : base(description)
         {
             PerformOnDestroyAction = onDestroyAction;
         }

@@ -55,6 +55,23 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
                     }
                 }
             }
+            foreach (Relic r in Inventory.Relics)
+            {
+                foreach (var effect in r.Effects.OfType<TransformationRelicEffect>())
+                {
+                    if (effect.TransformationCondition(this))
+                    {
+                        replacements.Add(() =>
+                        {
+                            if (effect.RelicToTransformInto is not null)
+                                AddRelicToInventory(effect.RelicToTransformInto);
+                            RemoveRelicFromInventory(r);
+
+                        });
+                        break;
+                    }
+                }
+            }
             foreach (Action replace in replacements)
                 replace();
         }

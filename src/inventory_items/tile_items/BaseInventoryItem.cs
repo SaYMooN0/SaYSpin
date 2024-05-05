@@ -1,4 +1,5 @@
-﻿using SaYSpin.src.gameplay_parts;
+﻿using SaYSpin.src.enums;
+using SaYSpin.src.gameplay_parts;
 using System.Globalization;
 
 namespace SaYSpin.src.inventory_items
@@ -13,6 +14,11 @@ namespace SaYSpin.src.inventory_items
         public bool IsUnique{get;init;}
         public bool IsSpecial{get;init;}
         public abstract string ImageFolderPath { get; }
+        internal HashSet<Markers> Markers { get; init; } = new();
+        internal void AddMarker(Markers marker) =>
+            Markers.Add(marker);
+        internal void ClearMarkers() =>
+            Markers.Clear();
         protected BaseInventoryItem(string name, string description, Rarity rarity, bool isSpecial=false, bool isUnique=false)
         {
             Id = name.ToLower().Replace(" ", "_");

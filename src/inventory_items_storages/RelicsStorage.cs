@@ -7,7 +7,6 @@ using SaYSpin.src.gameplay_parts.inventory_related.tokens;
 using SaYSpin.src.inventory_items.relics;
 using SaYSpin.src.inventory_items.tile_items;
 using SaYSpin.src.static_classes;
-using System.Net.NetworkInformation;
 
 namespace SaYSpin.src.inventory_items_storages
 {
@@ -25,6 +24,7 @@ namespace SaYSpin.src.inventory_items_storages
                 ["Treasure Map"] = TreasureMap,
                 ["Golden Key"] = GoldenKey,
                 ["Apple Tree"] = AppleTree,
+                ["Apple Tree Sapling"] = AppleTreeSapling,
                 ["Random Token"] = RandomToken,
                 ["Diamond Token"] = DiamondToken,
                 ["Ufo"] = UFO,
@@ -41,6 +41,8 @@ namespace SaYSpin.src.inventory_items_storages
                 ["Hourglass"] = Hourglass,
                 ["Zoo Tickets"] = ZooTickets,
                 ["Piggy Bank"] = PiggyBank,
+                ["Bag Of Sour Worms"] = BagOfSourWorms
+
             };
             _availableRelics = new HashSet<string>(_storedItems.Keys);
         }
@@ -112,13 +114,27 @@ namespace SaYSpin.src.inventory_items_storages
         private Relic AppleTree()
         {
             const int appleBonus = 1;
-            const int appleChance = 40; // 40%
-            return new Relic("Apple Tree", Rarity.Epic)
+            const int appleChance = 60; // 40%
+            return new Relic("Apple Tree", Rarity.Legendary, isSpecial: true)
                 .WithCoinsCalculationRelicEffect($"Apple tile item gives +{appleBonus} coin", ModifierType.Plus, appleBonus, i => i.Id == "apple")
                 .WithAfterStageRewardRelicEffect($"After stage have a {appleChance}% chance to receive an apple tile item",
                     (stageNumber, game) => [Randomizer.Percent(appleChance) ? game.TileItemWithId("apple") : null])
                 .WithAfterStageRewardRelicEffect("After every fifth stage receive a golden apple tile item",
                     (stageNumber, game) => [stageNumber % 5 == 0 ? game.TileItemWithId("golden_apple") : null]);
+        }
+        private Relic AppleTreeSapling()
+        {
+            const int appleBonus = 1;
+            const int counterValueToTransform = 15;
+            RelicWithCounter appleTreeSapling = new RelicWithCounter("Apple Tree Sapling", Rarity.Rare, isUnique: true)
+                .WithCoinsCalculationRelicEffect($"Apple tile item gives +{appleBonus} coin", ModifierType.Plus, appleBonus, i => i.Id == "apple") as RelicWithCounter;
+
+            appleTreeSapling = appleTreeSapling.WithAfterSpinRelicEffect($"After each spin increase counter by 1", (_) => appleTreeSapling.IncrementCounter(1)) as RelicWithCounter;
+            appleTreeSapling = appleTreeSapling.WithTransformationRelicEffect(
+                $"When counter value reach {counterValueToTransform} transforms into apple tree",
+                (_) => appleTreeSapling.Counter >= counterValueToTransform, AppleTree()) as RelicWithCounter;
+
+            return appleTreeSapling;
         }
         private Relic RandomToken()
         {
@@ -255,7 +271,7 @@ namespace SaYSpin.src.inventory_items_storages
         private Relic Hourglass()
         {
             const int coinsBonus = 2;
-            return new Relic("Hourglass", Rarity.Epic, true, true )
+            return new Relic("Hourglass", Rarity.Epic, true, true)
                 .WithNonConstantCalculationRelicEffect(
                     $"In the last 3 spins of every stage all tile items give +{coinsBonus} coins",
                     (game) =>
@@ -267,11 +283,11 @@ namespace SaYSpin.src.inventory_items_storages
                     },
                     _ => true
                 );
-        }                                           
+        }
         private Relic ZooTickets()
         {
             const int coinsBonus = 1;
-            return new Relic("Zoo Tickets", Rarity.Legendary,true, true )
+            return new Relic("Zoo Tickets", Rarity.Legendary, true, true)
                 .WithNonConstantCalculationRelicEffect(
                     $"All people (except zookeeper) give +{coinsBonus} coins for every bird and animal variants in the inventory",
                     (game) =>
@@ -288,11 +304,32 @@ namespace SaYSpin.src.inventory_items_storages
             return new Relic("Piggy Bank", Rarity.Legendary, true, true)
                 .WithNonConstantCalculationRelicEffect(
                     $"All humans give +{coinsForRemainingSpins} coins for every remaining spin",
-                    (game) => new(ModifierType.Plus, (game.SpinsLeft+1) * coinsForRemainingSpins),
+                    (game) => new(ModifierType.Plus, (game.SpinsLeft + 1) * coinsForRemainingSpins),
                     ti => ti.HasTag("human")
             );
         }
-
+        private Relic BagOfSourWorms()
+        {
+            const int startingCounter = 7;
+            RelicWithCounter sourWorms = new("Bag Of Sour Worms", Rarity.Legendary, startingCounterValue: startingCounter);
+            sourWorms = sourWorms
+                .WithAfterSpinRelicEffect("Every spin if counter is more than 0 decreases counter by 1 and adds 1 sour worm",
+                (game) =>
+                {
+                    if (sourWorms.Counter < 1) return;
+                    int rand = Randomizer.Int(1, 3);
+                    switch (rand)
+                    {
+                        case 1: game.AddTileItemToInventory(game.TileItemWithId("green_and_yellow_sour_worm")); break;
+                        case 2: game.AddTileItemToInventory(game.TileItemWithId("pink_and_blue_sour_worm")); break;
+                        default: game.AddTileItemToInventory(game.TileItemWithId("orange_sour_worm")); break;
+                    }
+                    sourWorms.IncrementCounter(-1);
+                }
+                ) as RelicWithCounter;
+            sourWorms = sourWorms.WithTransformationRelicEffect("After counter reaches 0 disappears", (_) => sourWorms.Counter == 0, null) as RelicWithCounter;
+            return sourWorms;
+        }
 
     }
 }

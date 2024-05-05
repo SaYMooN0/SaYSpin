@@ -25,12 +25,6 @@ namespace SaYSpin.src.inventory_items.tile_items
             LastIncome = 0;
         public void SetLastIncome(int value) =>
             LastIncome = value;
-        internal HashSet<Markers> Markers { get; init; } = new();
-        internal void AddMarker(Markers marker) =>
-            Markers.Add(marker);
-        internal void ClearMarkers() =>
-            Markers.Clear();
-
         public override string ImageFolderPath => "tile_items";
         public override string ToString() =>
             $"{{Id: {Id}, Rarity: {Rarity}, InitialCoinValue: {InitialCoinValue}}}";

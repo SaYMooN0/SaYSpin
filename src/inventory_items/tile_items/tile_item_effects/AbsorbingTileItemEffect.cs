@@ -4,7 +4,7 @@ namespace SaYSpin.src.inventory_items.tile_items.tile_item_effects
 {
     internal class AbsorbingTileItemEffect : BaseTileItemEffect
     {
-        public AbsorbingTileItemEffect(string description,TileItem sourceTileItem, Func<TileItem?, bool> absorbingCondition, OnAbsorbActionDelegate onAbsorbAction) : base(description, sourceTileItem)
+        public AbsorbingTileItemEffect(string description, Func<TileItem?, bool> absorbingCondition, OnAbsorbActionDelegate onAbsorbAction) : base(description)
         {
             AbsorbingCondition = absorbingCondition;
             ExecuteOnAbsorbAction = onAbsorbAction;

@@ -54,7 +54,10 @@ namespace SaYSpin.src.inventory_items_storages
                 ["Tiger"] = Tiger,
                 ["First Place Medal"] = FirstPlaceMedal,
                 ["Second Place Medal"] = SecondPlaceMedal,
-                ["Third Place Medal"] = ThirdPlaceMedal
+                ["Third Place Medal"] = ThirdPlaceMedal,
+                ["Orange Sour Worm"] = OrangeSourWorm,
+                ["Pink And Blue Sour Worm"] = PinkAndBlueSourWorm,
+                ["Green And Yellow Sour Worm"] = GreenAndYellowSourWorm
             };
             //_avaliableTileItems = InitAvailable();
             _avaliableTileItems = [.. _storedItems.Keys];
@@ -248,21 +251,21 @@ namespace SaYSpin.src.inventory_items_storages
             tileItem = tileItem
                 .WithAreaScanningTileItemEffect("If there are two adjacent apples, absorbs them", SlotMachineArea.Adjacent, (ti) => ti.IdIs("apple"), (game, tiWithCoords) =>
                     {
-                        var tileItems = tiWithCoords.Where(ti => !ti.TileItem.Markers.Contains(Markers.WillBeAbsorbed)).Take(2).ToArray();
+                        var tileItems = tiWithCoords.Where(ti => !ti.TileItem.Markers.Contains(Markers.WillBeDestroyed)).Take(2).ToArray();
                         if (tileItems.Length >= 2)
                         {
                             var ti1 = tileItems[0];
                             var ti2 = tileItems[1];
-                            ti1.TileItem.AddMarker(Markers.WillBeAbsorbed);
-                            ti2.TileItem.AddMarker(Markers.WillBeAbsorbed);
+                            ti1.TileItem.AddMarker(Markers.WillBeDestroyed);
+                            ti2.TileItem.AddMarker(Markers.WillBeDestroyed);
                             game.DestroyTileItem(ti1.TileItem, ti1.Row, ti1.Column);
                             game.DestroyTileItem(ti2.TileItem, ti2.Row, ti2.Column);
-                            tileItem.AddMarker(Markers.ReadyToPerformAction);
+                            tileItem.AddMarker(Markers.ReadyToTransform);
                         }
                     })
                 .WithTransformationEffect(
                     "When absorbing apples transforms into waffle with apples tile item",
-                    (game) => tileItem.Markers.Contains(Markers.ReadyToPerformAction),
+                    (game) => tileItem.Markers.Contains(Markers.ReadyToTransform),
                     WaffleWithApples());
             return tileItem;
 
@@ -321,19 +324,19 @@ namespace SaYSpin.src.inventory_items_storages
                         SlotMachineArea.Adjacent, (ti) => ti.IdIs("third_place_medal"),
                         (game, tiWithCoords) =>
                         {
-                            var medals = tiWithCoords.Where(ti => !ti.TileItem.Markers.Contains(Markers.WillBeAbsorbed)).Take(2).ToArray();
+                            var medals = tiWithCoords.Where(ti => !ti.TileItem.Markers.Contains(Markers.WillBeDestroyed)).Take(2).ToArray();
                             if (medals.Length < 2)
                                 return;
                             var ti1 = medals[0];
                             var ti2 = medals[1];
-                            ti1.TileItem.AddMarker(Markers.WillBeAbsorbed);
-                            ti2.TileItem.AddMarker(Markers.WillBeAbsorbed);
+                            ti1.TileItem.AddMarker(Markers.WillBeDestroyed);
+                            ti2.TileItem.AddMarker(Markers.WillBeDestroyed);
                             game.DestroyTileItem(ti1.TileItem, ti1.Row, ti1.Column);
                             game.DestroyTileItem(ti2.TileItem, ti2.Row, ti2.Column);
-                            newTI.AddMarker(Markers.ReadyToPerformAction);
+                            newTI.AddMarker(Markers.ReadyToTransform);
                         }
                     );
-            newTI = newTI.WithTransformationEffect(string.Empty, (_) => newTI.Markers.Contains(Markers.ReadyToPerformAction), SecondPlaceMedal());
+            newTI = newTI.WithTransformationEffect(string.Empty, (_) => newTI.Markers.Contains(Markers.ReadyToTransform), SecondPlaceMedal());
             return newTI;
         }
 
@@ -351,19 +354,19 @@ namespace SaYSpin.src.inventory_items_storages
                        SlotMachineArea.Adjacent, (ti) => ti.IdIs("second_place_medal"),
                        (game, tiWithCoords) =>
                        {
-                           var medals = tiWithCoords.Where(ti => !ti.TileItem.Markers.Contains(Markers.WillBeAbsorbed)).Take(2).ToArray();
+                           var medals = tiWithCoords.Where(ti => !ti.TileItem.Markers.Contains(Markers.WillBeDestroyed)).Take(2).ToArray();
                            if (medals.Length < 2)
                                return;
                            var ti1 = medals[0];
                            var ti2 = medals[1];
-                           ti1.TileItem.AddMarker(Markers.WillBeAbsorbed);
-                           ti2.TileItem.AddMarker(Markers.WillBeAbsorbed);
+                           ti1.TileItem.AddMarker(Markers.WillBeDestroyed);
+                           ti2.TileItem.AddMarker(Markers.WillBeDestroyed);
                            game.DestroyTileItem(ti1.TileItem, ti1.Row, ti1.Column);
                            game.DestroyTileItem(ti2.TileItem, ti2.Row, ti2.Column);
-                           newTI.AddMarker(Markers.ReadyToPerformAction);
+                           newTI.AddMarker(Markers.ReadyToTransform);
                        }
                    );
-            newTI = newTI.WithTransformationEffect(string.Empty, (_) => newTI.Markers.Contains(Markers.ReadyToPerformAction), FirstPlaceMedal());
+            newTI = newTI.WithTransformationEffect(string.Empty, (_) => newTI.Markers.Contains(Markers.ReadyToTransform), FirstPlaceMedal());
             return newTI;
         }
         private TileItem FirstPlaceMedal()
@@ -375,6 +378,48 @@ namespace SaYSpin.src.inventory_items_storages
                     SlotMachineArea.Adjacent,
                     ModifierType.Multiply, adjacentHumansMultiplier,
                     (ti) => ti.IdIs("human"));
+            return newTI;
+        }
+        private TileItem OrangeSourWorm()
+        {
+            const int adjectWormsBonus = 3;
+            const int adjacentOrangesBonus = 3;
+
+            var newTI = TileItem.Special("Orange Sour Worm", Rarity.Rare, 3, ["sweet","sour_worm"])
+                .WithTileItemsEnhancingTileItemEffect($"Adjacent sour worms give +{adjectWormsBonus} coins",
+                    SlotMachineArea.Adjacent, ModifierType.Plus,
+                    adjectWormsBonus, (ti) => ti.HasTag("sour_worm"))
+                .WithTileItemsEnhancingTileItemEffect($"Adjacent oranges give +{adjacentOrangesBonus} coins",
+                    SlotMachineArea.Adjacent, ModifierType.Plus,
+                    adjacentOrangesBonus, (ti) => ti.IdIs("orange"));
+            return newTI;
+        }
+        private TileItem PinkAndBlueSourWorm()
+        {
+            const int adjectWormsBonus = 3;
+            const int adjacentSweetsBonus = 4;
+            string[] affectedSweets = ["lollipop", "candy"];
+
+            var newTI = TileItem.Special("Pink and Blue Sour Worm", Rarity.Rare, 3, ["sweet","sour_worm"])
+                .WithTileItemsEnhancingTileItemEffect($"Adjacent sour worms give +{adjectWormsBonus} coins",
+                    SlotMachineArea.Adjacent, ModifierType.Plus,
+                    adjectWormsBonus, (ti) => ti.HasTag("sour_worm"))
+                .WithTileItemsEnhancingTileItemEffect($"Adjacent {string.Join(", ", affectedSweets)} give +{adjacentSweetsBonus} coins",
+                    SlotMachineArea.Adjacent, ModifierType.Plus,
+                    adjacentSweetsBonus, (ti) =>ti is not null && affectedSweets.Contains(ti.Id));
+            return newTI;
+        }
+        private TileItem GreenAndYellowSourWorm()
+        {
+            const int adjectWormsBonus = 3;
+            const int greenAndYellowWormsBonus = 2;
+            var newTI = TileItem.Special("Green And Yellow Sour Worm", Rarity.Rare, 3, ["sweet","sour_worm"])
+               .WithTileItemsEnhancingTileItemEffect($"Adjacent sour worms give +{adjectWormsBonus} coins",
+                   SlotMachineArea.Adjacent, ModifierType.Plus,
+                   adjectWormsBonus, (ti) => ti.HasTag("sour_worm"))
+               .WithTileItemsEnhancingTileItemEffect($"Green And Yellow Worms in all tile items give +{greenAndYellowWormsBonus}coins",
+                    SlotMachineArea.AllTiles, ModifierType.Plus,
+                    greenAndYellowWormsBonus, (ti) => ti.IdIs("green_and_yellow_sour_worm"));
             return newTI;
         }
     }

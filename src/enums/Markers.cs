@@ -2,7 +2,8 @@
 {
     internal enum Markers
     {
-        WillBeAbsorbed,
-        ReadyToPerformAction,
+        WillBeDestroyed,
+        ReadyToTransform,
+        ReadyToPerformAction
     }
 }

@@ -9,7 +9,7 @@ namespace SaYSpin.src.inventory_items.tile_items.tile_item_effects
     internal class AreaScanningTileItemEffect : BaseTileItemEffect
     {
         public delegate void AreaScanningDelegate(GameFlowController game, List<TileItemWithCoordinates> tIWithCoordinates);
-        public AreaScanningTileItemEffect(string description,TileItem sourceTileItem, SlotMachineArea area, Func<TileItem, bool> condition, AreaScanningDelegate onScannedAction) : base(description , sourceTileItem)
+        public AreaScanningTileItemEffect(string description, SlotMachineArea area, Func<TileItem, bool> condition, AreaScanningDelegate onScannedAction) : base(description)
         {
             Area = area;
             Condition = condition;

@@ -1,5 +1,4 @@
-﻿using Microsoft.Maui.Animations;
-using SaYSpin.src.enums;
+﻿using SaYSpin.src.enums;
 using SaYSpin.src.extension_classes;
 using SaYSpin.src.extension_classes.factories;
 using SaYSpin.src.gameplay_parts;
@@ -41,7 +40,11 @@ namespace SaYSpin.src.inventory_items_storages
                 ["Hourglass"] = Hourglass,
                 ["Zoo Tickets"] = ZooTickets,
                 ["Piggy Bank"] = PiggyBank,
-                ["Bag Of Sour Worms"] = BagOfSourWorms
+                ["Bag Of Sour Worms"] = BagOfSourWorms,
+                ["Olympic Flag"] = OlympicFlag,
+                ["Intergalactic Bubblegum"] = IntergalacticBubbleGum,
+                ["Storybook"] = Storybook,
+                ["Shipping Containers"] = ShippingContainers
 
             };
             _availableRelics = new HashSet<string>(_storedItems.Keys);
@@ -271,7 +274,7 @@ namespace SaYSpin.src.inventory_items_storages
         private Relic Hourglass()
         {
             const int coinsBonus = 2;
-            return new Relic("Hourglass", Rarity.Epic, true, true)
+            return new Relic("Hourglass", Rarity.Epic, isUnique: true)
                 .WithNonConstantCalculationRelicEffect(
                     $"In the last 3 spins of every stage all tile items give +{coinsBonus} coins",
                     (game) =>
@@ -287,7 +290,7 @@ namespace SaYSpin.src.inventory_items_storages
         private Relic ZooTickets()
         {
             const int coinsBonus = 1;
-            return new Relic("Zoo Tickets", Rarity.Legendary, true, true)
+            return new Relic("Zoo Tickets", Rarity.Legendary, isUnique: true)
                 .WithNonConstantCalculationRelicEffect(
                     $"All people (except zookeeper) give +{coinsBonus} coins for every bird and animal variants in the inventory",
                     (game) =>
@@ -301,7 +304,7 @@ namespace SaYSpin.src.inventory_items_storages
         private Relic PiggyBank()
         {
             const int coinsForRemainingSpins = 3;
-            return new Relic("Piggy Bank", Rarity.Legendary, true, true)
+            return new Relic("Piggy Bank", Rarity.Legendary, isUnique: true)
                 .WithNonConstantCalculationRelicEffect(
                     $"All humans give +{coinsForRemainingSpins} coins for every remaining spin",
                     (game) => new(ModifierType.Plus, (game.SpinsLeft + 1) * coinsForRemainingSpins),
@@ -330,6 +333,71 @@ namespace SaYSpin.src.inventory_items_storages
             sourWorms = sourWorms.WithTransformationRelicEffect("After counter reaches 0 disappears", (_) => sourWorms.Counter == 0, null) as RelicWithCounter;
             return sourWorms;
         }
-
+        private Relic OlympicFlag()
+        {
+            const int
+                firstWith5Spins = 15,
+                secondWith5Spins = 25,
+                firstWith3Spins = 5,
+                secondWith3Spins = 10,
+                medalCoinsBonus = 1;
+            return new Relic("Olympic Flag", Rarity.Mythic, isUnique: true)
+                .WithCoinsCalculationRelicEffect($"All medals give +{medalCoinsBonus} coin", ModifierType.Plus, 1, ti => ti.HasTag("medal"))
+                .WithAfterStageRewardRelicEffect(
+                    $"If you complete stage with 3 or more spins, receive one of medals (first place with {firstWith3Spins}%, second place with {secondWith3Spins}%, third place with {100 - firstWith3Spins - secondWith3Spins}% )",
+                    (stageNumber, game) =>
+                    {
+                        if (game.SpinsLeft >= 3)
+                        {
+                            int rand = Randomizer.Int(1, 100);
+                            if (rand <= firstWith3Spins)
+                                return [game.TileItemWithId("first_place_medal")];
+                            else if (rand <= firstWith3Spins + secondWith3Spins)
+                                return [game.TileItemWithId("second_place_medal")];
+                            else
+                                return [game.TileItemWithId("third_place_medal")];
+                        }
+                        return [];
+                    })
+                .WithAfterStageRewardRelicEffect(
+                    $"If you complete stage with 5 or more spins receive, one of medals (first place with {firstWith5Spins}%, second place with {secondWith5Spins}%, third place with {100 - firstWith5Spins - secondWith5Spins}% )",
+                    (stageNumber, game) =>
+                    {
+                        if (game.SpinsLeft >= 5)
+                        {
+                            int rand = Randomizer.Int(1, 100);
+                            if (rand <= firstWith5Spins)
+                                return [game.TileItemWithId("first_place_medal")];
+                            else if (rand <= firstWith5Spins + secondWith5Spins)
+                                return [game.TileItemWithId("second_place_medal")];
+                            else
+                                return [game.TileItemWithId("third_place_medal")];
+                        }
+                        return [];
+                    });
+        }
+        private Relic IntergalacticBubbleGum()
+        {
+            return new Relic("Intergalactic Bubblegum", Rarity.Epic)
+                .WithNonConstantCalculationRelicEffect(
+                    $"All aliens give +1 coin for every type of sweet tile item in your inventory",
+                    (game) =>
+                    {
+                        int count = game.Inventory.TileItems.Where(ti => ti.HasTag("sweet")).DistinctBy(ti => ti.Id).Count();
+                        return new(ModifierType.Plus, count);
+                    },
+                    (ti) => ti.HasTag("alien"));
+        }
+        private Relic Storybook()
+        {
+            return new Relic("Storybook", Rarity.Epic)
+                .WithGameStatRelicEffect($"Choose from 1 more relic in before stage choosing phase", GameStat.NewStageRelicsForChoiceCount, ModifierType.Plus, 1)
+                .WithGameStatRelicEffect($"There will be 1 more relic to choose from in the shop", GameStat.RelicsInShopCount, ModifierType.Plus, 1);
+        }
+        private Relic ShippingContainers()
+        {
+            return new Relic("Shipping Containers", Rarity.Epic)
+                .WithGameStatRelicEffect($"There will be 3 more tile items to choose from in the shop", GameStat.TileItemsInShopCount, ModifierType.Plus, 3);
+        }
     }
 }

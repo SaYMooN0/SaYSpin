@@ -1,0 +1,29 @@
+﻿@inject ShowItemInfoDialogService showItemInfoDialog
+@inject IJSRuntime JSRuntime
+
+<dialog id="shopItemDialog">
+    @if (item is not null)
+    {
+        <div class="dialog-content unselectable">
+            <img src="@ResourcePathsHelper.ResourcesImages(item.Image)" class="item-img" @onclick="()=>showItemInfoDialog.ShowDialog(item)" />
+            <label class="item-name">@item.Name</label>
+            <label class="item-price">@price</label>
+            <button class="buy-button">Buy</button>
+        </div>
+    }
+</dialog>
+@code {
+    public BaseInventoryItem item;
+    public int price;
+    public async Task Open(BaseInventoryItem item, int price)
+    {
+        this.item = item;
+        this.price = price;
+        await JSRuntime.InvokeVoidAsync("blazorDialogFunctions.openDialog", "shopItemDialog");
+        this.StateHasChanged();
+    }
+
+    private async Task Close() =>
+        await JSRuntime.InvokeVoidAsync("blazorDialogFunctions.closeDialog", "shopItemDialog");
+
+}

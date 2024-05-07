@@ -1,4 +1,6 @@
-﻿namespace SaYSpin.src
+﻿using SaYSpin.src.inventory_items;
+
+namespace SaYSpin.src
 {
     public static class ResourcePathsHelper
     {
@@ -7,5 +9,6 @@
             DefaultTileItem = "/resources/images/tile_items/default.png";
         public static string ResourcesImages(string fileName) =>
             "/resources/images/" + fileName;
+
     }
 }

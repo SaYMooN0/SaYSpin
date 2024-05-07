@@ -1,0 +1,24 @@
+.dialog-close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    padding: 10px;
+    border-radius: 100px;
+    border: none;
+    background: #fb2d2d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: bolder;
+    color: white;
+    cursor: pointer;
+    transition-duration: 0.1s;
+}
+
+    .dialog-close-button:hover {
+        background: #ed1f1f;
+        transform: scale(1.05);
+    }

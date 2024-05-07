@@ -11,8 +11,8 @@ namespace SaYSpin.src.gameplay_parts.shop
             this.possibleSpecialMerchants = possibleSpecialMerchants;
         }
 
-        public ItemForSale<TileItem>[] TileItemsForSale { get; private set; }
-        public ItemForSale<Relic>[] RelicsForSale {  get; private set; }
+        public ItemForSale<TileItem>[] TileItemsForSale { get; private set; } = [];
+        public ItemForSale<Relic>[] RelicsForSale { get; private set; } = [];
         public ISpecialMerchant CurrentSpecialMerchant { get; private set; }
       
 

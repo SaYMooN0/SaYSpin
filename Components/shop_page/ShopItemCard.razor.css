@@ -3,11 +3,15 @@
     width: fit-content;
     display: grid;
     grid-template-rows: calc(60px + 4vw) min-content;
-    background: white;
-    border-radius:10px;
+    background: #ffffff;
+    border-radius: 10px;
+    transition: all 0.07s ease-in;
+    position: relative;
+    overflow: hidden;
 }
 
     .item-card .item-price {
+        z-index: 100;
         justify-self: center;
         margin-top: -6px;
         display: flex;
@@ -25,25 +29,76 @@
             height: 2em;
             margin-right: -10px;
         }
-@media (max-width: 1800px){
+
+
+
+
+.item-img {
+    height: 100%;
+    box-sizing: border-box;
+    padding: calc(3px + 5%);
+    transition-duration: 0.08s;
+}
+
+.item-card:hover .item-img {
+    padding: calc(1px + 4%);
+}
+
+
+.item-card .counter-value {
+    position: absolute;
+    bottom: calc(10px + 16%);
+    left: 50%;
+    transform: translateX(-50%);
+    box-sizing: border-box;
+    background-color: white;
+    padding: 4px 8px;
+    border-radius: 8px;
+    z-index: 2;
+    font-size: 16px;
+    font-family: Montserrat;
+    font-weight: bold;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    white-space: nowrap;
+    transition: opacity 0.26s ease-in;
+}
+
+.item-card :hover .counter-value {
+    bottom: calc(3px + 3%);
+    opacity: 0;
+}
+
+@media (max-width: 1800px) {
     .item-card {
         grid-template-rows: calc(50px + 3.6vw)
     }
 }
+
 @media (max-width: 1600px) {
     .item-card {
         grid-template-rows: calc(38px + 4vw)
     }
+
+        .item-card .counter-value {
+            font-size: 15px;
+            padding: 3px 7px;
+        }
 }
+
 @media (max-width: 1000px), (max-height:800px) {
     .item-card .item-price {
         font-size: 18px;
         letter-spacing: 1px;
     }
+
         .item-card .item-price img {
             height: 1.6em;
             margin-right: -10px;
         }
+
+    .item-card .counter-value {
+        bottom: calc(10px + 12%);
+    }
 }
 
 @media (max-width: 850px), (max-height:670px) {
@@ -56,4 +111,10 @@
             height: 1.2em;
             margin-right: -10px;
         }
+
+    .item-card .counter-value {
+        bottom: calc(9px + 10%);
+        padding: 3px 6px;
+        font-size: 12px;
+    }
 }

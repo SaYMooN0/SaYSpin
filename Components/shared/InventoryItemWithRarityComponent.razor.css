@@ -7,6 +7,7 @@
     position: relative;
     overflow: hidden;
 }
+
     .item-to-display:hover img {
         padding: calc(1px + 4%);
     }
@@ -20,7 +21,7 @@
         position: absolute;
         height: 2px;
         width: 2px;
-        border-radius: 10px;
+        border-radius: 1000px;
         border: none;
     }
 
@@ -46,8 +47,14 @@
         z-index: 2;
         font-size: 16px;
         font-family: Montserrat;
-        font-weight:bold;
+        font-weight: bold;
         box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
         white-space: nowrap;
         transition: opacity 0.26s ease-in;
     }
+
+@media (max-width: 800px), (max-height: 600px) {
+    .item-to-display div {
+        box-shadow: none;
+    }
+}

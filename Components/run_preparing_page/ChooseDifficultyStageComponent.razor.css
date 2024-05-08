@@ -1,12 +1,3 @@
-
-.choose-difficulty-label {
-    color: #FBFBFB;
-    font-weight: bold;
-    font-size: 36px;
-    font-family: 'Montserrat';
-    letter-spacing: 2px;
-}
-
 .choose-difficulty-container {
     display: flex;
     height: 100%;
@@ -18,6 +9,7 @@
 }
 
 .difficulties-container {
+    margin-top:16px;
     display: flex;
     flex-direction: row;
     gap: 6vw;
@@ -26,15 +18,15 @@
 .difficulty-info-container {
     display: grid;
     grid-template-rows: auto 1fr;
+ 
 }
 
 .difficulty-info-label {
     justify-self: center;
-    background-image: radial-gradient(circle, #428bff, #4486ff, #4881ff, #4d7cff, #5277ff, #5274ff, #5371ff, #546eff, #4f6cff, #496bff, #4469ff, #3d68ff);
     width: fit-content;
     padding: 12px;
     border-radius: 10px;
-    margin-bottom: -20px;
+    margin-bottom: -30px;
     font-size: 20px;
     z-index: 2;
     color: #FBFBFB;
@@ -53,6 +45,7 @@
     font-family: 'Montserrat';
     position: relative;
     z-index: 1;
+    box-shadow: 0 10px 20px rgb(1, 6, 9, 0.1);
 }
 
     .difficulty-info::-webkit-scrollbar-track {

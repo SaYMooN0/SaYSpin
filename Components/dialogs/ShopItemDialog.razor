@@ -2,13 +2,18 @@
 @inject IJSRuntime JSRuntime
 
 <dialog id="shopItemDialog">
+    <DialogCloseButton closeAction="()=>Close()" />
     @if (item is not null)
     {
         <div class="dialog-content unselectable">
-            <img src="@ResourcePathsHelper.ResourcesImages(item.Image)" class="item-img" @onclick="()=>showItemInfoDialog.ShowDialog(item)" />
-            <label class="item-name">@item.Name</label>
+            <label class="item-name" style="color:@item.Rarity.ToHexColor()">@item.Name</label>
+            <div class="img-container">
+                <InventoryItemWithRarityComponent itemToDisplay="item" />
+                <label class="press-label">Press for more info</label>
+            </div>
+
             <label class="item-price">@price</label>
-            <button class="buy-button">Buy</button>
+            <div class="buy-button">Buy</div>
         </div>
     }
 </dialog>

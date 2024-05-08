@@ -216,7 +216,7 @@ namespace SaYSpin.src.inventory_items_storages
         {
             const double adjacentGreenAlienBonus = 1.3;
             return TileItem.Ordinary("Mars", Rarity.Epic, 5, ["planet"])
-                .WithTileItemsEnhancingTileItemEffect($"Adjacent green aliens give {adjacentGreenAlienBonus} more coins", SlotMachineArea.Adjacent, ModifierType.Multiply, adjacentGreenAlienBonus, (ti) => ti.IdIs("green_alien"));
+                .WithTileItemsEnhancingTileItemEffect($"Adjacent green aliens give {adjacentGreenAlienBonus}× coins", SlotMachineArea.Adjacent, ModifierType.Multiply, adjacentGreenAlienBonus, (ti) => ti.IdIs("green_alien"));
         }
         private TileItem Saturn()
         {
@@ -229,7 +229,7 @@ namespace SaYSpin.src.inventory_items_storages
         {
             const int areaBonus = 5;
             return TileItem.Ordinary("Venus", Rarity.Epic, 10, ["planet"])
-                .WithTileItemsEnhancingTileItemEffect($"Orange aliens in a 5 by 5 area give {areaBonus} more coins", SlotMachineArea.Square5, ModifierType.Plus, areaBonus, (ti) => ti.IdIs("orange_alien"));
+                .WithTileItemsEnhancingTileItemEffect($"Orange aliens in a 5 by 5 area give {areaBonus}× coins", SlotMachineArea.Square5, ModifierType.Plus, areaBonus, (ti) => ti.IdIs("orange_alien"));
         }
         private TileItem Neptune()
         {
@@ -237,7 +237,7 @@ namespace SaYSpin.src.inventory_items_storages
             const int cornerBonus = 5;
             return TileItem.Ordinary("Neptune", Rarity.Epic, 2, ["planet"])
                 .WithTileItemsEnhancingTileItemEffect($"Cyan aliens in the same horizontal line give {horizontalMultiplier}× coins", SlotMachineArea.HorizontalLine, ModifierType.Multiply, horizontalMultiplier, (ti) => ti.IsAlien())
-                .WithTileItemsEnhancingTileItemEffect($"Cyan aliens in the corner tiles give {cornerBonus} more coins", SlotMachineArea.CornerTiles, ModifierType.Plus, cornerBonus, (ti) => ti.IsAlien());
+                .WithTileItemsEnhancingTileItemEffect($"Cyan aliens in the corner tiles give {cornerBonus}× coins", SlotMachineArea.CornerTiles, ModifierType.Plus, cornerBonus, (ti) => ti.IsAlien());
         }
         private TileItem ArtificialSatellite()
         {

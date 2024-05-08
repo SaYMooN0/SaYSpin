@@ -1,9 +1,6 @@
 @inject AppController allGameController
 
 <div class="choose-difficulty-container">
-    <label class="choose-difficulty-label unselectable">
-        Difficulties:
-    </label>
     <div class="difficulties-container">
         @foreach (var difficulty in allGameController.PossibleDifficulties)
         {
@@ -20,7 +17,10 @@
     </label>
 
     <div class="difficulty-info-container">
-        <label class="difficulty-info-label unselectable">Difficulty info</label>
+        <label class="difficulty-info-label unselectable">
+
+            <LabelWithDiamonds text="Difficulty Info" />
+        </label>
         <div class="difficulty-info">
             <a href="#"></a>
             <div class="difficulty-negatives">

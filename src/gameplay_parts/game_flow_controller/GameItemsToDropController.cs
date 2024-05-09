@@ -98,20 +98,27 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
         private void UpdateShopItems()
         {
             double luckParam = CalculateCurrentLuckPoints();
-            var tileItems = GenerateNewTileItemsForShop(luckParam);
-            var relics = GenerateNewRelicsForShop(luckParam);
+
+            var lockedTileItems = Shop.TileItemsForSale.Where(ti => ti.IsLocked);
+            var lockedRelics = Shop.RelicsForSale.Where(r => r.IsLocked);
+
+
+            int tileItemsNeeded = StatsTracker.TileItemsInShopCount - lockedTileItems.Count();
+            int relicsNeeded = StatsTracker.RelicsInShopCount - lockedRelics.Count();
+
+            var tileItems = tileItemsNeeded > 0 ? GenerateNewTileItemsForShop(luckParam, tileItemsNeeded) : [];
+            var relics = relicsNeeded > 0 ? GenerateNewRelicsForShop(luckParam, relicsNeeded) : [];
             //will be changed based on rarity
             Shop.Update(
-                tileItems.Select(ti => new ItemForSale<TileItem>(ti, Randomizer.Int(20, 100))).ToArray(),
-                relics.Select(r => new ItemForSale<Relic>(r, Randomizer.Int(20, 100))).ToArray()
-                );
+                lockedTileItems.Concat(tileItems).ToArray(),
+                lockedRelics.Concat(relics).ToArray());
         }
         private double CalculateCurrentLuckPoints() =>
             CurrentStage % 10 == 0 ? StatsTracker.Luck + 2
             : CurrentStage % 5 == 0 ? StatsTracker.Luck + 1
             : StatsTracker.Luck;
 
-        private TileItem[] GenerateNewTileItemsForShop(double currentLuckPoints)
+        private IEnumerable<ItemForSale> GenerateNewTileItemsForShop(double currentLuckPoints, int tileItemsNeeded)
         {
             Random rnd = new();
 
@@ -119,14 +126,14 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
             var tileItems = TileItemsPossibleToDrop.ToArray();
 
 
-            for (int i = 0; i < StatsTracker.TileItemsInShopCount; i++)
+            for (int i = 0; i < tileItemsNeeded; i++)
             {
                 int index = rnd.Next(tileItems.Length);
                 tileItemsToReturn[i] = tileItems[index];
             }
-            return tileItemsToReturn;
+            return AddPriceToItems(tileItemsToReturn);
         }
-        private Relic[] GenerateNewRelicsForShop(double currentLuckPoints)
+        private IEnumerable<ItemForSale> GenerateNewRelicsForShop(double currentLuckPoints, int relicsNeeded)
         {
             Random rnd = new();
 
@@ -134,13 +141,19 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
             var relics = RelicsPossibleToDrop.ToArray();
 
 
-            for (int i = 0; i < StatsTracker.RelicsInShopCount; i++)
+            for (int i = 0; i < relicsNeeded; i++)
             {
                 int index = rnd.Next(relics.Length);
                 relicsToReturn[i] = relics[index];
             }
-            return relicsToReturn;
+            return AddPriceToItems(relicsToReturn);
         }
-
+        private IEnumerable<ItemForSale> AddPriceToItems(BaseInventoryItem[] items) =>
+            items.Select(
+                item => new ItemForSale(
+                    item,
+                    (int)(item.Rarity.ItemPrice() * CurrentStage / 3.5 * StatsTracker.ShopPriceCoefficient) + Randomizer.Int(0, CurrentStage / 3)
+                )
+            );
     }
 }

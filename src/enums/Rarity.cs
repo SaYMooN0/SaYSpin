@@ -11,7 +11,6 @@
     }
     public static class RarityExtensions
     {
-
         public static string ToHexColor(this Rarity rarity) => rarity switch
         {
             Rarity.Common => "#B1C8F0",
@@ -20,6 +19,15 @@
             Rarity.Legendary => "#ffc611",
             Rarity.Mythic => "#ff033e",
             _ => "#FFFFFF",
+        };
+        public static int ItemPrice(this Rarity rarity) => rarity switch
+        {
+            Rarity.Common => 3,
+            Rarity.Rare => 5,
+            Rarity.Epic => 7,
+            Rarity.Legendary => 9,
+            Rarity.Mythic => 12,
+            _ => 0
         };
     }
 }

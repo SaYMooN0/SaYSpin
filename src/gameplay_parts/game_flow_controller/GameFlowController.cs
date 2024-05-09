@@ -38,7 +38,7 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
             StatsTracker = stats;
             Difficulty = difficulty;
 
-            allTileItemsConstructors = new ReadOnlyDictionary<string, Func<TileItem>>(accessibleTileItems); 
+            allTileItemsConstructors = new ReadOnlyDictionary<string, Func<TileItem>>(accessibleTileItems);
             AllTileItemsCollection = accessibleTileItems.Select(ti => ti.Value()).ToArray();
 
             allRelicsConstructors = new ReadOnlyDictionary<string, Func<Relic>>(accessibleRelics);
@@ -153,6 +153,14 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
         private int CalculateCoinsNeededForStage() => (int)
                (Math.Pow(CurrentStage * 1.65 + 2, 1.85) * Difficulty.NeededCoinsMultiplier * 2.2) - 10;
 
+        public void BuyItem(ItemForSale item)
+        {
+            Inventory.ChangeDiamondsCount(d => d - item.Price);
+            if (item.Item is Relic r)
+                AddRelicToInventory(r);
+            else if (item.Item is TileItem ti)
+                AddTileItemToInventory(ti); 
+        }
 
         public event StageStartedDelegate OnNewStageStarted;
         public delegate void StageStartedDelegate(int newStageNumber);

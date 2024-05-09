@@ -67,7 +67,12 @@
     bottom: calc(3px + 3%);
     opacity: 0;
 }
-
+.lock-button{
+    height:20px;
+    aspect-ratio:1/1;
+    position:absolute;
+    right:0;
+}
 @media (max-width: 1800px) {
     .item-card {
         grid-template-rows: calc(50px + 3.6vw)

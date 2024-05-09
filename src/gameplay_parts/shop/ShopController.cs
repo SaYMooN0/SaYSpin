@@ -3,22 +3,22 @@ using SaYSpin.src.inventory_items.tile_items;
 
 namespace SaYSpin.src.gameplay_parts.shop
 {
-    public  class ShopController
+    public class ShopController
     {
-        private readonly ISpecialMerchant[] possibleSpecialMerchants;
+        public ISpecialMerchant[] PossibleSpecialMerchants { get; init; }
         internal ShopController(ISpecialMerchant[] possibleSpecialMerchants)
         {
-            this.possibleSpecialMerchants = possibleSpecialMerchants;
+            this.PossibleSpecialMerchants = possibleSpecialMerchants;
         }
-
-        public ItemForSale<TileItem>[] TileItemsForSale { get; private set; } = [];
-        public ItemForSale<Relic>[] RelicsForSale { get; private set; } = [];
+        public List<ItemForSale> LockedItems => TileItemsForSale.Concat(RelicsForSale).Where(i => i.IsLocked).ToList();
+        public ItemForSale[] TileItemsForSale { get; private set; } = [];
+        public ItemForSale[] RelicsForSale { get; private set; } = [];
         public ISpecialMerchant CurrentSpecialMerchant { get; private set; }
-      
 
-        public void Update(ItemForSale<TileItem>[] newTileItemsForSale, ItemForSale<Relic>[] newRelicsForSale)
+
+        public void Update(ItemForSale[] newTileItemsForSale, ItemForSale[] newRelicsForSale)
         {
-            TileItemsForSale=newTileItemsForSale;
+            TileItemsForSale = newTileItemsForSale;
             RelicsForSale = newRelicsForSale;
         }
         public void UpdateSpecialMerchant()

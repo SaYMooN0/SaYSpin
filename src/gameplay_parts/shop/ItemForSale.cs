@@ -2,14 +2,13 @@
 
 namespace SaYSpin.src.gameplay_parts.shop
 {
-    public class ItemForSale<T> where T : BaseInventoryItem
+    public record class ItemForSale(
+        BaseInventoryItem Item,
+        int Price
+    )
     {
-        public T Item { get; init; }
-        public int Price { get; init; }
-        public ItemForSale(T item, int price)
-        {
-            Item = item;
-            Price = price;
-        }
+        public bool IsLocked { get; private set; } = false;
+        public void Lock() => IsLocked = true;
+        public void Unlock() => IsLocked = false;
     }
 }

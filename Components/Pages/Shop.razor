@@ -2,8 +2,11 @@
 @inject AppController appController
 @code {
     private ShopItemDialog shopItemDialog;
-    private void OpenShopItemDialog(BaseInventoryItem item, int price) =>
-        shopItemDialog.Open(item, price);
+    private void BuyItem(ItemForSale item)
+    {
+    }
+    private void OpenShopItemDialog(ItemForSale item) =>
+        shopItemDialog.Open(item);
 }
 <ShopItemDialog @ref="shopItemDialog"></ShopItemDialog>
 <div class="shop-page-container">
@@ -38,7 +41,7 @@
                 <div class="items-for-sale-container">
                     @foreach (var item in appController.Game.Shop.TileItemsForSale)
                     {
-                        <ShopItemCard itemForSale="@item.Item" price="@item.Price" onClick="()=>OpenShopItemDialog(item.Item, item.Price)" />
+                        <ShopItemCard item="item" onClick="()=>OpenShopItemDialog(item)" />
                     }
                 </div>
 
@@ -48,7 +51,7 @@
                 <div class="items-for-sale-container">
                     @foreach (var item in appController.Game.Shop.RelicsForSale)
                     {
-                        <ShopItemCard itemForSale="@item.Item" price="@item.Price" onClick="()=>OpenShopItemDialog(item.Item, item.Price)" />
+                        <ShopItemCard item="item" onClick="()=>OpenShopItemDialog(item)" />
                     }
                 </div>
             </div>

@@ -1,34 +1,38 @@
 ﻿@inject ShowItemInfoDialogService showItemInfoDialog
 @inject IJSRuntime JSRuntime
-
+@inject AppController gameController
 <dialog id="shopItemDialog">
     <DialogCloseButton closeAction="()=>Close()" />
-    @if (item is not null)
+    @if (itemToBuy is not null)
     {
         <div class="dialog-content unselectable">
-            <label class="item-name" style="color:@item.Rarity.ToHexColor()">@item.Name</label>
+            <label class="item-name" style="color:@itemToBuy.Item.Rarity.ToHexColor()">@itemToBuy.Item.Name</label>
             <div class="img-container">
-                <InventoryItemWithRarityComponent itemToDisplay="item" />
+                <InventoryItemWithRarityComponent itemToDisplay="itemToBuy.Item" />
                 <label class="press-label">Press for more info</label>
             </div>
 
-            <label class="item-price">@price</label>
-            <div class="buy-button">Buy</div>
+            <label class="item-price">@itemToBuy.Price</label>
+            
+            <div class='buy-button @(gameController.Game.Inventory.IsAbleToBuy(itemToBuy).ableToBuy ? "":"disabled")'>Buy</div>
         </div>
     }
 </dialog>
 @code {
-    public BaseInventoryItem item;
-    public int price;
-    public async Task Open(BaseInventoryItem item, int price)
+    public ItemForSale itemToBuy;
+    private void BuyAction()
     {
-        this.item = item;
-        this.price = price;
+
+
+    }
+    public async Task Open(ItemForSale item)
+    {
+        this.itemToBuy = item;
         await JSRuntime.InvokeVoidAsync("blazorDialogFunctions.openDialog", "shopItemDialog");
         this.StateHasChanged();
     }
 
     private async Task Close() =>
-        await JSRuntime.InvokeVoidAsync("blazorDialogFunctions.closeDialog", "shopItemDialog");
+    await JSRuntime.InvokeVoidAsync("blazorDialogFunctions.closeDialog", "shopItemDialog");
 
-}
+            }

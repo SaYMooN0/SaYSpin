@@ -62,8 +62,14 @@
         <div class="special-merchant-container">
             Special Merchant
         </div>
-
     </div>
+</div>
+<div class="tokens-and-diamonds-container">
+    @foreach (var i in appController.Game.Inventory.Tokens.TokensAsTuples())
+    {
+        <TokenDisplayComponent type="@i.tokenType" count="@i.count" />
+    }
+    <DiamondsCountDisplayComponent count="@appController.Game.Inventory.DiamondsCount" />
 </div>
 
 

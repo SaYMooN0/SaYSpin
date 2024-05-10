@@ -15,10 +15,10 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
             {
                 if (_possibleRelicsReinitNeeded)
                 {
-                    var takenUniqueRelics = Inventory.Relics.Where(r => r.IsUnique);
+                    var takenUniqueRelicsNames = Inventory.Relics.Where(r => r.IsUnique).Select(r => r.Name);
                     _possibleToDropRelics = AllRelicsCollection
                         .Where(r => !r.IsSpecial)
-                        .Except(takenUniqueRelics)
+                        .Where(r => !takenUniqueRelicsNames.Contains(r.Name))
                         .ToArray();
                     _possibleRelicsReinitNeeded = false;
                 }
@@ -34,10 +34,10 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
             {
                 if (_possibleTileItemsReinitNeeded)
                 {
-                    var takenUniqueTileItems = Inventory.TileItems.Where(ti => ti.IsUnique);
+                    var takenUniqueTileItemsNames = Inventory.TileItems.Where(ti => ti.IsUnique).Select(ti => ti.Name);
                     _possibleToDropTileItems = AllTileItemsCollection
                         .Where(ti => !ti.IsSpecial)
-                        .Except(takenUniqueTileItems)
+                        .Where(ti => !takenUniqueTileItemsNames.Contains(ti.Name))
                         .ToArray();
                     _possibleTileItemsReinitNeeded = false;
                 }
@@ -122,7 +122,7 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
         {
             Random rnd = new();
 
-            TileItem[] tileItemsToReturn = new TileItem[StatsTracker.TileItemsInShopCount];
+            TileItem[] tileItemsToReturn = new TileItem[tileItemsNeeded];
             var tileItems = TileItemsPossibleToDrop.ToArray();
 
 
@@ -137,7 +137,7 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
         {
             Random rnd = new();
 
-            Relic[] relicsToReturn = new Relic[StatsTracker.RelicsInShopCount];
+            Relic[] relicsToReturn = new Relic[relicsNeeded];
             var relics = RelicsPossibleToDrop.ToArray();
 
 
@@ -152,7 +152,7 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
             items.Select(
                 item => new ItemForSale(
                     item,
-                    (int)(item.Rarity.ItemPrice() * CurrentStage / 3.5 * StatsTracker.ShopPriceCoefficient) + Randomizer.Int(0, CurrentStage / 3)
+                    (int)((item.Rarity.ItemPrice() * CurrentStage / 3 + 7) * StatsTracker.ShopPriceCoefficient) + Randomizer.Int(0, CurrentStage / 3 + 5)
                 )
             );
     }

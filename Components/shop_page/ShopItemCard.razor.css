@@ -2,12 +2,14 @@
     height: 100%;
     width: fit-content;
     display: grid;
-    grid-template-rows: calc(60px + 4vw) min-content;
+    grid-template-rows: calc(66px + 4vw) min-content;
     background: #ffffff;
     border-radius: 10px;
     transition: all 0.07s ease-in;
     position: relative;
     overflow: hidden;
+    padding: 2px;
+    box-sizing: border-box;
 }
 
     .item-card .item-price {
@@ -67,27 +69,42 @@
     bottom: calc(3px + 3%);
     opacity: 0;
 }
-.lock-button{
-    height:20px;
-    aspect-ratio:1/1;
-    position:absolute;
-    right:0;
+
+.lock-button {
+    height: 23px;
+    aspect-ratio: 1/1;
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    transition:all 0.2s ease;
 }
+
+    .lock-button svg {
+        fill: #466dfc;
+    }
+
+    .lock-button .not-locked {
+        opacity: 0;
+   
+    }
+
+.item-card:hover .lock-button .not-locked {
+    opacity: 1;
+    fill: #6183ff;
+}
+
 @media (max-width: 1800px) {
     .item-card {
-        grid-template-rows: calc(50px + 3.6vw)
+        grid-template-rows: calc(58px + 4.6vw)
     }
 }
 
 @media (max-width: 1600px) {
-    .item-card {
-        grid-template-rows: calc(38px + 4vw)
-    }
 
-        .item-card .counter-value {
-            font-size: 15px;
-            padding: 3px 7px;
-        }
+    .item-card .counter-value {
+        font-size: 15px;
+        padding: 3px 7px;
+    }
 }
 
 @media (max-width: 1000px), (max-height:800px) {
@@ -103,6 +120,11 @@
 
     .item-card .counter-value {
         bottom: calc(10px + 12%);
+    }
+    .lock-button {
+        height: 18px;
+        right: 6px;
+        top: 6px;
     }
 }
 
@@ -121,5 +143,10 @@
         bottom: calc(9px + 10%);
         padding: 3px 6px;
         font-size: 12px;
+    }
+    .lock-button {
+        height: 16px;
+        right: 5px;
+        top: 5px;
     }
 }

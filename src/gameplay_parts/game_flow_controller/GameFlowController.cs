@@ -50,11 +50,13 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
 
             this.OnInventoryItemAdded += (item) =>
             {
-                if (item.IsUnique) SetPossibleInventoryItemsReinitNeeded(item);
+                if (item.IsUnique) 
+                    SetPossibleInventoryItemsReinitNeeded(item);
             };
             this.OnInventoryItemRemoved += (item) =>
             {
-                if (item.IsUnique) SetPossibleInventoryItemsReinitNeeded(item);
+                if (item.IsUnique) 
+                    SetPossibleInventoryItemsReinitNeeded(item);
             };
 
         }

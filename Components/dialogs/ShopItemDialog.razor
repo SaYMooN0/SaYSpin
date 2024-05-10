@@ -11,14 +11,25 @@
                 <InventoryItemWithRarityComponent itemToDisplay="itemToBuy.Item" />
                 <label class="press-label">Press for more info</label>
             </div>
+            @if (IsAbleToBuy.ableToBuy)
+            {
+                <div class='buy-button'>
+                    Buy for @itemToBuy.Price
+                    <img src="/resources/images/inventory/diamond.png" />
+                </div>
+            }
+            else
+            {
+                <label class="buy-error">
+                    @IsAbleToBuy.errorMessage
+                </label>
+            }
 
-            <label class="item-price">@itemToBuy.Price</label>
-            
-            <div class='buy-button @(gameController.Game.Inventory.IsAbleToBuy(itemToBuy).ableToBuy ? "":"disabled")'>Buy</div>
         </div>
     }
 </dialog>
 @code {
+    private (bool ableToBuy, string? errorMessage) IsAbleToBuy => gameController.Game.Inventory.IsAbleToBuy(itemToBuy);
     public ItemForSale itemToBuy;
     private void BuyAction()
     {
@@ -34,5 +45,4 @@
 
     private async Task Close() =>
     await JSRuntime.InvokeVoidAsync("blazorDialogFunctions.closeDialog", "shopItemDialog");
-
-            }
+}

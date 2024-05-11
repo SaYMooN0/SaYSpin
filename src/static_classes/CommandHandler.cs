@@ -22,8 +22,11 @@ namespace SaYSpin.src.static_classes
               ["delAllI"] = HandleDelAllI,
               ["clearInv"] = (args, game) => HandleClearInventory(game),
               ["setCoins"] = HandleSetCurrentCoins,
+              ["setDiamonds"] = HandleSetCurrentDiamonds,
               ["stats"] = (args, game) => HandleGetStats(game),
+              ["refreshShop"] = (args, game) => HandleRefreshShop(game)
           };
+
         private static readonly HashSet<string> cheatRequiredCommands = [
             "addI",
             "addR",
@@ -32,7 +35,9 @@ namespace SaYSpin.src.static_classes
             "delAllR",
             "delAllI",
             "clearInv",
-            "setCoins"
+            "setCoins",
+            "setDiamonds",
+            "refreshShop"
         ];
 
         public static GameLogModel HandleCommand(string command, GameFlowController game)
@@ -182,9 +187,25 @@ namespace SaYSpin.src.static_classes
             }
             return GameLogModel.CommandError($"Unable to parse {args[0]}");
         }
+        private static GameLogModel HandleSetCurrentDiamonds(string[] args, GameFlowController game)
+        {
+            if (args.Length == 0) return NotEnoughArgs("setDiamonds", 1, 0);
+
+            if (uint.TryParse(args[0], out uint count))
+            {
+                game.Inventory.ChangeDiamondsCount((currentCount) => currentCount = ((int)count));
+                return GameLogModel.CommandSuccess($"Current diamonds set to {count}");
+            }
+            return GameLogModel.CommandError($"Unable to parse {args[0]}");
+        }
 
         private static GameLogModel HandleGetStats(GameFlowController game) =>
             GameLogModel.CommandSuccess(string.Join("\n", game.StatsTracker.Values.Select(kvp => $"{kvp.Key}: {kvp.Value}")));
+        private static GameLogModel HandleRefreshShop(GameFlowController game)
+        {
+            game.UpdateShopItems();
+            return GameLogModel.CommandSuccess("Shop refreshed");
+        }
     }
 
 }

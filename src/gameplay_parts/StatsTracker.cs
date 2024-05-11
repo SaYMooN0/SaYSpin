@@ -18,7 +18,8 @@ namespace SaYSpin.src.gameplay_parts
             double initAfterStageCoinsToDiamondsCoefficient,
             double initShopPriceCoefficient,
             int initTileItemsInShopCount,
-            int initRelicsInShopCount
+            int initRelicsInShopCount,
+            int initCoinsNeededToCompleteStageCoefficient
             )
         {
             initialValues = new Dictionary<GameStat, double>
@@ -31,6 +32,7 @@ namespace SaYSpin.src.gameplay_parts
                 { GameStat.ShopPriceCoefficient, initShopPriceCoefficient },
                 { GameStat.TileItemsInShopCount, initTileItemsInShopCount },
                 { GameStat.RelicsInShopCount, initRelicsInShopCount },
+                { GameStat.CoinsNeededToCompleteStage, initCoinsNeededToCompleteStageCoefficient }
             };
             Values = new Dictionary<GameStat, double>(initialValues);
         }
@@ -43,6 +45,7 @@ namespace SaYSpin.src.gameplay_parts
         public double ShopPriceCoefficient => Values[GameStat.ShopPriceCoefficient];
         public int TileItemsInShopCount => (int)Values[GameStat.TileItemsInShopCount];
         public int RelicsInShopCount => (int)Values[GameStat.RelicsInShopCount];
+        public int CoinsNeededToCompleteStage => (int)Values[GameStat.CoinsNeededToCompleteStage];
 
         public void SetChanged() => Changed = true;
 
@@ -52,13 +55,18 @@ namespace SaYSpin.src.gameplay_parts
                 .OrderBy(effect => effect.ModifierType == ModifierType.Multiply ? 1 : 0)
                 .ToList();
 
-            Changed = false;
-            foreach (var gameStat in Values.Keys)
-                Values[gameStat] = initialValues[gameStat];
+            ResetGameStats();
+
             foreach (var effect in sortedEffects)
             {
                 Values[effect.Stat] = effect.ApplyEffect(Values[effect.Stat]);
             }
+        }
+        private void ResetGameStats()
+        {
+            Changed = false;
+            foreach (var gameStat in Values.Keys)
+                Values[gameStat] = initialValues[gameStat];
         }
     }
 

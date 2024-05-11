@@ -8,7 +8,7 @@
     private void OpenShopItemDialog(ItemForSale item) =>
         shopItemDialog.Open(item);
 }
-<ShopItemDialog @ref="shopItemDialog"></ShopItemDialog>
+<ShopItemDialog @ref="shopItemDialog" rerenderShop="this.StateHasChanged"></ShopItemDialog>
 <div class="shop-page-container">
     <svg class="shop-roof" viewBox="0 200 3000 800" preserveAspectRatio="none">
         <path fill-rule="evenodd" fill="rgb(100%, 52.929688%, 40.405273%)" fill-opacity="1" d="M 567.273438 714.539062 L 876.308594 300 L 737.710938 300 L 360 714.539062 L 567.273438 714.539062 " />

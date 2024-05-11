@@ -11,12 +11,12 @@ namespace SaYSpin.src.gameplay_parts.shop
             this.PossibleSpecialMerchants = possibleSpecialMerchants;
         }
         public List<ItemForSale> LockedItems => TileItemsForSale.Concat(RelicsForSale).Where(i => i.IsLocked).ToList();
-        public ItemForSale[] TileItemsForSale { get; private set; } = [];
-        public ItemForSale[] RelicsForSale { get; private set; } = [];
+        public List<ItemForSale> TileItemsForSale { get; private set; } = [];
+        public List<ItemForSale> RelicsForSale { get; private set; } = [];
         public ISpecialMerchant CurrentSpecialMerchant { get; private set; }
 
 
-        public void Update(ItemForSale[] newTileItemsForSale, ItemForSale[] newRelicsForSale)
+        public void Update(List<ItemForSale> newTileItemsForSale, List<ItemForSale> newRelicsForSale)
         {
             TileItemsForSale = newTileItemsForSale;
             RelicsForSale = newRelicsForSale;
@@ -24,6 +24,15 @@ namespace SaYSpin.src.gameplay_parts.shop
         public void UpdateSpecialMerchant()
         {
             ; ; ; ;
+        }
+        public void ItemBought(ItemForSale itemForSale)
+        {
+            itemForSale.Unlock();
+            if (itemForSale.Item is Relic)
+                RelicsForSale.Remove(itemForSale);
+            else if (itemForSale.Item is TileItem)
+                TileItemsForSale.Remove(itemForSale);
+
         }
 
     }

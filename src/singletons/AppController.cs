@@ -67,7 +67,8 @@ namespace SaYSpin.src.singletons
                 initAfterStageCoinsToDiamondsCoefficient: 1,
                 initShopPriceCoefficient: 1,
                 initTileItemsInShopCount: 4,
-                initRelicsInShopCount: 2
+                initRelicsInShopCount: 2,
+                initCoinsNeededToCompleteStageCoefficient: 1
                 );
         }
 

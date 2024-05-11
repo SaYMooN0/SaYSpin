@@ -10,6 +10,7 @@
         ShopPriceCoefficient,
         TileItemsInShopCount,
         RelicsInShopCount,
+        CoinsNeededToCompleteStage,
     }
 
 }

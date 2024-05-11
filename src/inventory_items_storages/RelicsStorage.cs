@@ -44,7 +44,9 @@ namespace SaYSpin.src.inventory_items_storages
                 ["Olympic Flag"] = OlympicFlag,
                 ["Intergalactic Bubblegum"] = IntergalacticBubbleGum,
                 ["Storybook"] = Storybook,
-                ["Shipping Containers"] = ShippingContainers
+                ["Shipping Containers"] = ShippingContainers,
+                ["Safe"] = Safe,
+                ["Compass"] = Compass,
 
             };
             _availableRelics = new HashSet<string>(_storedItems.Keys);
@@ -398,6 +400,49 @@ namespace SaYSpin.src.inventory_items_storages
         {
             return new Relic("Shipping Containers", Rarity.Epic)
                 .WithGameStatRelicEffect($"There will be 3 more tile items to choose from in the shop", GameStat.TileItemsInShopCount, ModifierType.Plus, 3);
+        }
+        private Relic Safe()
+        {
+            const int maxValue = 20;
+            RelicWithCounter safe = new("Safe", Rarity.Mythic, isUnique: true);
+            safe = safe.WithAfterStageRewardRelicEffect(
+                $"After each stage increase counter by count of remaining spins (up to {maxValue})",
+                (stageNumber, game) =>
+                {
+                    if(safe.Counter< maxValue)
+                    {
+                        safe.IncrementCounter(game.SpinsLeft);
+                        game.StatsTracker.SetChanged();
+                    }
+                    return [];
+                }) as RelicWithCounter;
+
+            safe = safe.WithNonConstantGameStatRelicEffect(
+                "For every two counter values, reduces the number of coins needed to complete the stage by 1%",
+                GameStat.CoinsNeededToCompleteStage,
+                (game) => new Tuple<ModifierType, double>(ModifierType.Multiply, 1 - ((double)safe.Counter / 200))) as RelicWithCounter;
+            return safe;
+        }
+        private Relic Compass()
+        {
+            const int maxValue = 15;
+            RelicWithCounter compass = new("Compass", Rarity.Legendary, isUnique: true);
+            compass = compass.WithAfterStageRewardRelicEffect(
+                $"If you complete stage with 0 spins remain, increase counter by 1 (up to {maxValue})",
+                (stageNumber, game) =>
+                {
+                    if (game.SpinsLeft == 0 && compass.Counter < maxValue)
+                    {
+                        compass.IncrementCounter(1);
+                        game.StatsTracker.SetChanged();
+                    }
+                    return [];
+                }) as RelicWithCounter;
+            compass = compass.WithNonConstantGameStatRelicEffect(
+                "Reduces the prices in the store based on the counter value",
+                GameStat.ShopPriceCoefficient,
+                (game) => new(ModifierType.Multiply, 1 - ((double)compass.Counter / 100))) as RelicWithCounter;
+            return compass;
         }
     }
 }

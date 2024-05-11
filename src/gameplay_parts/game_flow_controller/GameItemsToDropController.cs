@@ -95,7 +95,7 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
             return RelicsPossibleToDrop.OrderBy(x => Guid.NewGuid()).Take(StatsTracker.NewStageRelicsForChoiceCount).ToArray();
             //will be changed based on luck
         }
-        private void UpdateShopItems()
+        public void UpdateShopItems()
         {
             double luckParam = CalculateCurrentLuckPoints();
 
@@ -110,8 +110,8 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
             var relics = relicsNeeded > 0 ? GenerateNewRelicsForShop(luckParam, relicsNeeded) : [];
             //will be changed based on rarity
             Shop.Update(
-                lockedTileItems.Concat(tileItems).ToArray(),
-                lockedRelics.Concat(relics).ToArray());
+                lockedTileItems.Concat(tileItems).ToList(),
+                lockedRelics.Concat(relics).ToList());
         }
         private double CalculateCurrentLuckPoints() =>
             CurrentStage % 10 == 0 ? StatsTracker.Luck + 2
@@ -152,7 +152,7 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
             items.Select(
                 item => new ItemForSale(
                     item,
-                    (int)((item.Rarity.ItemPrice() * CurrentStage / 3 + 7) * StatsTracker.ShopPriceCoefficient) + Randomizer.Int(0, CurrentStage / 3 + 5)
+                    (int)((item.Rarity.ItemPrice() * (CurrentStage + 2) / 3 + 7) * StatsTracker.ShopPriceCoefficient) + Randomizer.Int(0, CurrentStage / 3 + 3)
                 )
             );
     }

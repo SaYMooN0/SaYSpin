@@ -19,9 +19,18 @@ namespace SaYSpin.src.extension_classes
         {
             if (!game.StatsTracker.Changed)
                 return;
-            var effects = game.Inventory.Relics
-                    .SelectMany(r => r.Effects.OfType<GameStatRelicEffect>());
-            game.StatsTracker.Update(effects);
+
+            var staticEffects = game.Inventory.Relics
+                .SelectMany(r => r.Effects.OfType<GameStatRelicEffect>());
+
+            var dynamicEffects = game.Inventory.Relics
+                .SelectMany(r => r.Effects.OfType<NonConstantGameStatRelicEffect>())
+                .Select(de => de.ConvertToStaticEffect(game))
+                .Where(e => e != null);
+
+            var combinedEffects = staticEffects.Concat(dynamicEffects);
+
+            game.StatsTracker.Update(combinedEffects);
         }
         public static TileItem? TileItemWithId(this GameFlowController game, string id) =>
             game.AllTileItemsCollection.FirstOrDefault(item => item?.Id == id);

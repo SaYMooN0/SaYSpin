@@ -50,12 +50,12 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
 
             this.OnInventoryItemAdded += (item) =>
             {
-                if (item.IsUnique) 
+                if (item.IsUnique)
                     SetPossibleInventoryItemsReinitNeeded(item);
             };
             this.OnInventoryItemRemoved += (item) =>
             {
-                if (item.IsUnique) 
+                if (item.IsUnique)
                     SetPossibleInventoryItemsReinitNeeded(item);
             };
 
@@ -109,6 +109,7 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
         {
             SpinsLeft -= 1;
 
+
             TileItemsPicker itemsPicker = new(SlotMachine.TotalSlots);
             itemsPicker.PickItemsFrom(Inventory.TileItems);
             SlotMachine.UpdateItems(itemsPicker);
@@ -123,6 +124,8 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
             HandleTransformationEffects();
             HandleTileItemsWithAbsorbingEffects();
             ClearTileItemsMarkers();
+
+            this.UpdateStatsIfNeeded();
         }
         public void AddCoins(int count) =>
             CoinsCount += count;
@@ -153,15 +156,16 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
         private void ClearTileItemsMarkers() =>
            Inventory.TileItems.ForEach(ti => ti.ClearMarkers());
         private int CalculateCoinsNeededForStage() => (int)
-               (Math.Pow(CurrentStage * 1.65 + 2, 1.85) * Difficulty.NeededCoinsMultiplier * 2.2) - 10;
+               (Math.Pow(CurrentStage * 1.65 + 2, 1.85) * Difficulty.NeededCoinsMultiplier * 2.2 * StatsTracker.CoinsNeededToCompleteStage) - 10;
 
         public void BuyItem(ItemForSale item)
         {
             Inventory.ChangeDiamondsCount(d => d - item.Price);
+            Shop.ItemBought(item);
             if (item.Item is Relic r)
                 AddRelicToInventory(r);
             else if (item.Item is TileItem ti)
-                AddTileItemToInventory(ti); 
+                AddTileItemToInventory(ti);
         }
 
         public event StageStartedDelegate OnNewStageStarted;

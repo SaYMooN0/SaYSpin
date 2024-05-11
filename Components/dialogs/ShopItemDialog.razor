@@ -13,7 +13,7 @@
             </div>
             @if (IsAbleToBuy.ableToBuy)
             {
-                <div class='buy-button'>
+                <div class='buy-button' @onclick="BuyItem">
                     Buy for @itemToBuy.Price
                     <img src="/resources/images/inventory/diamond.png" />
                 </div>
@@ -29,11 +29,16 @@
     }
 </dialog>
 @code {
+    [Parameter]
+    public Action rerenderShop { get; set; }
+
     private (bool ableToBuy, string? errorMessage) IsAbleToBuy => gameController.Game.Inventory.IsAbleToBuy(itemToBuy);
     public ItemForSale itemToBuy;
-    private void BuyAction()
+    private async void BuyItem()
     {
-
+        gameController.Game.BuyItem(itemToBuy);
+        rerenderShop();
+        await Close();
 
     }
     public async Task Open(ItemForSale item)
@@ -44,5 +49,5 @@
     }
 
     private async Task Close() =>
-    await JSRuntime.InvokeVoidAsync("blazorDialogFunctions.closeDialog", "shopItemDialog");
+        await JSRuntime.InvokeVoidAsync("blazorDialogFunctions.closeDialog", "shopItemDialog");
 }

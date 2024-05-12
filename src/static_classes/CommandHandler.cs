@@ -3,6 +3,7 @@ using SaYSpin.src.game_logging;
 using SaYSpin.src.inventory_items.relics;
 using SaYSpin.src.inventory_items.tile_items;
 using SaYSpin.src.gameplay_parts.game_flow_controller;
+using SaYSpin.src.gameplay_parts.inventory_related.tokens;
 
 namespace SaYSpin.src.static_classes
 {
@@ -24,7 +25,8 @@ namespace SaYSpin.src.static_classes
               ["setCoins"] = HandleSetCurrentCoins,
               ["setDiamonds"] = HandleSetCurrentDiamonds,
               ["stats"] = (args, game) => HandleGetStats(game),
-              ["refreshShop"] = (args, game) => HandleRefreshShop(game)
+              ["refreshShop"] = (args, game) => HandleRefreshShop(game),
+              ["addT"] = HandleAddToken,
           };
 
         private static readonly HashSet<string> cheatRequiredCommands = [
@@ -37,7 +39,8 @@ namespace SaYSpin.src.static_classes
             "clearInv",
             "setCoins",
             "setDiamonds",
-            "refreshShop"
+            "refreshShop",
+            "addT"
         ];
 
         public static GameLogModel HandleCommand(string command, GameFlowController game)
@@ -205,6 +208,22 @@ namespace SaYSpin.src.static_classes
         {
             game.UpdateShopItems();
             return GameLogModel.CommandSuccess("Shop refreshed");
+        }
+        private static GameLogModel HandleAddToken(string[] args, GameFlowController game)
+        {
+            if (args.Length == 0) return NotEnoughArgs("addT", 1, 0);
+            TokenType? type = args[0] switch
+            {
+                "shop_r" => TokenType.ShopRefresh,
+                "new_stage_r" => TokenType.NewStageItemsRefresh,
+                "inv_rem" => TokenType.InventoryItemRemoval,
+                _ => null
+            };
+            if (type is null)
+                return GameLogModel.CommandError($"Unknown token type {args[0]}");
+
+            game.Inventory.Tokens.AddToken((TokenType)type);
+            return GameLogModel.CommandSuccess($"Successfully added {type} token");
         }
     }
 

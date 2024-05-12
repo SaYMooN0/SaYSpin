@@ -7,11 +7,11 @@ namespace SaYSpin.src.gameplay_parts.inventory_related.tokens
         private Dictionary<TokenType, int> _tokens = new Dictionary<TokenType, int>();
 
         public TokensCollection(
-            int freeShopRefreshTokensCount = 0,
+            int shopRefreshTokensCount = 0,
             int tileItemRemovalTokensCount = 0,
             int newStageItemsRefreshTokensCount = 0)
         {
-            _tokens[TokenType.FreeShopRefresh] = freeShopRefreshTokensCount;
+            _tokens[TokenType.ShopRefresh] = shopRefreshTokensCount;
             _tokens[TokenType.InventoryItemRemoval] = tileItemRemovalTokensCount;
             _tokens[TokenType.NewStageItemsRefresh] = newStageItemsRefreshTokensCount;
         }

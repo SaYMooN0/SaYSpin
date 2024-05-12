@@ -2,7 +2,7 @@
 {
     public enum TokenType
     {
-        FreeShopRefresh,
+        ShopRefresh,
         InventoryItemRemoval,
         NewStageItemsRefresh
     }
@@ -12,13 +12,13 @@
         {
             return tokenType switch
             {
-                TokenType.FreeShopRefresh => "free_shop_refresh.png",
+                TokenType.ShopRefresh => "shop_refresh.png",
                 TokenType.InventoryItemRemoval => "inventory_item_removal.png",
                 TokenType.NewStageItemsRefresh => "new_stage_items_refresh.png",
                 _ => throw new ArgumentException("Unsupported token type"),
             };
         }
         public static string ImageFullPath(this TokenType tokenType) =>
-            "resources/images/inventory/tokens/"+tokenType.GetImage();
+            "resources/images/inventory/tokens/" + tokenType.GetImage();
     }
 }

@@ -34,49 +34,41 @@
         <path fill-rule="evenodd" fill="rgb(87.889099%, 88.28125%, 88.671875%)" fill-opacity="1" d="M 2432.730469 714.539062 L 2225.460938 714.539062 C 2225.460938 714.539062 2225.460938 816.648438 2225.460938 899.371094 C 2225.460938 926.851562 2236.371094 953.210938 2255.808594 972.648438 C 2275.238281 992.078125 2301.601562 1003 2329.089844 1003 C 2356.578125 1003 2382.941406 992.078125 2402.371094 972.648438 C 2421.808594 953.210938 2432.730469 926.851562 2432.730469 899.371094 C 2432.730469 816.648438 2432.730469 714.539062 2432.730469 714.539062 " />
         <path fill-rule="evenodd" fill="rgb(87.5%, 40.795898%, 29.710388%)" fill-opacity="1" d="M 2640 714.539062 L 2432.730469 714.539062 C 2432.730469 714.539062 2432.730469 816.648438 2432.730469 899.371094 C 2432.730469 926.851562 2443.648438 953.210938 2463.078125 972.648438 C 2482.519531 992.078125 2508.878906 1003 2536.359375 1003 C 2536.359375 1003 2536.359375 1003 2536.371094 1003 C 2563.851562 1003 2590.210938 992.078125 2609.648438 972.648438 C 2629.078125 953.210938 2640 926.851562 2640 899.371094 C 2640 816.648438 2640 714.539062 2640 714.539062 " />
     </svg>
-    <div class="shop-zone">
-        <div class="main-items-zone">
-            <div class="ti-zone">
-                <LabelWithDiamonds text="Tile Items" />
-                <div class="items-for-sale-container">
-                    @foreach (var item in appController.Game.Shop.TileItemsForSale)
-                    {
-                        <ShopItemCard item="item" onClick="()=>OpenShopItemDialog(item)" />
-                    }
-                </div>
-
-            </div>
-            <div class="r-zone">
-                <LabelWithDiamonds text="Relics" />
-                <div class="items-for-sale-container">
-                    @foreach (var item in appController.Game.Shop.RelicsForSale)
-                    {
-                        <ShopItemCard item="item" onClick="()=>OpenShopItemDialog(item)" />
-                    }
-                </div>
-            </div>
-            <div class="refresh-button" @onclick=RefreshButtonClicked>
-                Refresh
-            </div>
-        </div>
+    <div class="shops-zone">
+        <ShopZone labelText="Tile Items" openShopItemDialog="OpenShopItemDialog" items="appController.Game.Shop.TileItemsForSale" />
+        <ShopZone labelText="Relics" openShopItemDialog="OpenShopItemDialog" items="appController.Game.Shop.RelicsForSale" />
         <div class="special-merchant-container">
             Special Merchant
         </div>
+        @if (RefreshTokensCount > 0)
+        {
+            <div class='unselectable refresh-button' @onclick=RefreshButtonClicked>
+                Refresh (@RefreshTokensCount  <img src="@TokenType.ShopRefresh.ImageFullPath()" />)
+            </div>
+        }
+        else
+        {
+            <div class='unselectable refresh-button refresh-disabled'>
+                No tokens left
+            </div>
+        }
+        <div class="tokens-and-diamonds-container">
+            @foreach (var i in appController.Game.Inventory.Tokens.TokensAsTuples())
+            {
+                <TokenDisplayComponent type="@i.tokenType" count="@i.count" />
+            }
+            <DiamondsCountDisplayComponent count="@appController.Game.Inventory.DiamondsCount" />
+        </div>
     </div>
 </div>
-<div class="tokens-and-diamonds-container">
-    @foreach (var i in appController.Game.Inventory.Tokens.TokensAsTuples())
-    {
-        <TokenDisplayComponent type="@i.tokenType" count="@i.count" />
-    }
-    <DiamondsCountDisplayComponent count="@appController.Game.Inventory.DiamondsCount" />
-</div>
-
 
 
 
 @code {
+    private int RefreshTokensCount => appController.Game.Inventory.Tokens.Count(TokenType.ShopRefresh);
     private void RefreshButtonClicked()
     {
+        appController.Game.RefreshShopWithToken();
+        StateHasChanged();
     }
 }

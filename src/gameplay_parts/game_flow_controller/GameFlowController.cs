@@ -144,7 +144,7 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
 
         public void RefreshShopWithToken()
         {
-            if (UseToken(TokenType.FreeShopRefresh))
+            if (UseToken(TokenType.ShopRefresh))
                 UpdateShopItems();
         }
         private void EveryStageShopUpdate()

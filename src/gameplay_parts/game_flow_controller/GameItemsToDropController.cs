@@ -95,7 +95,7 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
             return RelicsPossibleToDrop.OrderBy(x => Guid.NewGuid()).Take(StatsTracker.NewStageRelicsForChoiceCount).ToArray();
             //will be changed based on luck
         }
-        public void UpdateShopItems()
+        internal void UpdateShopItems()
         {
             double luckParam = CalculateCurrentLuckPoints();
 

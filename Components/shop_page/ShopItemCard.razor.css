@@ -150,3 +150,21 @@
         top: 5px;
     }
 }
+@media (max-width: 720px), (max-height:580px) {
+    .item-card .item-price {
+        font-size: 14px;
+        letter-spacing: 0px;
+    }
+
+        .item-card .item-price img {
+            height: 1em;
+        }
+
+    .item-card .counter-value {
+        font-size: 11px;
+    }
+
+    .lock-button {
+        height: 14px;
+    }
+}

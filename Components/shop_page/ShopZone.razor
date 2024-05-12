@@ -1,0 +1,18 @@
+﻿<div class="shop-zone">
+    <LabelWithDiamonds text="@labelText" />
+    <div class="items-for-sale-container">
+        @foreach (var item in items)
+        {
+            <ShopItemCard item="item" onClick="()=>openShopItemDialog(item)" />
+        }
+    </div>
+
+</div>
+@code {
+    [Parameter]
+    public Action<ItemForSale> openShopItemDialog { get; set; }
+    [Parameter]
+    public IEnumerable<ItemForSale> items { get; set; }
+    [Parameter]
+    public string labelText { get; set; }
+}

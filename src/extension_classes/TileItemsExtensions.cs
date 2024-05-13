@@ -6,7 +6,7 @@ namespace SaYSpin.src.extension_classes
     {
         public static bool HasTag(this TileItem? tileItem, string tag) =>
             tileItem is not null && tileItem.Tags.Contains(tag);
-        public static bool HasOneOfTags(this TileItem? tileItem,params string[] tags) =>
+        public static bool HasOneOfTags(this TileItem? tileItem, params string[] tags) =>
             tileItem is not null && tileItem.Tags.Any(t => tags.Contains(t));
         public static bool IsConsumableByPirate(this TileItem? tileItem) =>
             tileItem is not null && tileItem.Tags.Any(t => t == "gold" || t == "chest");
@@ -18,5 +18,7 @@ namespace SaYSpin.src.extension_classes
             tileItem.HasTag("planet");
         public static bool IdIs(this TileItem? tileItem, string id) =>
             tileItem is not null && tileItem.Id == id;
+        public static bool IdIsOneOf(this TileItem? tileItem, params string[] ids) =>
+            tileItem is not null && ids.Contains(tileItem.Id);
     }
 }

@@ -12,8 +12,10 @@ namespace SaYSpin.src.inventory_items.tile_items
             string description,
             Rarity rarity,
             int initialCoinValue,
-            string[] tags
-            ) : base(name, description, rarity, initialCoinValue, tags, new(), null) // null because it will be set in the constructor.
+            string[] tags,
+            bool isSpecial,
+            bool isUnique
+            ) : base(name, description, rarity, initialCoinValue, tags, new(), null, isSpecial, isUnique) // null because it will be set in the constructor.
         {
             _counter = 0;
             base.CalculateIncome = CalculateIncomeWithCounter;
@@ -34,7 +36,7 @@ namespace SaYSpin.src.inventory_items.tile_items
             }
             return (int)baseIncome;
         }
-        public TileItemWithCounter WithEffect(BaseTileItemEffect effect)=>
+        public TileItemWithCounter WithEffect(BaseTileItemEffect effect) =>
             base.WithEffect(effect) as TileItemWithCounter;
         public TileItemWithCounter SetBaseIncomeCalculationFunc(Func<TileItemWithCounter, int> baseIncomeCalculationFunc)
         {
@@ -42,9 +44,9 @@ namespace SaYSpin.src.inventory_items.tile_items
             return this;
         }
 
-        public static TileItemWithCounter New(string name, string description, Rarity rarity, int initialCoinValue, string[] tags)
+        public static TileItemWithCounter New(string name, string description, Rarity rarity, int initialCoinValue, string[] tags, bool isSpecial = false, bool isUnique = false)
         {
-            var tileItemWithCounter = new TileItemWithCounter(name, description, rarity, initialCoinValue, tags);
+            var tileItemWithCounter = new TileItemWithCounter(name, description, rarity, initialCoinValue, tags, isSpecial, isUnique);
             return tileItemWithCounter;
         }
     }

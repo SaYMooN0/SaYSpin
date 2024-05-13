@@ -33,8 +33,8 @@ namespace SaYSpin.src.inventory_items_storages
                 ["Owl"] = Owl,
                 ["Magic Ball"] = MagicBall,
                 ["Wizard"] = () => TileItem.Ordinary("Wizard", Rarity.Rare, 15, ["human"]),
-                ["Carrot"] = () => TileItem.Ordinary("Carrot", Rarity.Common, 5, []),
-                ["Golden Carrot"] = () => TileItem.Ordinary("Golden Carrot", Rarity.Epic, 15, []),
+                ["Carrot"] = () => TileItem.Ordinary("Carrot", Rarity.Common, 5, ["vegetable"]),
+                ["Golden Carrot"] = () => TileItem.Ordinary("Golden Carrot", Rarity.Epic, 15, ["vegetable", "gold"]),
                 ["Sweet Tooth"] = SweetTooth,
                 ["Pirate"] = Pirate,
                 ["Capybara"] = Capybara,
@@ -57,7 +57,10 @@ namespace SaYSpin.src.inventory_items_storages
                 ["Third Place Medal"] = ThirdPlaceMedal,
                 ["Orange Sour Worm"] = OrangeSourWorm,
                 ["Pink And Blue Sour Worm"] = PinkAndBlueSourWorm,
-                ["Green And Yellow Sour Worm"] = GreenAndYellowSourWorm
+                ["Green And Yellow Sour Worm"] = GreenAndYellowSourWorm,
+                ["King"] = King,
+                ["Farmer"] = Farmer,
+                ["Raccoon"]= Raccoon
             };
             //_avaliableTileItems = InitAvailable();
             _avaliableTileItems = [.. _storedItems.Keys];
@@ -105,16 +108,19 @@ namespace SaYSpin.src.inventory_items_storages
 
         private TileItemWithCounter Pirate()
         {
+            const int
+                absorbedIncomeMultiplier = 3,
+                baseIncome = 7;
             TileItemWithCounter t = TileItemWithCounter
-                .New("Pirate", "Gives (7 + value of counter) coins ", Rarity.Legendary, 7, ["human"])
-                .SetBaseIncomeCalculationFunc(t => t.Counter + 7);
+                .New("Pirate", $"Gives ({baseIncome} + value of counter) coins ", Rarity.Legendary, 7, ["human"])
+                .SetBaseIncomeCalculationFunc(t => t.Counter + baseIncome);
             t = t.WithAbsorbingTileItemEffect(
-                "Absorbs adjacent chests and golden tile items giving 3 times of their basic income",
+                $"Absorbs adjacent chests and golden tile items giving {absorbedIncomeMultiplier}× coins of their basic income and increases counter by 1",
                 tiToAbsorb => tiToAbsorb.IsConsumableByPirate(),
                 (game, absorbedTI) =>
                     {
                         t.IncrementCounter(1);
-                        game.AddCoins(absorbedTI.InitialCoinValue * 3);
+                        game.AddCoins(absorbedTI.InitialCoinValue * absorbedIncomeMultiplier);
                     });
             return t;
         }
@@ -385,7 +391,7 @@ namespace SaYSpin.src.inventory_items_storages
             const int adjectWormsBonus = 3;
             const int adjacentOrangesBonus = 3;
 
-            var newTI = TileItem.Special("Orange Sour Worm", Rarity.Rare, 3, ["sweet","sour_worm"])
+            var newTI = TileItem.Special("Orange Sour Worm", Rarity.Rare, 3, ["sweet", "sour_worm"])
                 .WithTileItemsEnhancingTileItemEffect($"Adjacent sour worms give +{adjectWormsBonus} coins",
                     SlotMachineArea.Adjacent, ModifierType.Plus,
                     adjectWormsBonus, (ti) => ti.HasTag("sour_worm"))
@@ -400,26 +406,76 @@ namespace SaYSpin.src.inventory_items_storages
             const int adjacentSweetsBonus = 4;
             string[] affectedSweets = ["lollipop", "candy"];
 
-            var newTI = TileItem.Special("Pink and Blue Sour Worm", Rarity.Rare, 3, ["sweet","sour_worm"])
+            var newTI = TileItem.Special("Pink and Blue Sour Worm", Rarity.Rare, 3, ["sweet", "sour_worm"])
                 .WithTileItemsEnhancingTileItemEffect($"Adjacent sour worms give +{adjectWormsBonus} coins",
                     SlotMachineArea.Adjacent, ModifierType.Plus,
                     adjectWormsBonus, (ti) => ti.HasTag("sour_worm"))
                 .WithTileItemsEnhancingTileItemEffect($"Adjacent {string.Join(", ", affectedSweets)} give +{adjacentSweetsBonus} coins",
                     SlotMachineArea.Adjacent, ModifierType.Plus,
-                    adjacentSweetsBonus, (ti) =>ti is not null && affectedSweets.Contains(ti.Id));
+                    adjacentSweetsBonus, (ti) => ti is not null && affectedSweets.Contains(ti.Id));
             return newTI;
         }
         private TileItem GreenAndYellowSourWorm()
         {
             const int adjectWormsBonus = 3;
             const int greenAndYellowWormsBonus = 2;
-            var newTI = TileItem.Special("Green And Yellow Sour Worm", Rarity.Rare, 3, ["sweet","sour_worm"])
+            var newTI = TileItem.Special("Green And Yellow Sour Worm", Rarity.Rare, 3, ["sweet", "sour_worm"])
                .WithTileItemsEnhancingTileItemEffect($"Adjacent sour worms give +{adjectWormsBonus} coins",
                    SlotMachineArea.Adjacent, ModifierType.Plus,
                    adjectWormsBonus, (ti) => ti.HasTag("sour_worm"))
                .WithTileItemsEnhancingTileItemEffect($"Green And Yellow Worms in all tile items give +{greenAndYellowWormsBonus}coins",
                     SlotMachineArea.AllTiles, ModifierType.Plus,
                     greenAndYellowWormsBonus, (ti) => ti.IdIs("green_and_yellow_sour_worm"));
+            return newTI;
+        }
+        private TileItem King()
+        {
+            const int taxPercent = 7;
+            const int baseTax = 1;
+            TileItemWithCounter newTI = TileItemWithCounter
+                .New("King", "Gives 7 coins per every 3 counter", Rarity.Mythic, 0, ["human"], isUnique: true)
+                .SetBaseIncomeCalculationFunc(ti => ti.Counter / 3 * 7);
+            newTI = newTI.WithAreaScanningTileItemEffect(
+                $"Reduces counter of adjacent humans with counters (except pirate) by {baseTax}+{taxPercent}% of counter and adds this value to its counter",
+                SlotMachineArea.Adjacent,
+                (ti) => ti.HasTag("human") && !ti.IdIs("pirate"),
+                (game, tis) =>
+                {
+                    foreach (var ti in tis.Select(tiWithCoords => tiWithCoords.TileItem).OfType<TileItemWithCounter>())
+                    {
+                        int taken = Math.Min(ti.Counter, ti.Counter * taxPercent / 100 + baseTax);
+                        ti.IncrementCounter(-taken);
+                        newTI.IncrementCounter(taken);
+                    }
+                });
+            return newTI;
+        }
+        private TileItem Farmer()
+        {
+            const double fruitSaleCoefficient = 4.5;
+            TileItemWithCounter newTI = TileItemWithCounter
+                .New("Farmer", "Gives 1 coin per counter", Rarity.Epic, 0, ["human"])
+                .SetBaseIncomeCalculationFunc(ti => ti.Counter);
+            newTI = newTI.WithAbsorbingTileItemEffect(
+                $"Absorbs adjacent fruits and vegetables giving {fruitSaleCoefficient}× coins of their basic income and increases counter by 1",
+                tiToAbsorb => tiToAbsorb.HasOneOfTags("fruit", "vegetable"),
+                (game, absorbedTI) =>
+                {
+                    newTI.IncrementCounter(1);
+                    game.AddCoins((int)(absorbedTI.InitialCoinValue * fruitSaleCoefficient));
+                });
+            return newTI;
+        }
+        private TileItem Raccoon()
+        {
+            int baseIncome = 4;
+            TileItemWithCounter newTI = TileItemWithCounter
+                .New("Raccoon", "Gives 4 + 6 coin per every 5 counter", Rarity.Epic, 0, ["animal"])
+                .SetBaseIncomeCalculationFunc(newTI => newTI.Counter / 5 * 6 + baseIncome);
+            newTI = newTI.WithAbsorbingTileItemEffect(
+                $"Absorbs adjacent apples, bananas and carrots increasing counter by 3",
+                tiToAbsorb => tiToAbsorb.IdIsOneOf("apple", "banana", "carrot"),
+                (game, absorbedTI) => newTI.IncrementCounter(3));
             return newTI;
         }
     }

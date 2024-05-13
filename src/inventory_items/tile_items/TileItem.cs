@@ -40,7 +40,9 @@ namespace SaYSpin.src.inventory_items.tile_items
         public static TileItem Ordinary(string name, Rarity rarity, int initialCoinValue, string[] tags) =>
            new(name, $"Gives {initialCoinValue} coins", rarity, initialCoinValue, tags, [], (bonuses) => _basciIncomeCalculationFunc(bonuses, initialCoinValue));
         public static TileItem Special(string name, Rarity rarity, int initialCoinValue, string[] tags) =>
-           new(name, $"Gives {initialCoinValue} coins", rarity, initialCoinValue, tags, [], (bonuses) => _basciIncomeCalculationFunc(bonuses, initialCoinValue), true);
+           new(name, $"Gives {initialCoinValue} coins", rarity, initialCoinValue, tags, [], (bonuses) => _basciIncomeCalculationFunc(bonuses, initialCoinValue), isSpecial: true);
+        public static TileItem Unique(string name, Rarity rarity, int initialCoinValue, string[] tags) =>
+           new(name, $"Gives {initialCoinValue} coins", rarity, initialCoinValue, tags, [], (bonuses) => _basciIncomeCalculationFunc(bonuses, initialCoinValue),isUnique: true);
         public override string TextInfo()
         {
             StringBuilder sb = new();

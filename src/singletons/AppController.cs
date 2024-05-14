@@ -30,7 +30,7 @@ namespace SaYSpin.src.singletons
 
 
         public bool IsGameRunning() => Game is not null;
-        public void InitializeNewGame(Difficulty difficulty, GameLoggingService logger, bool areCheatsEnabled)
+        public void InitializeNewGame(Difficulty difficulty, GameLoggingService logger, BeforeStageActionDialogService beforeStageActionDialogService, bool areCheatsEnabled)
         {
             logger.Clear();
 
@@ -40,25 +40,30 @@ namespace SaYSpin.src.singletons
                 TileItemsStorage.GetAvailableItems(),
                 RelicsStorage.GetAvailableItems(),
                 LoadSpecialMerchants(),
-                areCheatsEnabled);
+                beforeStageActionDialogService.ShowDialog,
+                areCheatsEnabled
+               );
 
             Game.OnNewStageStarted += (newStage) => logger.Log(GameLogModel.New($"Stage #{newStage} has been started", GameLogType.Info));
             Game.OnInventoryItemAdded += logger.LogItemAdded;
 
             Game.OnTileItemDestruction += logger.LogItemDestroyed;
             Game.OnTokenUsed += logger.LogTokenUsed;
+
         }
         public void FinishGame()
         {
-            //invoke event
+            //TODO :
+            //invoke in finish event
             //count exp and rubies
             //only then null
+
             Game = null;
         }
         private ISpecialMerchant[] LoadSpecialMerchants() => [];
         private StatsTracker LoadInitialStats()
         {
-            //will be load from file
+            //TODO : StatsTracker from file
             return new StatsTracker(
                 initLuck: 1,
                 initNewStageTileItemsForChoiceCount: 4,
@@ -68,7 +73,7 @@ namespace SaYSpin.src.singletons
                 initShopPriceCoefficient: 1,
                 initTileItemsInShopCount: 4,
                 initRelicsInShopCount: 2,
-                initCoinsNeededToCompleteStageCoefficient: 1
+                initCoinsNeededToCompleteStage: 1
                 );
         }
 

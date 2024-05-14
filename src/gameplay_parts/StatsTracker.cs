@@ -19,7 +19,7 @@ namespace SaYSpin.src.gameplay_parts
             double initShopPriceCoefficient,
             int initTileItemsInShopCount,
             int initRelicsInShopCount,
-            int initCoinsNeededToCompleteStageCoefficient
+            int initCoinsNeededToCompleteStage
             )
         {
             initialValues = new Dictionary<GameStat, double>
@@ -32,7 +32,7 @@ namespace SaYSpin.src.gameplay_parts
                 { GameStat.ShopPriceCoefficient, initShopPriceCoefficient },
                 { GameStat.TileItemsInShopCount, initTileItemsInShopCount },
                 { GameStat.RelicsInShopCount, initRelicsInShopCount },
-                { GameStat.CoinsNeededToCompleteStage, initCoinsNeededToCompleteStageCoefficient }
+                { GameStat.CoinsNeededToCompleteStage, initCoinsNeededToCompleteStage }
             };
             Values = new Dictionary<GameStat, double>(initialValues);
         }

@@ -88,12 +88,12 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
         {
 
             return TileItemsPossibleToDrop.OrderBy(x => Guid.NewGuid()).Take(StatsTracker.NewStageTileItemsForChoiceCount).ToArray();
-            //will be changed  based on luck
+            //TODO change  based on luck
         }
         public Relic[] GenerateRelicsForNewStageChoosing()
         {
             return RelicsPossibleToDrop.OrderBy(x => Guid.NewGuid()).Take(StatsTracker.NewStageRelicsForChoiceCount).ToArray();
-            //will be changed based on luck
+            //TODO change  based on luck
         }
         internal void UpdateShopItems()
         {
@@ -108,7 +108,8 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
 
             var tileItems = tileItemsNeeded > 0 ? GenerateNewTileItemsForShop(luckParam, tileItemsNeeded) : [];
             var relics = relicsNeeded > 0 ? GenerateNewRelicsForShop(luckParam, relicsNeeded) : [];
-            //will be changed based on rarity
+            //TODO change  based on rarity
+
             Shop.Update(
                 lockedTileItems.Concat(tileItems).ToList(),
                 lockedRelics.Concat(relics).ToList());

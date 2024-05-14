@@ -2,15 +2,14 @@
 
 @inject AppController allGameController
 @inject GameLoggingService logger
+@inject BeforeStageActionDialogService beforeStageActionDialog
 
 @code {
     public GameFlowController gameFlowController;
-    private NewStageItemsChoosingDialog newStageDialog;
     private StageCompletedDialog stageCompletedDialog;
     protected override void OnInitialized()
     {
         gameFlowController = allGameController.Game;
-        gameFlowController.OnNewStageStarted += (newStageNumber) => newStageDialog.Open();
     }
 }
 <div class="home-page-container">
@@ -44,7 +43,6 @@
     </div>
     <InventoryComponent inventory="gameFlowController.Inventory" />
 </div>
-<NewStageItemsChoosingDialog @ref="newStageDialog" game="gameFlowController" refreshInventory="@StateHasChanged" />
 <StageCompletedDialog @ref="stageCompletedDialog" ClaimRewardsAndStartNewStage="@FinishStageAndStartNew" />
 
 @code {

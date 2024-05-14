@@ -1,0 +1,87 @@
+﻿@inject IJSRuntime JSRuntime
+@inject BeforeStageActionDialogService DialogService
+@inject AppController appController
+<dialog id="beforeStageAction" class="unselectable">
+    <div class="dialog-content">
+        @switch (currentActionToShow)
+        {
+            case null:
+                break;
+
+            case BeforeStageActionType.TileItemChoosing:
+                ItemsToChooseFromInChoosingActions = appController.Game.GenerateTileItemsForNewStageChoosing();
+                <ItemChoosingContentComponent ItemsToChooseFrom="ItemsToChooseFromInChoosingActions"
+                                              itemChosenAction="(item)=>appController.Game.AddTileItemToInventory(item as TileItem)"
+                                              refreshItemsAction="RefreshTileItems"
+                                              skipAction="OnSkipPressed"
+                                              tokensCount="appController.Game.Inventory.Tokens.Count(TokenType.NewStageItemsRefresh)" />
+                break;
+            case BeforeStageActionType.RelicChoosing:
+                ItemsToChooseFromInChoosingActions = appController.Game.GenerateRelicsForNewStageChoosing();
+                <ItemChoosingContentComponent ItemsToChooseFrom="ItemsToChooseFromInChoosingActions"
+                                              itemChosenAction="(item)=>appController.Game.AddRelicToInventory(item as Relic)"
+                                              refreshItemsAction="RefreshRelics"
+                                              skipAction="OnSkipPressed"
+                                              tokensCount="appController.Game.Inventory.Tokens.Count(TokenType.NewStageItemsRefresh)" />
+                break;
+            default:
+                <h1>Not implemented type: @currentActionToShow</h1>
+                break;
+
+        }
+    </div>
+</dialog>
+@code {
+    BaseInventoryItem[] ItemsToChooseFromInChoosingActions { get; set; } = [];
+    private List<BeforeStageActionType> actionsToShow { get; set; }
+    private BeforeStageActionType? currentActionToShow => actionsToShow is not null && actionsToShow.Count > 0 ? actionsToShow[0] : null;
+    public async Task Open(BeforeStageActionsGroup actionsGroup)
+    {
+        switch (actionsGroup.ActionType)
+        {
+            case BeforeStageActionGroupType.None:
+                actionsToShow = [];
+                return;
+            case BeforeStageActionGroupType.All:
+                actionsToShow = actionsGroup.Actions.ToList();
+                break;
+            default:
+                //TODO: BeforeStageActionGroupType.OneOf
+                throw new NotImplementedException("Not implemented action type");
+        }
+        await JSRuntime.InvokeVoidAsync("blazorDialogFunctions.openDialog", "beforeStageAction");
+    }
+
+    private async Task Close() =>
+        await JSRuntime.InvokeVoidAsync("blazorDialogFunctions.closeDialog", "beforeStageAction");
+
+
+    private void OnSkipPressed()
+    {
+        appController.Game.TriggerOnNewStageChoosingSkippedEffects();
+        MoveToNextBeforeStageAction();
+    }
+    private void RefreshTileItems()
+    {
+        if (appController.Game.UseToken(TokenType.NewStageItemsRefresh))
+            ItemsToChooseFromInChoosingActions = appController.Game.GenerateTileItemsForNewStageChoosing();
+    }
+
+
+    private void RefreshRelics()
+    {
+        if (appController.Game.UseToken(TokenType.NewStageItemsRefresh))
+            ItemsToChooseFromInChoosingActions = appController.Game.GenerateRelicsForNewStageChoosing();
+    }
+    private void MoveToNextBeforeStageAction()
+    {
+        if (actionsToShow.Count > 0)
+            actionsToShow.RemoveAt(0);
+        else
+            Close();
+    }
+    protected override void OnInitialized() =>
+        DialogService.OnShow = Open;
+
+    public void Dispose() => DialogService.Clear();
+}

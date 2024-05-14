@@ -8,6 +8,7 @@ using SaYSpin.src.inventory_items;
 using SaYSpin.src.gameplay_parts.inventory_related.tokens;
 using System.Collections.ObjectModel;
 using SaYSpin.src.gameplay_parts.shop;
+using SaYSpin.src.gameplay_parts.run_progress;
 namespace SaYSpin.src.gameplay_parts.game_flow_controller
 {
     public partial class GameFlowController
@@ -23,20 +24,24 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
         public int CurrentStage { get; private set; }
         public int CoinsCount { get; private set; }
         public int CoinsNeededToCompleteTheStage { get; private set; }
+        public RunProgressController RunProgressController { get; init; }
         public StatsTracker StatsTracker { get; init; }
         public ShopController Shop { get; init; }
         public bool AreCheatsEnabled { get; init; }
-
+        private BeforeNewStageDialogDelegate ShowBeforeStageDialog { get; init; }
         public GameFlowController(
             StatsTracker stats,
             Difficulty difficulty,
             Dictionary<string, Func<TileItem>> accessibleTileItems,
             Dictionary<string, Func<Relic>> accessibleRelics,
             ISpecialMerchant[] possibleSpecialMerchants,
+            BeforeNewStageDialogDelegate beforeStageDialogShowingDelegate,
             bool areCheatsEnabled)
         {
-            StatsTracker = stats;
+
+            AreCheatsEnabled = areCheatsEnabled;
             Difficulty = difficulty;
+
 
             allTileItemsConstructors = new ReadOnlyDictionary<string, Func<TileItem>>(accessibleTileItems);
             AllTileItemsCollection = accessibleTileItems.Select(ti => ti.Value()).ToArray();
@@ -44,10 +49,11 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
             allRelicsConstructors = new ReadOnlyDictionary<string, Func<Relic>>(accessibleRelics);
             AllRelicsCollection = accessibleRelics.Select(r => r.Value()).ToArray();
 
-            AreCheatsEnabled = areCheatsEnabled;
-
+            RunProgressController = new(difficulty);
+            StatsTracker = stats;
             Shop = new(possibleSpecialMerchants);
 
+            ShowBeforeStageDialog= beforeStageDialogShowingDelegate;
             this.OnInventoryItemAdded += (item) =>
             {
                 if (item.IsUnique)
@@ -95,15 +101,16 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
             SpinsLeft = StatsTracker.StageSpinsCount;
             CoinsCount = 0;
 
-            OnNewStageStarted?.Invoke(CurrentStage);
-
             CoinsNeededToCompleteTheStage = this.CalculateCoinsNeededForStage();
 
+            OnNewStageStarted?.Invoke(CurrentStage);
             foreach (var effect in Inventory.Relics.SelectMany(r => r.Effects.OfType<OnStageStartedRelicEffect>()))
             {
                 effect.PerformOnStageStartedAction(this);
             }
             EveryStageShopUpdate();
+
+            ShowBeforeStageDialog(RunProgressController.GetNewStageActionsGroup(CurrentStage));
         }
         public void SpinSlotMachine()
         {
@@ -168,8 +175,9 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
                 AddTileItemToInventory(ti);
         }
 
-        public event StageStartedDelegate OnNewStageStarted;
-        public delegate void StageStartedDelegate(int newStageNumber);
+        public event Action<int> OnNewStageStarted;
+
+        public delegate Task BeforeNewStageDialogDelegate(BeforeStageActionsGroup actionsGroup);
 
         public event Action<TileItem> OnTileItemDestruction;
         public event Action<BaseInventoryItem> OnInventoryItemAdded;

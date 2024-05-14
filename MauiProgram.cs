@@ -25,6 +25,7 @@ namespace SaYSpin
 
             builder.Services.AddSingleton(provider => mainController);
             builder.Services.AddSingleton<ShowItemInfoDialogService>();
+            builder.Services.AddSingleton<BeforeStageActionDialogService>();
             builder.Services.AddSingleton<GameLoggingService>();
 
             return builder.Build();

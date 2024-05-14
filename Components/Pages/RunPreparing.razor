@@ -2,6 +2,8 @@
 @layout Layout.EmptyLayout
 @inject AppController allGameController
 @inject GameLoggingService gameLoggingService
+@inject BeforeStageActionDialogService beforeStageActionDialogService
+
 <div class="run-preparing-page">
     <div class="content">
         @if (currentStageIsDifficlutyChoosing)
@@ -20,7 +22,7 @@
 
     private void DifficultyChosen(Difficulty difficulty, bool cheatsEnebled)
     {
-        allGameController.InitializeNewGame(difficulty, gameLoggingService, cheatsEnebled);
+        allGameController.InitializeNewGame(difficulty, gameLoggingService, beforeStageActionDialogService, cheatsEnebled);
         currentStageIsDifficlutyChoosing = false;
         StateHasChanged();
     }

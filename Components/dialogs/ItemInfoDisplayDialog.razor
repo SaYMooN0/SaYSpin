@@ -1,6 +1,6 @@
 ﻿@using System.Text.RegularExpressions
 @inject IJSRuntime JSRuntime
-@inject ShowItemInfoDialogService DialogService
+@inject ShowItemInfoDialogService ShowItemInfoDialog
 
 <dialog id="itemInfoDisplayDialog" class="unselectable">
     <div class="dialog-content">
@@ -65,12 +65,12 @@
 
     protected override void OnInitialized()
     {
-        DialogService.OnShow += Open;
+        ShowItemInfoDialog.OnShow += Open;
     }
 
     public void Dispose()
     {
-        DialogService.OnShow -= Open;
+        ShowItemInfoDialog.OnShow -= Open;
     }
 
     @code {

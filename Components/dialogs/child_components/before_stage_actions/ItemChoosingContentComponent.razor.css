@@ -1,17 +1,10 @@
-#newStagePickingDialog {
-    padding: 20px 2vw;
-    border: none;
-    outline: none;
-    border-radius: 30px;
+.dialog-content {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: 14px;
 }
-    #newStagePickingDialog div{
-        display:grid;
-        grid-template-rows:auto 1fr auto;
-        gap:14px;
 
-    }
-
-    #newStagePickingDialog .choose-label {
+    .dialog-content .choose-label {
         justify-self: center;
         background-image: linear-gradient(to bottom, #566cff, #596cff, #5c6cff, #5e6cff, #616cff, #606aff, #6067ff, #5f65ff, #5b5fff, #565aff, #5254ff, #4e4eff);
         color: white;
@@ -24,32 +17,37 @@
         font-size: 22px;
         font-weight: bold;
         letter-spacing: 2px;
-    }  
-    #newStagePickingDialog .options-container {
+    }
+
+    .dialog-content .options-container {
         display: flex;
         flex-direction: row;
         justify-content: center;
         align-items: center;
         gap: 20px;
-        max-width:1300px;
-        overflow-x:auto;
+        max-width: 1300px;
+        overflow-x: auto;
     }
+
 @media (max-width: 1100px) {
-    #newStagePickingDialog .options-container {
+    .dialog-content .options-container {
         gap: 14px;
         max-width: 900px;
     }
 }
+
 @media (max-width: 850px) {
-    #newStagePickingDialog .options-container {
+    .dialog-content .options-container {
         gap: 10px;
         max-width: 700px;
     }
-    #newStagePickingDialog .choose-label {
+
+    .dialog-content .choose-label {
         padding: 10px 20px;
         font-size: 21px;
-    }  
+    }
 }
+
 @media (max-width: 700px) {
     #newStagePickingDialog .options-container {
         max-width: calc(400px + 10vw);

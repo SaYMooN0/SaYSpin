@@ -50,10 +50,14 @@
     protected override void OnParametersSet()
     {
         tileItems = inventory.TileItems ?? new();
-        relics = inventory.Relics;
+        relics = inventory.Relics ?? new();
+
     }
+
     private void DeleteItem()
     {
 
     }
+    public void Refresh() =>
+        StateHasChanged();
 }

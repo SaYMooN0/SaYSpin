@@ -7,10 +7,18 @@
 @code {
     public GameFlowController gameFlowController;
     private StageCompletedDialog stageCompletedDialog;
+    private InventoryComponent inventoryComponent;
     protected override void OnInitialized()
     {
         gameFlowController = allGameController.Game;
+        gameFlowController.OnInventoryChanged += InventoryChanged;
     }
+
+    private void InventoryChanged() =>
+        inventoryComponent?.Refresh();
+
+    public void Dispose() =>
+        gameFlowController.OnInventoryChanged -= InventoryChanged;
 }
 <div class="home-page-container">
     <div class="home-central">
@@ -41,7 +49,7 @@
         </div>
 
     </div>
-    <InventoryComponent inventory="gameFlowController.Inventory" />
+    <InventoryComponent inventory="gameFlowController.Inventory" @ref="inventoryComponent" />
 </div>
 <StageCompletedDialog @ref="stageCompletedDialog" ClaimRewardsAndStartNewStage="@FinishStageAndStartNew" />
 

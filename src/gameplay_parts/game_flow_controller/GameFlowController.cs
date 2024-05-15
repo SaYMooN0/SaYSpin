@@ -53,16 +53,22 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
             StatsTracker = stats;
             Shop = new(possibleSpecialMerchants);
 
-            ShowBeforeStageDialog= beforeStageDialogShowingDelegate;
+            ShowBeforeStageDialog = beforeStageDialogShowingDelegate;
             this.OnInventoryItemAdded += (item) =>
             {
+                OnInventoryChanged?.Invoke();
                 if (item.IsUnique)
                     SetPossibleInventoryItemsReinitNeeded(item);
             };
             this.OnInventoryItemRemoved += (item) =>
             {
+                OnInventoryChanged?.Invoke();
                 if (item.IsUnique)
                     SetPossibleInventoryItemsReinitNeeded(item);
+            };
+            this.OnTokenUsed += (token) =>
+            {
+                OnInventoryChanged?.Invoke();
             };
 
         }
@@ -184,6 +190,7 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
         public event Action<BaseInventoryItem> OnInventoryItemRemoved;
 
         public event Action<TokenType> OnTokenUsed;
+        public event Action OnInventoryChanged;
 
 
     }

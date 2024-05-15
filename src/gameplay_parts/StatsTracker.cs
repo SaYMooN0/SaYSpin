@@ -45,7 +45,7 @@ namespace SaYSpin.src.gameplay_parts
         public double ShopPriceCoefficient => Values[GameStat.ShopPriceCoefficient];
         public int TileItemsInShopCount => (int)Values[GameStat.TileItemsInShopCount];
         public int RelicsInShopCount => (int)Values[GameStat.RelicsInShopCount];
-        public int CoinsNeededToCompleteStage => (int)Values[GameStat.CoinsNeededToCompleteStage];
+        public double CoinsNeededToCompleteStage => Values[GameStat.CoinsNeededToCompleteStage];
 
         public void SetChanged() => Changed = true;
 

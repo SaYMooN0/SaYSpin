@@ -11,7 +11,7 @@
             case BeforeStageActionType.TileItemChoosing:
                 ItemsToChooseFromInChoosingActions = appController.Game.GenerateTileItemsForNewStageChoosing();
                 <ItemChoosingContentComponent ItemsToChooseFrom="ItemsToChooseFromInChoosingActions"
-                                              itemChosenAction="(item)=>appController.Game.AddTileItemToInventory(item as TileItem)"
+                                              itemChosenAction="(item)=>{appController.Game.AddTileItemToInventory(item as TileItem);MoveToNextBeforeStageAction();}"
                                               refreshItemsAction="RefreshTileItems"
                                               skipAction="OnSkipPressed"
                                               tokensCount="appController.Game.Inventory.Tokens.Count(TokenType.NewStageItemsRefresh)" />
@@ -19,7 +19,7 @@
             case BeforeStageActionType.RelicChoosing:
                 ItemsToChooseFromInChoosingActions = appController.Game.GenerateRelicsForNewStageChoosing();
                 <ItemChoosingContentComponent ItemsToChooseFrom="ItemsToChooseFromInChoosingActions"
-                                              itemChosenAction="(item)=>appController.Game.AddRelicToInventory(item as Relic)"
+                                              itemChosenAction="(item)=>{appController.Game.AddRelicToInventory(item as Relic);MoveToNextBeforeStageAction();}"
                                               refreshItemsAction="RefreshRelics"
                                               skipAction="OnSkipPressed"
                                               tokensCount="appController.Game.Inventory.Tokens.Count(TokenType.NewStageItemsRefresh)" />
@@ -50,6 +50,8 @@
                 throw new NotImplementedException("Not implemented action type");
         }
         await JSRuntime.InvokeVoidAsync("blazorDialogFunctions.openDialog", "beforeStageAction");
+        StateHasChanged();
+
     }
 
     private async Task Close() =>
@@ -60,6 +62,7 @@
     {
         appController.Game.TriggerOnNewStageChoosingSkippedEffects();
         MoveToNextBeforeStageAction();
+
     }
     private void RefreshTileItems()
     {
@@ -75,10 +78,11 @@
     }
     private void MoveToNextBeforeStageAction()
     {
-        if (actionsToShow.Count > 0)
+        if (actionsToShow.Count > 1)
             actionsToShow.RemoveAt(0);
         else
             Close();
+        StateHasChanged();
     }
     protected override void OnInitialized() =>
         DialogService.OnShow = Open;

@@ -35,7 +35,7 @@ namespace SaYSpin.src.singletons
             logger.Clear();
 
             Game = new(
-                LoadInitialStats(),
+                LoadInitialStats(difficulty),
                 difficulty,
                 TileItemsStorage.GetAvailableItems(),
                 RelicsStorage.GetAvailableItems(),
@@ -61,7 +61,7 @@ namespace SaYSpin.src.singletons
             Game = null;
         }
         private ISpecialMerchant[] LoadSpecialMerchants() => [];
-        private StatsTracker LoadInitialStats()
+        private StatsTracker LoadInitialStats(Difficulty difficulty)
         {
             //TODO : StatsTracker from file
             return new StatsTracker(
@@ -73,7 +73,7 @@ namespace SaYSpin.src.singletons
                 initShopPriceCoefficient: 1,
                 initTileItemsInShopCount: 4,
                 initRelicsInShopCount: 2,
-                initCoinsNeededToCompleteStage: 1
+                initCoinsNeededToCompleteStage: difficulty.NeededCoinsMultiplier
                 );
         }
 

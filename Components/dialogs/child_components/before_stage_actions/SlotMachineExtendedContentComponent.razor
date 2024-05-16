@@ -1,0 +1,49 @@
+﻿<div class="machine-extended-content-container unselectable">
+    <label class="message-label">
+        @(actionType switch
+        {
+            BeforeStageActionType.ColumnAdded => "Column added",
+            BeforeStageActionType.RowAdded => "Row added",
+            _ => throw new NotImplementedException("Unsupported action type " + actionType)
+        })
+    </label>
+    <div class="animation-container @(actionType==BeforeStageActionType.ColumnAdded ? "column-added" : "row-added")">
+        <div class="current-grid">
+            @for (int i = 0; i < currentColumnCount; i++)
+            {
+                for (int j = 0; j < currentRowCount; j++)
+                {
+                    <span class="grid-item"></span>
+                }
+            }
+        </div>
+        <div class="added-part">
+            @if (actionType == BeforeStageActionType.ColumnAdded)
+            {
+                for (int i = 0; i < currentRowCount; i++)
+                {
+                    <span class="added-grid-item"></span>
+                }
+            }
+            else
+            {
+                for (int i = 0; i < currentColumnCount; i++)
+                {
+                    <span class="added-grid-item"></span>
+                }
+            }
+        </div>
+    </div>
+    <div class="ok-button" @onclick="OnOkClicked">Ok</div>
+</div>
+
+@code {
+    [Parameter]
+    public int currentColumnCount { get; set; }
+    [Parameter]
+    public int currentRowCount { get; set; }
+    [Parameter]
+    public BeforeStageActionType? actionType { get; set; }
+    [Parameter]
+    public Action OnOkClicked { get; set; }
+}

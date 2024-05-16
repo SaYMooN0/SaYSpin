@@ -24,6 +24,13 @@
                                               skipAction="OnSkipPressed"
                                               tokensCount="appController.Game.Inventory.Tokens.Count(TokenType.NewStageItemsRefresh)" />
                 break;
+            case BeforeStageActionType.RowAdded:
+            case BeforeStageActionType.ColumnAdded:
+                <SlotMachineExtendedContentComponent actionType="currentActionToShow"
+                                                     currentRowCount="appController.Game.SlotMachine.RowsCount"
+                                                     currentColumnCount="appController.Game.SlotMachine.ColumnsCount"
+                                                     OnOkClicked="()=>{ExtendSlotMachine(currentActionToShow); MoveToNextBeforeStageAction();}" />
+                break;
             default:
                 <h1>Not implemented type: @currentActionToShow</h1>
                 break;
@@ -75,6 +82,14 @@
     {
         if (appController.Game.UseToken(TokenType.NewStageItemsRefresh))
             ItemsToChooseFromInChoosingActions = appController.Game.GenerateRelicsForNewStageChoosing();
+    }
+    public void ExtendSlotMachine(BeforeStageActionType? actionType)
+    {
+        if (actionType == BeforeStageActionType.RowAdded)
+            appController.Game.SlotMachine.IncreaseRowsCount();
+        else if (actionType == BeforeStageActionType.ColumnAdded)
+            appController.Game.SlotMachine.IncreaseColumnsCount();
+        else throw new NotImplementedException("Impossible action type");
     }
     private void MoveToNextBeforeStageAction()
     {

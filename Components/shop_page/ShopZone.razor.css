@@ -1,5 +1,5 @@
 .shop-zone {
-    max-height: calc(84vh - 260px);
+    max-height: calc(85vh - 280px);
     display: grid;
     grid-template-rows: auto 1fr;
     align-items: start;
@@ -38,3 +38,29 @@
         .items-for-sale-container::-webkit-scrollbar-thumb:hover {
             background: #3860fa;
         }
+
+@media (max-width: 1400px), (max-height:900px) {
+    .shop-zone {
+        max-height: calc(124px + 33vh);
+        gap: 18px;
+    }
+}
+
+
+@media (max-width: 1000px), (max-height:800px) {
+    .shop-zone {
+        max-height: calc(50vh + 2vw - 24px);
+    }
+}
+
+@media (max-height:670px) {
+    .shop-zone {
+        max-height: calc(45vh + 2vw - 40px);
+    }
+}
+
+@media (max-height:580px) {
+    .shop-zone {
+        max-height: calc(38vh + 2vw - 40px);
+    }
+}

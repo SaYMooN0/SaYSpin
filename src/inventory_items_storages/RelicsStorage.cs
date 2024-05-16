@@ -131,7 +131,7 @@ namespace SaYSpin.src.inventory_items_storages
         {
             const int appleBonus = 1;
             const int counterValueToTransform = 15;
-            RelicWithCounter appleTreeSapling = new RelicWithCounter("Apple Tree Sapling", Rarity.Rare, isUnique: true)
+            RelicWithCounter appleTreeSapling = new RelicWithCounter("Apple Tree Sapling", Rarity.Rare, startingCounterValue: 0, isUnique: true)
                 .WithCoinsCalculationRelicEffect($"Apple tile item gives +{appleBonus} coin", ModifierType.Plus, appleBonus, i => i.Id == "apple") as RelicWithCounter;
 
             appleTreeSapling = appleTreeSapling.WithAfterSpinRelicEffect($"After each spin increase counter by 1", (_) => appleTreeSapling.IncrementCounter(1)) as RelicWithCounter;
@@ -184,7 +184,7 @@ namespace SaYSpin.src.inventory_items_storages
         private Relic Alarm()
         {
             const double humansIncomeBonus = 2.5;
-            return new Relic("Alarm", Rarity.Rare)
+            return new Relic("Alarm", Rarity.Rare, isUnique: true)
                 .WithNonConstantCalculationRelicEffect($"All humans in the first spins of each stage give ×{humansIncomeBonus} coins",
                     (game) =>
                     {
@@ -248,10 +248,10 @@ namespace SaYSpin.src.inventory_items_storages
         }
         private Relic WaffleIron()
         {
-            const int waffleChance = 30; //50%
+            const int waffleChance = 30; //30%
             return new Relic("Waffle Iron", Rarity.Epic)
                 .WithAfterSpinRelicEffect(
-                $"After each spin have a {waffleChance} chance to add 1 waffle to inventory",
+                $"After each spin have a {waffleChance}% chance to add 1 waffle to inventory",
                 (game) =>
                 {
                     if (Randomizer.Percent(waffleChance))
@@ -409,9 +409,9 @@ namespace SaYSpin.src.inventory_items_storages
                 $"After each stage increase counter by count of remaining spins (up to {maxValue})",
                 (stageNumber, game) =>
                 {
-                    if(safe.Counter< maxValue)
+                    if (safe.Counter < maxValue)
                     {
-                        safe.IncrementCounter(game.SpinsLeft);
+                        safe.IncrementCounter(Math.Min(game.SpinsLeft, maxValue - safe.Counter));
                         game.StatsTracker.SetChanged();
                     }
                     return [];

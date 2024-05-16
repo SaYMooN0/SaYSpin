@@ -23,7 +23,12 @@ namespace SaYSpin.src.gameplay_parts.run_progress
 
 
             List<BeforeStageActionsGroup> map = [emptyGroup, emptyGroup];
-            map.AddRange(Enumerable.Repeat(itemsAndRelicsGroup, 24));
+            map.AddRange(Enumerable.Repeat(itemsAndRelicsGroup, 50));
+
+            for(int i=1; i<5; i++)
+            {
+                map[i*10] = new BeforeStageActionsGroup([i%2==0 ? BeforeStageActionType.RowAdded : BeforeStageActionType.ColumnAdded], BeforeStageActionGroupType.All);
+            }
 
             return map;
         }

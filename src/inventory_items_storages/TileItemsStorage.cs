@@ -60,7 +60,7 @@ namespace SaYSpin.src.inventory_items_storages
                 ["Green And Yellow Sour Worm"] = GreenAndYellowSourWorm,
                 ["King"] = King,
                 ["Farmer"] = Farmer,
-                ["Raccoon"]= Raccoon
+                ["Raccoon"] = Raccoon
             };
             //_avaliableTileItems = InitAvailable();
             _avaliableTileItems = [.. _storedItems.Keys];
@@ -457,8 +457,8 @@ namespace SaYSpin.src.inventory_items_storages
                 .New("Farmer", "Gives 1 coin per counter", Rarity.Epic, 0, ["human"])
                 .SetBaseIncomeCalculationFunc(ti => ti.Counter);
             newTI = newTI.WithAbsorbingTileItemEffect(
-                $"Absorbs adjacent fruits and vegetables giving {fruitSaleCoefficient}× coins of their basic income and increases counter by 1",
-                tiToAbsorb => tiToAbsorb.HasOneOfTags("fruit", "vegetable"),
+                $"Absorbs adjacent fruits, berries and vegetables giving {fruitSaleCoefficient}× coins of their basic income and increases counter by 1",
+                tiToAbsorb => tiToAbsorb.HasOneOfTags("fruit", "vegetable", "berry"),
                 (game, absorbedTI) =>
                 {
                     newTI.IncrementCounter(1);

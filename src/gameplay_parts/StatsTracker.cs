@@ -19,7 +19,7 @@ namespace SaYSpin.src.gameplay_parts
             double initShopPriceCoefficient,
             int initTileItemsInShopCount,
             int initRelicsInShopCount,
-            int initCoinsNeededToCompleteStage
+            double initCoinsNeededToCompleteStage
             )
         {
             initialValues = new Dictionary<GameStat, double>

@@ -83,8 +83,8 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
         internal StageCompletionResult CompleteStage()
         {
             int extraCoins = CoinsCount - CoinsNeededToCompleteTheStage;
-            int diamondsFromCoins = (int)(extraCoins / (CurrentStage + 4) * 1.25 * StatsTracker.AfterStageCoinsToDiamondsCoefficient);
-            int diamondsFromSpins = (int)((CurrentStage + 4) / 4.5 * SpinsLeft);
+            int diamondsFromCoins = (int)(extraCoins * StatsTracker.AfterStageCoinsToDiamondsCoefficient / (CurrentStage * 2.2 + 4));
+            int diamondsFromSpins = (int)((CurrentStage / 2 + 1) * SpinsLeft);
 
             var rewards = this.GatherAllAfterStageRewards();
 
@@ -169,7 +169,7 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
         private void ClearTileItemsMarkers() =>
            Inventory.TileItems.ForEach(ti => ti.ClearMarkers());
         private int CalculateCoinsNeededForStage() => (int)
-               (Math.Pow(CurrentStage * 1.65 + 2, 1.85) * Difficulty.NeededCoinsMultiplier * 2.2 * StatsTracker.CoinsNeededToCompleteStage) - 10;
+               (Math.Pow(CurrentStage * 1.25 + +1, 2.3)  * 2 * StatsTracker.CoinsNeededToCompleteStage) + 10;
 
         public void BuyItem(ItemForSale item)
         {

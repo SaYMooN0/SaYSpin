@@ -1,5 +1,18 @@
-﻿<h3>OneOfActionsChoosingContentComponent</h3>
-
+﻿<div class="dialog-content">
+    <label class="choose-label unselectable">Choose one of the following actions:</label>
+    <div class="options-container">
+        @foreach (BeforeStageActionType action in actions)
+        {
+            <div class="action-choosing-card" @onclick="()=>onActionSelected(action)">
+                <img src="@action.GetFullImagePath()" />
+                <label class="action-name">@action.Name()</label>
+            </div>
+        }
+    </div>
+</div>
 @code {
-
+    [Parameter]
+    public IEnumerable<BeforeStageActionType> actions { get; set; }
+    [Parameter]
+    public Action<BeforeStageActionType> onActionSelected { get; set; }
 }

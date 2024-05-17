@@ -4,7 +4,13 @@
     <div class="options-container">
         @foreach (BaseInventoryItem item in ItemsToChooseFrom)
         {
-            <NewStageItemChoosingCard item="item" OnChosen="itemChosenAction" />
+            <div class="item-choosing-card unselectable">
+                <span>
+                    <InventoryItemWithRarityComponent itemToDisplay="item" />
+                </span>
+
+                <button @onclick="()=>itemChosenAction(item)">Choose</button>
+            </div>
         }
     </div>
     <ItemsChoosingDialogBottomButtons onRefresh="refreshItemsAction" onSkip="skipAction" tokensCount="tokensCount" />

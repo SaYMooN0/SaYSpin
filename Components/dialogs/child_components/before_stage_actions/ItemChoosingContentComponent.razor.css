@@ -29,6 +29,41 @@
         overflow-x: auto;
     }
 
+.item-choosing-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 32px;
+    border-radius: 20px;
+    background: #ffedca;
+}
+
+    .item-choosing-card span {
+        background-color: white;
+        width: 200px;
+        border-radius: 14px;
+    }
+
+    .item-choosing-card button {
+        margin-top: 34px;
+        padding: 13px 26px;
+        border: 0;
+        box-shadow: #FFC524 0px 6px 0px 0px;
+        background-color: #FFD40C;
+        border-radius: 8px;
+        color: white;
+        font-size: 24px;
+        font-weight: bold;
+        letter-spacing: 2px;
+        font-family: 'Montserrat';
+    }
+
+        .item-choosing-card button:hover {
+            box-shadow: #FFC524 0px 2px 0px 0px;
+            transform: translateY(4px);
+        }
+
 @media (max-width: 1100px) {
     .dialog-content .options-container {
         gap: 14px;
@@ -51,5 +86,63 @@
 @media (max-width: 700px) {
     #newStagePickingDialog .options-container {
         max-width: calc(400px + 10vw);
+    }
+}
+
+@media (max-width: 1400px) {
+    .item-choosing-card {
+        padding: 30px;
+    }
+
+        .item-choosing-card span {
+            width: 170px;
+        }
+
+        .item-choosing-card button {
+            margin-top: 24px;
+            padding: 12px 24px;
+            font-size: 22px;
+        }
+}
+
+@media (max-width: 1100px), (max-height:800px) {
+    .item-choosing-card {
+        padding: 28px;
+    }
+
+        .item-choosing-card span {
+            width: 136px;
+        }
+
+        .item-choosing-card button {
+            margin-top: 22px;
+            padding: 10px 22px;
+            font-size: 18px;
+        }
+}
+
+@media (max-width: 850px), (max-height:600px) {
+    .item-choosing-card {
+        padding: 17px;
+    }
+
+        .item-choosing-card span {
+            width: 110px;
+        }
+
+        .item-choosing-card button {
+            font-size: 16px;
+            padding: 9px 18px;
+        }
+}
+
+@media (max-width: 700px), (max-height:500px) {
+    .item-choosing-card span {
+        width: 100px;
+    }
+
+    .item-choosing-card button {
+        margin-top: 12px;
+        font-size: 14px;
     }
 }

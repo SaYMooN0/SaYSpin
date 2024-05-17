@@ -19,7 +19,7 @@ namespace SaYSpin.src.gameplay_parts.run_progress
         private List<BeforeStageActionsGroup> DefaultRoadMap()
         {
             BeforeStageActionsGroup emptyGroup = new([], BeforeStageActionGroupType.None);
-            BeforeStageActionsGroup itemsAndRelicsGroup = new BeforeStageActionsGroup([BeforeStageActionType.TileItemChoosing, BeforeStageActionType.RelicChoosing], BeforeStageActionGroupType.All);
+            BeforeStageActionsGroup itemsAndRelicsGroup = new BeforeStageActionsGroup([BeforeStageActionType.TileItemChoosing, BeforeStageActionType.RelicChoosing], BeforeStageActionGroupType.OneOf);
 
 
             List<BeforeStageActionsGroup> map = [emptyGroup, emptyGroup];

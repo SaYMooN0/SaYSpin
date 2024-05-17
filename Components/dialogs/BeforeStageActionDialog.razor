@@ -7,7 +7,14 @@
         {
             case null:
                 break;
-
+            case BeforeStageActionType.OneOfActionsChoosing:
+                <OneOfActionsChoosingContentComponent actions="actionsToShow[1..]"
+                                                      onActionSelected="(action)=>{
+                                                        actionsToShow.Clear();
+                                                        actionsToShow.Add(action);
+                                                        MoveToNextBeforeStageAction();
+                                                      }" />
+                break;
             case BeforeStageActionType.TileItemChoosing:
                 ItemsToChooseFromInChoosingActions = appController.Game.GenerateTileItemsForNewStageChoosing();
                 <ItemChoosingContentComponent ItemsToChooseFrom="ItemsToChooseFromInChoosingActions"
@@ -52,9 +59,12 @@
             case BeforeStageActionGroupType.All:
                 actionsToShow = actionsGroup.Actions.ToList();
                 break;
+            case BeforeStageActionGroupType.OneOf:
+                actionsToShow = [BeforeStageActionType.OneOfActionsChoosing];
+                actionsToShow.AddRange(actionsGroup.Actions);
+                break;
             default:
-                //TODO: BeforeStageActionGroupType.OneOf
-                throw new NotImplementedException("Not implemented action type");
+                throw new ArgumentException("Not supported before stage action group type");
         }
         await JSRuntime.InvokeVoidAsync("blazorDialogFunctions.openDialog", "beforeStageAction");
         StateHasChanged();

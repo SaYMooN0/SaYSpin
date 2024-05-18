@@ -19,17 +19,23 @@ namespace SaYSpin.src.gameplay_parts.run_progress
         private List<BeforeStageActionsGroup> DefaultRoadMap()
         {
             BeforeStageActionsGroup emptyGroup = new([], BeforeStageActionGroupType.None);
-            BeforeStageActionsGroup itemsAndRelicsGroup = new BeforeStageActionsGroup([BeforeStageActionType.TileItemChoosing, BeforeStageActionType.RelicChoosing], BeforeStageActionGroupType.OneOf);
+            BeforeStageActionsGroup itemsAndRelicsGroup = new BeforeStageActionsGroup([BeforeStageActionType.TileItemChoosing, BeforeStageActionType.RelicChoosing], BeforeStageActionGroupType.All);
 
 
             List<BeforeStageActionsGroup> map = [emptyGroup, emptyGroup];
             map.AddRange(Enumerable.Repeat(itemsAndRelicsGroup, 50));
 
-            for(int i=1; i<5; i++)
+            for (int i = 1; i < 5; i++)
             {
-                map[i*10] = new BeforeStageActionsGroup([i%2==0 ? BeforeStageActionType.RowAdded : BeforeStageActionType.ColumnAdded], BeforeStageActionGroupType.All);
+                map[i * 10] = new BeforeStageActionsGroup([i % 2 == 0 ? BeforeStageActionType.AddRow : BeforeStageActionType.AddColumn], BeforeStageActionGroupType.All);
             }
-
+            for (int i = 1; i < 3; i++)
+            {
+                map[i * 13] = new BeforeStageActionsGroup([
+                    BeforeStageActionType.RelicChoosing,
+                    i%2==0 ? BeforeStageActionType.AddRow : BeforeStageActionType.AddColumn,
+                    BeforeStageActionType.StatChoosing], BeforeStageActionGroupType.OneOf);
+            }
             return map;
         }
     }

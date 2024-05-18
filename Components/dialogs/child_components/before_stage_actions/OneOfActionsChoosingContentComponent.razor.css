@@ -4,22 +4,136 @@
     gap: 14px;
 }
 
+.choose-label {
+    margin: 0 20px;
+    justify-self: center;
+    background-image: linear-gradient(to bottom, #566cff, #596cff, #5c6cff, #5e6cff, #616cff, #606aff, #6067ff, #5f65ff, #5b5fff, #565aff, #5254ff, #4e4eff);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 100px;
+    align-items: center;
+    justify-content: center;
+    font-family: Montserrat;
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
 .options-container {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    gap: 20px;
+    gap: 40px;
+    padding: 40px;
     max-width: 1300px;
     overflow-x: auto;
 }
 
 .action-choosing-card {
+    background-color: #fffefd;
+    width: 320px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    padding: 5px 30px;
+    box-sizing: border-box;
+    transition: all 0.12s ease;
+    cursor: pointer;
+    position: relative;
+    box-shadow: 0 10px 20px rgb(1, 6, 9, 0.1);
 }
 
     .action-choosing-card label {
+        margin: 20px 0;
+        font-family: 'Montserrat';
+        font-size: 26px;
+        font-weight: bold;
+        color: #001140;
     }
 
     .action-choosing-card img {
-        height: 160px;
+        width: 100%;
+        aspect-ratio: 1/1;
     }
+
+    .action-choosing-card:hover {
+        transform: rotateY(10deg) rotateX(8deg) scale(1.08);
+        box-shadow: 0 10px 20px rgba(12, 9, 25, 0.2);
+    }
+
+@media (max-width: 1400px), (max-height:900px) {
+    .options-container {
+        gap: 32px;
+        padding: 34px;
+        max-width: 1060px;
+    }
+
+    .action-choosing-card {
+        width: 250px;
+    }
+
+        .action-choosing-card label {
+            font-size: 25px;
+        }
+}
+
+@media (max-width: 1100px), (max-height:800px) {
+    .options-container {
+        gap: 26px;
+        padding: 34px 26px;
+        max-width: 860px;
+    }
+
+    .action-choosing-card {
+        width: 200px;
+        border-radius: 16px;
+    }
+
+        .action-choosing-card label {
+            margin: 16px 0;
+            font-size: 23px;
+        }
+
+        .action-choosing-card:hover {
+            box-shadow: 0 8px 16px rgba(12, 9, 25, 0.2);
+        }
+
+    .choose-label {
+        padding: 11px 22px;
+        font-size: 22px;
+    }
+}
+
+@media (max-width: 850px), (max-height:600px) {
+    .options-container {
+        gap: 20px;
+        padding: 30px 20px;
+        max-width: calc(80vw + 20px);
+        height: calc(8vw + 10vh + 40px);
+    }
+
+    .action-choosing-card {
+        height: 100%;
+        width: calc(20px + 10vw + 4vh);
+        border-radius: 12px;
+        padding: 4px 22px;
+    }
+
+        .action-choosing-card label {
+            margin: 20px 0;
+            font-size: 17px;
+        }
+
+        .action-choosing-card img {
+            width: calc(30% + 5vh);
+        }
+
+    .choose-label {
+        padding: 8px 16px;
+        font-size: 17px;
+        letter-spacing: 1px;
+    }
+}

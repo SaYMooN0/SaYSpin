@@ -2,12 +2,12 @@
     <label class="message-label">
         @(actionType switch
         {
-            BeforeStageActionType.ColumnAdded => "Column added",
-            BeforeStageActionType.RowAdded => "Row added",
+            BeforeStageActionType.AddColumn => "Column added",
+            BeforeStageActionType.AddRow => "Row added",
             _ => throw new NotImplementedException("Unsupported action type " + actionType)
         })
     </label>
-    <div class="animation-container @(actionType==BeforeStageActionType.ColumnAdded ? "column-added" : "row-added")">
+    <div class="animation-container @(actionType==BeforeStageActionType.AddColumn ? "column-added" : "row-added")">
         <div class="current-grid">
             @for (int i = 0; i < currentColumnCount; i++)
             {
@@ -18,7 +18,7 @@
             }
         </div>
         <div class="added-part">
-            @if (actionType == BeforeStageActionType.ColumnAdded)
+            @if (actionType == BeforeStageActionType.AddColumn)
             {
                 for (int i = 0; i < currentRowCount; i++)
                 {

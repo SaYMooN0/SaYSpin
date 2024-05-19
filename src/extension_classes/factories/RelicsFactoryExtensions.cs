@@ -12,6 +12,7 @@ using static SaYSpin.src.inventory_items.tile_items.tile_item_effects.NonConstan
 using static SaYSpin.src.inventory_items.relics.relic_effects.OnNewStageChoosingSkippedRelicEffect;
 using SaYSpin.src.gameplay_parts.game_flow_controller;
 using static SaYSpin.src.inventory_items.relics.relic_effects.NonConstantGameStatRelicEffect;
+using static SaYSpin.src.inventory_items.relics.relic_effects.TileItemAddingInterceptionRelicEffect;
 
 namespace SaYSpin.src.extension_classes.factories
 {
@@ -40,6 +41,8 @@ namespace SaYSpin.src.extension_classes.factories
             relic.WithEffect(new OnNewStageChoosingSkippedRelicEffect(description, action));
         public static Relic WithTransformationRelicEffect(this Relic relic, string description, Func<GameFlowController, bool> condition, Relic relicToTransformInto) =>
             relic.WithEffect(new TransformationRelicEffect(description, condition, relicToTransformInto));
+        public static Relic WithTileItemAddingIntersectionRelicEffect(this Relic relic, string description, TileItemAddingInterceptionDelegate interceptionFunc, Func<TileItem, bool> intersectionCondition) =>
+            relic.WithEffect(new TileItemAddingInterceptionRelicEffect(description, interceptionFunc, intersectionCondition));
 
     }
 }

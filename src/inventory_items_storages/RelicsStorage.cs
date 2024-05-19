@@ -47,13 +47,13 @@ namespace SaYSpin.src.inventory_items_storages
                 ["Shipping Containers"] = ShippingContainers,
                 ["Safe"] = Safe,
                 ["Compass"] = Compass,
+                ["Carrot Cake"] = CarrotCake,
+                ["Apple Pie"] = ApplePie,
+                ["Collector's Monocle"] = CollectorsMonocle
 
             };
             _availableRelics = new HashSet<string>(_storedItems.Keys);
         }
-
-
-
         public Dictionary<string, Func<Relic>> GetAvailableItems() =>
             _storedItems
                 .Where(nameItemPair => _availableRelics.Contains(nameItemPair.Key))
@@ -443,6 +443,49 @@ namespace SaYSpin.src.inventory_items_storages
                 GameStat.ShopPriceCoefficient,
                 (game) => new(ModifierType.Multiply, 1 - ((double)compass.Counter / 100))) as RelicWithCounter;
             return compass;
+        }
+
+        private Relic CarrotCake()
+        {
+            const double luckForEveryCarrot = 1.25;
+            RelicWithCounter carrotCake = new("Carrot Cake", Rarity.Legendary, startingCounterValue: 0, isUnique: true);
+            carrotCake = carrotCake.WithTileItemAddingIntersectionRelicEffect(
+                "Collects all carrots, adding +1 to the counter for each carrot",
+                (game, tiToAdd) => { carrotCake.IncrementCounter(1); game.StatsTracker.SetChanged(); return null; },
+                (tiToAdd) => tiToAdd.IdIs("carrot")) as RelicWithCounter;
+            carrotCake = carrotCake.WithNonConstantGameStatRelicEffect(
+                $"For every counter value gives +{luckForEveryCarrot} to luck parameter",
+                GameStat.Luck,
+                (game) => new(ModifierType.Plus, luckForEveryCarrot * carrotCake.Counter)) as RelicWithCounter;
+            return carrotCake;
+        }
+        private Relic ApplePie()
+        {
+            const double incomeBonusForEveryApple = 3;
+            int applesCollected = 0;
+            const int maxApples = 15;
+            RelicWithCounter applePie = new("Apple Pie", Rarity.Legendary, startingCounterValue: 0, isUnique: true);
+            applePie = applePie.WithTileItemAddingIntersectionRelicEffect(
+                $"Collects all apples, adding +1 to the counter for each apple. Can collect not more than {maxApples} apples",
+                (game, tiToAdd) =>
+                {
+                    applePie.IncrementCounter(1);
+                    applesCollected++;
+                    game.StatsTracker.SetChanged();
+                    return null;
+                },
+                (tiToAdd) => applesCollected < maxApples && tiToAdd.IdIs("apple")
+                ) as RelicWithCounter;
+            applePie = applePie.WithNonConstantCalculationRelicEffect(
+                $"For every counter value gives all humans give +{incomeBonusForEveryApple}% coins",
+                (game) => new Tuple<ModifierType, double>(ModifierType.Plus, incomeBonusForEveryApple * applePie.Counter),
+                (ti) => ti.HasTag("human")) as RelicWithCounter;
+            return applePie;
+        }
+        private Relic CollectorsMonocle()
+        {
+            Relic monocle = new("Collector's monocle", Rarity.Legendary, isUnique: true);
+            return monocle;
         }
     }
 }

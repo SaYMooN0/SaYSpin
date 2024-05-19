@@ -8,7 +8,8 @@
         RelicChoosing,
         TokenChoosing,
         StatChoosing,
-        OneOfActionsChoosing
+        OneOfActionsChoosing,
+        CloneItem
     }
     public static class BeforeStageActionTypeExtensions
     {
@@ -22,6 +23,7 @@
             BeforeStageActionType.RelicChoosing => "relic_choosing",
             BeforeStageActionType.TokenChoosing => "token_choosing",
             BeforeStageActionType.StatChoosing => "stat_choosing",
+            BeforeStageActionType.CloneItem => "clone_item",
             _ => throw new ArgumentException("Unsupported action type"),
         };
         public static string Name(this BeforeStageActionType action) => action switch
@@ -31,8 +33,9 @@
             BeforeStageActionType.TileItemChoosing => "Choose a tile item",
             BeforeStageActionType.RelicChoosing => "Choose a relic",
             BeforeStageActionType.TokenChoosing => "Choose a token",
-            BeforeStageActionType.StatChoosing => "Choose a stat to improve",
+            BeforeStageActionType.StatChoosing => "Choose stat to improve",
             BeforeStageActionType.OneOfActionsChoosing => "Choose one of actions",
+            BeforeStageActionType.CloneItem => "Clone non-unique inventory item",
             _ => throw new ArgumentException("Unsupported action type"),
         };
     }

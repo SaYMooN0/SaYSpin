@@ -19,6 +19,16 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
         }
         internal void AddTileItemToInventory(TileItem item)
         {
+            foreach (var effect in Inventory.Relics.SelectMany(r => r.Effects.OfType<TileItemAddingInterceptionRelicEffect>()))
+            {
+                if (effect.InterceptionCondition(item))
+                {
+                    item = effect.InterceptionFunc(this, item);
+                    break;
+                }
+            }
+            if (item is null)
+                return;
             TileItem itemToAdd = allTileItemsConstructors[item.Name]();
 
             Inventory.TileItems.Add(itemToAdd);

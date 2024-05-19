@@ -1,0 +1,18 @@
+﻿@inject IJSRuntime JSRuntime
+
+<dialog id="itemRemovingDialog" class="unselectable">
+    <div class="dialog-content">
+        <DialogCloseButton closeAction="()=>Close()" />
+    </div>
+</dialog>
+
+@code {
+    public async Task Open()
+    {
+        StateHasChanged();
+        await JSRuntime.InvokeVoidAsync("blazorDialogFunctions.openDialog", "itemRemovingDialog");
+    }
+
+    private async Task Close() =>
+        await JSRuntime.InvokeVoidAsync("blazorDialogFunctions.closeDialog", "itemRemovingDialog");
+}

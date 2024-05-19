@@ -33,7 +33,7 @@ namespace SaYSpin.src.gameplay_parts.run_progress
             {
                 map[i * 13] = new BeforeStageActionsGroup([
                     BeforeStageActionType.RelicChoosing,
-                    i%2==0 ? BeforeStageActionType.AddRow : BeforeStageActionType.AddColumn,
+                    BeforeStageActionType.CloneItem ,
                     BeforeStageActionType.StatChoosing], BeforeStageActionGroupType.OneOf);
             }
             return map;

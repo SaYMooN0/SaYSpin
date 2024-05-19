@@ -72,15 +72,11 @@
     {
         ShowItemInfoDialog.OnShow -= Open;
     }
-
-    @code {
-        private MarkupString ReplaceCoinsWithImages(string text)
-        {
-            if (string.IsNullOrEmpty(text))
-                return new MarkupString("");
-            string processedText = Regex.Replace(text, @"\b(coins?|Coins?)\b", @"<img class=""coin-img-inline"" src=""/resources/images/coin.png"" alt=""coin"" />");
-            return new MarkupString(processedText);
-        }
+    private MarkupString ReplaceCoinsWithImages(string text)
+    {
+        if (string.IsNullOrEmpty(text))
+            return new MarkupString("");
+        string processedText = Regex.Replace(text, @"\b(coins?|Coins?)\b", @"<img class=""coin-img-inline"" src=""/resources/images/coin.png"" alt=""coin"" />");
+        return new MarkupString(processedText);
     }
-
 }

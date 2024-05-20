@@ -8,7 +8,7 @@
             case null:
                 break;
             case BeforeStageActionType.OneOfActionsChoosing:
-                <OneOfActionsChoosingContentComponent actions="actionsToShow[1..]"
+                <OneOfActionsChoosingDialogContent actions="actionsToShow[1..]"
                                                       onActionSelected="(action)=>{
                                                         actionsToShow.Clear();
                                                         actionsToShow.Add(action);
@@ -18,7 +18,7 @@
                 break;
             case BeforeStageActionType.TileItemChoosing:
                 ItemsToChooseFromInChoosingActions = appController.Game.GenerateTileItemsForNewStageChoosing();
-                <ItemChoosingContentComponent ItemsToChooseFrom="ItemsToChooseFromInChoosingActions"
+                <ItemChoosingDialogContent ItemsToChooseFrom="ItemsToChooseFromInChoosingActions"
                                               itemChosenAction="(item)=>{appController.Game.AddTileItemToInventory(item as TileItem);MoveToNextBeforeStageAction();}"
                                               refreshItemsAction="RefreshTileItems"
                                               skipAction="OnSkipPressed"
@@ -26,7 +26,7 @@
                 break;
             case BeforeStageActionType.RelicChoosing:
                 ItemsToChooseFromInChoosingActions = appController.Game.GenerateRelicsForNewStageChoosing();
-                <ItemChoosingContentComponent ItemsToChooseFrom="ItemsToChooseFromInChoosingActions"
+                <ItemChoosingDialogContent ItemsToChooseFrom="ItemsToChooseFromInChoosingActions"
                                               itemChosenAction="(item)=>{appController.Game.AddRelicToInventory(item as Relic);MoveToNextBeforeStageAction();}"
                                               refreshItemsAction="RefreshRelics"
                                               skipAction="OnSkipPressed"
@@ -34,10 +34,13 @@
                 break;
             case BeforeStageActionType.AddRow:
             case BeforeStageActionType.AddColumn:
-                <SlotMachineExtendedContentComponent actionType="currentActionToShow"
+                <SlotMachineExtendedDialogContent actionType="currentActionToShow"
                                                      currentRowCount="appController.Game.SlotMachine.RowsCount"
                                                      currentColumnCount="appController.Game.SlotMachine.ColumnsCount"
                                                      OnOkClicked="()=>{ExtendSlotMachine(currentActionToShow); MoveToNextBeforeStageAction();}" />
+                break;
+            case BeforeStageActionType.TokenChoosing:
+                <TokenChoosingDialogContent onTokenSelected="(token)=>{appController.Game.Inventory.Tokens.AddToken(token); MoveToNextBeforeStageAction();}" />
                 break;
             default:
                 <h1>Not implemented type: @currentActionToShow</h1>
@@ -52,6 +55,9 @@
     private BeforeStageActionType? currentActionToShow => actionsToShow is not null && actionsToShow.Count > 0 ? actionsToShow[0] : null;
     public async Task Open(BeforeStageActionsGroup actionsGroup)
     {
+        var g = ((BeforeStageActionType[])Enum.GetValues(typeof(BeforeStageActionType))).ToList();
+        g.Remove(BeforeStageActionType.OneOfActionsChoosing);
+        actionsGroup=new BeforeStageActionsGroup(g.ToArray(), BeforeStageActionGroupType.OneOf ); 
         switch (actionsGroup.ActionType)
         {
             case BeforeStageActionGroupType.None:

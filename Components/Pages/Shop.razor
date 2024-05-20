@@ -43,7 +43,7 @@
         @if (RefreshTokensCount > 0)
         {
             <div class='unselectable refresh-button' @onclick=RefreshButtonClicked>
-                Refresh (@RefreshTokensCount  <img src="@TokenType.ShopRefresh.ImageFullPath()" />)
+                Refresh (@RefreshTokensCount  <img src="@TokenType.ShopRefresh.GetFullImagePath()" />)
             </div>
         }
         else

@@ -1,0 +1,47 @@
+.dialog-content {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: 14px;
+}
+
+.choose-label {
+    margin: 0 20px;
+    justify-self: center;
+    background-image: linear-gradient(to bottom, #566cff, #596cff, #5c6cff, #5e6cff, #616cff, #606aff, #6067ff, #5f65ff, #5b5fff, #565aff, #5254ff, #4e4eff);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 100px;
+    align-items: center;
+    justify-content: center;
+    font-family: Montserrat;
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.options-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    padding: 30px;
+    max-width: 1300px;
+    overflow-x: auto;
+}
+
+.token-choosing-card {
+    width: 120px;
+}
+
+    .token-choosing-card img {
+        width: 100%;
+    }
+
+    .token-choosing-card label {
+    }
+
+    .token-choosing-card:hover {
+        transform: rotateY(10deg) rotateX(10deg) scale(1.08);
+        box-shadow: 0 10px 20px rgba(12, 9, 25, 0.2);
+    }

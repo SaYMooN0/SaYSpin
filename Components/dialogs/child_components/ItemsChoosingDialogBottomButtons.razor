@@ -4,7 +4,7 @@
     </button>
     <button @onclick="onRefresh" class='refresh-button @(tokensCount<1 ? "refresh-disabled" : "")'>
         <label>
-            Refresh (@tokensCount  <img src="@TokenType.NewStageItemsRefresh.ImageFullPath()" />)
+            Refresh (@tokensCount  <img src="@TokenType.NewStageItemsRefresh.GetFullImagePath()" />)
         </label>
     </button>
 </div>

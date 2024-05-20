@@ -42,6 +42,8 @@ namespace SaYSpin.src.gameplay_parts.inventory_related.tokens
                 yield return (kvp.Key, kvp.Value);
             }
         }
+        public static IEnumerable<TokenType> AllTokenTypes =>
+            (TokenType[])Enum.GetValues(typeof(TokenType));
     }
 
 }

@@ -1,0 +1,26 @@
+﻿@inject AppController appController
+<div class="dialog-content">
+    <label class="choose-label unselectable">Choose one item to clone</label>
+    <div class="options-container">
+        <div class="ti-section">
+            <label class="section-label unselectable">Tile Items</label>
+            @foreach (BaseInventoryItem item in appController.Game.Inventory.TileItems)
+            {
+                <div class="option-item" @onclick="()=>cloneItem(item)">
+                </div>
+            }
+        </div>
+        <div class="relics-section">
+            <label class="section-label unselectable">Relics</label>
+            @foreach (BaseInventoryItem item in appController.Game.Inventory.Relics)
+            {
+                <div class="option-item" @onclick="()=>cloneItem(item)">
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@code {
+    [Parameter]
+    public Action<BaseInventoryItem> cloneItem { get; set; }
+ }

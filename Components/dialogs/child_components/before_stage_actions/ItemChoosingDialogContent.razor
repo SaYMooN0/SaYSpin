@@ -1,5 +1,4 @@
-﻿@inject IJSRuntime JSRuntime
-<div class="dialog-content">
+﻿<div class="dialog-content">
     <label class="choose-label unselectable">Choose one item</label>
     <div class="options-container">
         @foreach (BaseInventoryItem item in ItemsToChooseFrom)
@@ -19,14 +18,16 @@
 @code {
     [Parameter]
     public Action refreshItemsAction { get; set; }
+
     [Parameter]
     public Action skipAction { get; set; }
 
     [Parameter]
     public Action<BaseInventoryItem> itemChosenAction { get; set; }
+
     [Parameter]
     public BaseInventoryItem[] ItemsToChooseFrom { get; set; }
+
     [Parameter]
     public int tokensCount { get; set; }
-
 }

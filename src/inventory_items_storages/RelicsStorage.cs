@@ -478,7 +478,7 @@ namespace SaYSpin.src.inventory_items_storages
                 ) as RelicWithCounter;
             applePie = applePie.WithNonConstantCalculationRelicEffect(
                 $"For every counter value gives all humans give +{incomeBonusForEveryApple}% coins",
-                (game) => new Tuple<ModifierType, double>(ModifierType.Plus, incomeBonusForEveryApple * applePie.Counter),
+                (game) => new Tuple<ModifierType, double>(ModifierType.Multiply,1+ incomeBonusForEveryApple * applePie.Counter*0.01),
                 (ti) => ti.HasTag("human")) as RelicWithCounter;
             return applePie;
         }

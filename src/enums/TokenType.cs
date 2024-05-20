@@ -8,7 +8,17 @@
     }
     public static class TokenTypeExtensions
     {
-        public static string GetImage(this TokenType tokenType)
+        public static string Name(this TokenType tokenType)
+        {
+            return tokenType switch
+            {
+                TokenType.ShopRefresh => "Shop Refresh Token",
+                TokenType.InventoryItemRemoval => "Inventory Item Removal Token",
+                TokenType.NewStageItemsRefresh => "New Stage Items Refresh Token",
+                _ => throw new ArgumentException("Unsupported token type"),
+            };
+        }
+        public static string Image(this TokenType tokenType)
         {
             return tokenType switch
             {
@@ -18,7 +28,7 @@
                 _ => throw new ArgumentException("Unsupported token type"),
             };
         }
-        public static string ImageFullPath(this TokenType tokenType) =>
-            "resources/images/inventory/tokens/" + tokenType.GetImage();
+        public static string GetFullImagePath(this TokenType tokenType) =>
+            "resources/images/inventory/tokens/" + tokenType.Image();
     }
 }

@@ -1,0 +1,17 @@
+﻿<div class="dialog-content">
+    <label class="choose-label unselectable">Choose one item</label>
+    <div class="options-container">
+        @foreach (TokenType token in TokensCollection.AllTokenTypes)
+        {
+            <div class="token-choosing-card" @onclick="()=>onTokenSelected(token)">
+                <img src="@token.GetFullImagePath()" />
+                <label class="token-name">@token.Name()</label>
+            </div>
+
+        }
+    </div>
+</div>
+@code {
+    [Parameter]
+    public Action<TokenType> onTokenSelected { get; set; }
+}

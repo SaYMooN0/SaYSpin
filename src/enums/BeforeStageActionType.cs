@@ -8,8 +8,9 @@
         RelicChoosing,
         TokenChoosing,
         StatChoosing,
+        CloneItem,
         OneOfActionsChoosing,
-        CloneItem
+        
     }
     public static class BeforeStageActionTypeExtensions
     {

@@ -22,13 +22,18 @@ namespace SaYSpin.src.gameplay_parts.inventory_related.tokens
             if (_tokens[tokenType] > 0)
             {
                 _tokens[tokenType]--;
+                TokensCountChanged?.Invoke();
                 return true;
             }
             return false;
         }
 
-        public void AddToken(TokenType tokenType) =>
+        public void AddToken(TokenType tokenType)
+        {
             _tokens[tokenType]++;
+            TokensCountChanged?.Invoke();
+        }
+          
         static public TokenType RandomTokenType()
         {
             var tokenTypes = Enum.GetValues(typeof(TokenType));
@@ -44,6 +49,7 @@ namespace SaYSpin.src.gameplay_parts.inventory_related.tokens
         }
         public static IEnumerable<TokenType> AllTokenTypes =>
             (TokenType[])Enum.GetValues(typeof(TokenType));
+        public event Action TokensCountChanged;
     }
 
 }

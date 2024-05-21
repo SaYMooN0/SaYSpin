@@ -1,0 +1,74 @@
+.roadmap-section{
+    height:600px;
+    overflow-y:auto;
+}
+.roadmap-line {
+    width: 30px;
+    background-color: #4a90e2;
+    position:relative;
+}
+.roadmap-stage {
+    position: absolute;
+    display: flex;
+    flex-direction:row;
+    background-color:firebrick;
+    gap: 20px;
+}
+
+.stage-number {
+/*    background-color: #4a90e2;
+    color: white;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    z-index: 1;*/
+}
+.current-stage {
+    background-color: #3165f3 !important;
+}
+/*.actions {
+    display: flex;
+    gap: 10px;
+    margin-left: 20px;
+}
+
+.action {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}*/
+.tile-item {
+    background-color: #ffc813;
+}
+
+.relic_choosing {
+    background-color: #a714f5;
+}
+
+.add-row {
+    background-color: #ed2ad1;
+}
+
+.add-column {
+    background-color: #4a90e2;
+}
+
+.clone-item {
+    background-color: #11fbed;
+}
+
+.stat_choosing {
+    background-color: #00e88b;
+}
+
+.token_choosing {
+    background-color: #27dc4c;
+}
+
+.none {
+    background-color: #ffffff;
+}

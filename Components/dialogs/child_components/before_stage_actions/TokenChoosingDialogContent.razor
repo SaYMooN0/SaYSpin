@@ -1,5 +1,5 @@
 ﻿<div class="dialog-content">
-    <label class="choose-label unselectable">Choose one item</label>
+    <label class="choose-label unselectable">Choose One Token</label>
     <div class="options-container">
         @foreach (TokenType token in TokensCollection.AllTokenTypes)
         {
@@ -10,7 +10,7 @@
 
         }
     </div>
-</div>
+</div>o
 @code {
     [Parameter]
     public Action<TokenType> onTokenSelected { get; set; }

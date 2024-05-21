@@ -66,15 +66,13 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
                 if (item.IsUnique)
                     SetPossibleInventoryItemsReinitNeeded(item);
             };
-            this.OnTokenUsed += (token) =>
-            {
-                OnInventoryChanged?.Invoke();
-            };
+            
 
         }
         internal void Start(GameStarterKit chosenStarterKit)
         {
             Inventory = new(chosenStarterKit.TileItems, chosenStarterKit.Relics, chosenStarterKit.TokensCollection, chosenStarterKit.DiamondsCount);
+            Inventory.Tokens.TokensCountChanged += () => OnInventoryChanged?.Invoke();
             SlotMachine = new(Inventory.TileItems, 3, 3);
 
             CurrentStage = 0;
@@ -169,7 +167,7 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
         private void ClearTileItemsMarkers() =>
            Inventory.TileItems.ForEach(ti => ti.ClearMarkers());
         private int CalculateCoinsNeededForStage() => (int)
-               (Math.Pow(CurrentStage * 1.25 + +1, 2.3)  * 2 * StatsTracker.CoinsNeededToCompleteStage) + 10;
+               (Math.Pow(CurrentStage * 1.25 + +1, 2.3) * 2 * StatsTracker.CoinsNeededToCompleteStage) + 10;
 
         public void BuyItem(ItemForSale item)
         {

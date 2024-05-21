@@ -22,17 +22,38 @@
 .options-container {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
     gap: 40px;
     padding: 40px;
-    max-width: 1300px;
+    max-width: 1400px;
     overflow-x: auto;
 }
 
+    .options-container::-webkit-scrollbar {
+        position: relative;
+        height: 12px;
+        box-sizing: border-box;
+    }
+
+    .options-container::-webkit-scrollbar-track {
+        border-top-right-radius: 100px;
+        border-bottom-right-radius: 100px;
+    }
+
+    .options-container::-webkit-scrollbar-thumb {
+        background: #5577f6;
+        border-radius: 100px;
+    }
+
+        .options-container::-webkit-scrollbar-thumb:hover {
+            background: #3860fa;
+        }
+
 .action-choosing-card {
     background-color: #fffefd;
-    width: 320px;
+    height: 100%;
+    min-width: 260px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -47,6 +68,7 @@
 }
 
     .action-choosing-card label {
+        cursor: inherit;
         margin: 20px 0;
         font-family: 'Montserrat';
         font-size: 26px;
@@ -64,6 +86,7 @@
         box-shadow: 0 10px 20px rgba(12, 9, 25, 0.2);
     }
 
+
 @media (max-width: 1400px), (max-height:900px) {
     .options-container {
         gap: 32px;
@@ -72,7 +95,7 @@
     }
 
     .action-choosing-card {
-        width: 250px;
+        min-width: 250px;
     }
 
         .action-choosing-card label {
@@ -88,7 +111,7 @@
     }
 
     .action-choosing-card {
-        width: 200px;
+        min-width: 200px;
         border-radius: 16px;
     }
 
@@ -98,7 +121,8 @@
         }
 
         .action-choosing-card:hover {
-            box-shadow: 0 8px 16px rgba(12, 9, 25, 0.2);
+            transform: rotateY(8deg) rotateX(6deg) scale(1.05);
+            box-shadow: 0 7px 14px rgba(12, 9, 25, 0.2);
         }
 
     .choose-label {
@@ -109,7 +133,6 @@
 
 @media (max-width: 850px), (max-height:600px) {
     .options-container {
-        gap: 20px;
         padding: 30px 20px;
         max-width: calc(80vw + 20px);
         height: calc(8vw + 10vh + 40px);
@@ -117,7 +140,7 @@
 
     .action-choosing-card {
         height: 100%;
-        width: calc(20px + 10vw + 4vh);
+        min-width: calc(20px + 10vw + 4vh);
         border-radius: 12px;
         padding: 4px 22px;
     }
@@ -128,7 +151,7 @@
         }
 
         .action-choosing-card img {
-            width: calc(30% + 5vh);
+            min-width: calc(30% + 5vh);
         }
 
     .choose-label {

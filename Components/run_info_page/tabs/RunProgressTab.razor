@@ -1,0 +1,22 @@
+﻿@inject AppController allGameController
+<div class="content">
+    <label class="stage-number-label">Stage @allGameController.Game.CurrentStage</label>
+</div>
+<div class="roadmap-section">
+    <div class="roadmap-line" style="height:@(allGameController.Game.RunProgressController.BeforeStageActionsRoadMap.Count*50)px"></div>
+    @for (int i = 1; i < allGameController.Game.RunProgressController.BeforeStageActionsRoadMap.Count; i++)
+    {
+        <div class="roadmap-stage @(i == allGameController.Game.CurrentStage ? "current-stage" : "")" style="top:@((i-1)*50)px">
+            <div class="stage-number">@i</div>
+            <div class="actions">
+                @foreach (var action in allGameController.Game.RunProgressController.BeforeStageActionsRoadMap[i].Actions)
+                {
+                    <div class="action @action.ActionId()"></div>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+}

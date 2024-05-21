@@ -15,8 +15,8 @@
     public static class BeforeStageActionTypeExtensions
     {
         public static string GetFullImagePath(this BeforeStageActionType action) =>
-            $"/resources/images/before_stage_actions/{action.ImageName()}.png";
-        public static string ImageName(this BeforeStageActionType action) => action switch
+            $"/resources/images/before_stage_actions/{action.ActionId()}.png";
+        public static string ActionId(this BeforeStageActionType action) => action switch
         {
             BeforeStageActionType.AddColumn => "add_column",
             BeforeStageActionType.AddRow => "add_row",
@@ -36,7 +36,7 @@
             BeforeStageActionType.TokenChoosing => "Choose a token",
             BeforeStageActionType.StatChoosing => "Choose stat to improve",
             BeforeStageActionType.OneOfActionsChoosing => "Choose one of actions",
-            BeforeStageActionType.CloneItem => "Clone non-unique inventory item",
+            BeforeStageActionType.CloneItem => "Clone one inventory item",
             _ => throw new ArgumentException("Unsupported action type"),
         };
     }

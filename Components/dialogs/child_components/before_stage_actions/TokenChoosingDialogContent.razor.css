@@ -24,24 +24,92 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    gap: 40px;
-    padding: 30px;
-    max-width: 1300px;
+    gap: 50px;
+    padding:50px 30px;
     overflow-x: auto;
 }
 
 .token-choosing-card {
-    width: 120px;
+    background-color: #fffefd;
+    height: 100%;
+    width: 290px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 20px;
+    padding: 20px 0;
+    box-sizing: border-box;
+    transition: all 0.12s ease;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgb(1, 6, 9, 0.1);
 }
 
     .token-choosing-card img {
-        width: 100%;
+        width: calc(20px + 60%);
+        aspect-ratio: 1/1;
     }
 
     .token-choosing-card label {
+        text-align: center;
+        cursor: inherit;
+        margin: 10px;
+        font-family: 'Montserrat';
+        font-size: calc(8px + 0.65vw + 0.7vh);
+        font-weight: bold;
+        color: #001140;
     }
 
     .token-choosing-card:hover {
         transform: rotateY(10deg) rotateX(10deg) scale(1.08);
         box-shadow: 0 10px 20px rgba(12, 9, 25, 0.2);
     }
+
+@media (max-width: 1400px), (max-height:900px) {
+    .options-container {
+        gap: 42px;
+        padding:40px 34px;
+        max-width: 1060px;
+    }
+
+    .token-choosing-card {
+        width: 250px;
+    }
+
+    @media (max-width: 1100px), (max-height:800px) {
+        .options-container {
+            gap: 30px;
+            padding: 36px 26px;
+        }
+
+        .token-choosing-card {
+            min-width: 200px;
+            border-radius: 16px;
+        }
+
+            .token-choosing-card:hover {
+                transform: rotateY(8deg) rotateX(6deg) scale(1.05);
+                box-shadow: 0 7px 14px rgba(12, 9, 25, 0.2);
+            }
+
+        .choose-label {
+            padding: 11px 22px;
+            font-size: 22px;
+        }
+    }
+}
+
+@media (max-width: 850px), (max-height:600px) {
+    .token-choosing-card {
+        height: 100%;
+        min-width: calc(20px + 10vw + 4vh);
+        border-radius: 12px;
+        padding: 4px 22px;
+    }
+
+    .choose-label {
+        padding: 8px 16px;
+        font-size: 17px;
+        letter-spacing: 1px;
+    }
+}

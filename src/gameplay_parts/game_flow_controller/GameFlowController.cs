@@ -9,6 +9,7 @@ using SaYSpin.src.gameplay_parts.inventory_related.tokens;
 using System.Collections.ObjectModel;
 using SaYSpin.src.gameplay_parts.shop;
 using SaYSpin.src.gameplay_parts.run_progress;
+using SaYSpin.src.game_saving;
 namespace SaYSpin.src.gameplay_parts.game_flow_controller
 {
     public partial class GameFlowController
@@ -115,6 +116,7 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
             EveryStageShopUpdate();
 
             ShowBeforeStageDialog(RunProgressController.GetNewStageActionsGroup(CurrentStage));
+            SavingController.SaveGame(this);
         }
         public void SpinSlotMachine()
         {

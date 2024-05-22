@@ -1,10 +1,12 @@
 ﻿@inherits LayoutComponentBase
-@inject AppController allGameController
+@inject AppController appController
+@inject NavigationManager NavigationManager
 
 <ItemInfoDisplayDialog />
 <BeforeStageActionDialog />
+<SavingErrorDialog pageRefreshAction="StateHasChanged" @ref="savingErrorDialog" />
 
-@if (allGameController.IsGameRunning())
+@if (appController.IsGameRunning())
 {
     <div class="main-container">
         <div class="sidebar">
@@ -19,9 +21,15 @@ else
 {
     <div class="starting-screen">
         <div class="starting-screen-links-container">
-            <NavLink class="starting-screen-link" href="run_preparing">
-                New run
-            </NavLink>
+            @if (SavingController.AnySavedGameExists())
+            {
+                <div class="starting-screen-link continue-link">
+                    Continue
+                </div>
+            }
+            <div class="starting-screen-link" @onclick="StartNewGame">
+                New Game
+            </div>
             <button>Upgrades</button>
             <button>Achievements</button>
             <button>Last Runs</button>
@@ -30,4 +38,27 @@ else
         </div>
     </div>
 
+}
+@code {
+    private SavingErrorDialog savingErrorDialog;
+    public void LoadSavedGame()
+    {
+        GameFlowController game = SavingController.LoadSavedGame();
+        if (game is null)
+        {
+            savingErrorDialog.Open("Game save is corrupted and cannot be opened");
+            return;
+        }
+        appController.SetCurrentGame(game);
+        StateHasChanged();
+    }
+    public void StartNewGame()
+    {
+        if (SavingController.AnySavedGameExists())
+        {
+            savingErrorDialog.Open("You already have a saved game. Do you want to delete the save?");
+            return;
+        }
+        NavigationManager.NavigateTo("run_preparing");
+    }
 }

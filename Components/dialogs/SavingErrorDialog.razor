@@ -1,0 +1,36 @@
+﻿@inject IJSRuntime JSRuntime
+<dialog id="savingLoadingErrorDialog" class="unselectable">
+    <div class="dialog-content">
+        <label class="error-label unselectable">
+            @errorMessage
+        </label>
+        <div class="buttons-container">
+            <button class="cancel-button unselectable" @onclick="()=>Close()">Cancel</button>
+            <button class="retry-button unselectable" @onclick="DeleteSave">Delete Save</button>
+        </div>
+
+    </div>
+</dialog>
+
+
+@code {
+    [Parameter]
+    public Action pageRefreshAction { get; set; }
+    private string errorMessage { get; set; }
+    private void DeleteSave()
+    {
+        SavingController.DeleteSavedGame();
+        Close();
+        pageRefreshAction();
+
+    }
+    public async Task Open(string errorMessage)
+    {
+        this.errorMessage = errorMessage;
+        StateHasChanged();
+        await JSRuntime.InvokeVoidAsync("blazorDialogFunctions.openDialog", "savingLoadingErrorDialog");
+    }
+
+    private async Task Close() =>
+        await JSRuntime.InvokeVoidAsync("blazorDialogFunctions.closeDialog", "savingLoadingErrorDialog");
+}

@@ -3,6 +3,7 @@ using SaYSpin.src.game_logging;
 using SaYSpin.src.inventory_items_storages;
 using SaYSpin.src.gameplay_parts.game_flow_controller;
 using SaYSpin.src.gameplay_parts.shop;
+using SaYSpin.src.game_saving;
 
 namespace SaYSpin.src.singletons
 {
@@ -30,6 +31,7 @@ namespace SaYSpin.src.singletons
 
 
         public bool IsGameRunning() => Game is not null;
+        public void SetCurrentGame(GameFlowController game) => Game = game;
         public void InitializeNewGame(Difficulty difficulty, GameLoggingService logger, BeforeStageActionDialogService beforeStageActionDialogService, bool areCheatsEnabled)
         {
             logger.Clear();
@@ -53,6 +55,7 @@ namespace SaYSpin.src.singletons
         }
         public void FinishGame()
         {
+            SavingController.DeleteSavedGame();
             //TODO :
             //invoke in finish event
             //count exp and rubies

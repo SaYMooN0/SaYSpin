@@ -4,6 +4,7 @@ using SaYSpin.src.inventory_items_storages;
 using SaYSpin.src.gameplay_parts.game_flow_controller;
 using SaYSpin.src.gameplay_parts.shop;
 using SaYSpin.src.game_saving;
+using static SaYSpin.src.gameplay_parts.game_flow_controller.GameFlowController;
 
 namespace SaYSpin.src.singletons
 {
@@ -31,8 +32,23 @@ namespace SaYSpin.src.singletons
 
 
         public bool IsGameRunning() => Game is not null;
-        public void SetCurrentGame(GameFlowController game) => Game = game;
-        public void InitializeNewGame(Difficulty difficulty, GameLoggingService logger, BeforeStageActionDialogService beforeStageActionDialogService, bool areCheatsEnabled)
+        public bool TryLoadGameFromFile(GameLoggingService logger, BeforeNewStageDialogDelegate newStageDialogDelegate)
+        {
+            GameFlowController? loadedGame = SavingController.LoadSavedGame(
+                newStageDialogDelegate, 
+                TileItemsStorage.GetAvailableItems(),
+                RelicsStorage.GetAvailableItems());
+            if (loadedGame is null) { return false; }
+
+            logger.Clear();
+            loadedGame.OnNewStageStarted += (newStage) => logger.Log(GameLogModel.New($"Stage #{newStage} has been started", GameLogType.Info));
+            loadedGame.OnInventoryItemAdded += logger.LogItemAdded;
+
+            loadedGame.OnTileItemDestruction += logger.LogItemDestroyed;
+            loadedGame.OnTokenUsed += logger.LogTokenUsed;
+            return true;
+        }
+        public void InitializeNewGame(Difficulty difficulty, GameLoggingService logger, BeforeNewStageDialogDelegate newStageDialogDelegate, bool areCheatsEnabled)
         {
             logger.Clear();
 
@@ -42,7 +58,7 @@ namespace SaYSpin.src.singletons
                 TileItemsStorage.GetAvailableItems(),
                 RelicsStorage.GetAvailableItems(),
                 LoadSpecialMerchants(),
-                beforeStageActionDialogService.ShowDialog,
+                newStageDialogDelegate,
                 areCheatsEnabled
                );
 

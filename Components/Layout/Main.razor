@@ -1,6 +1,8 @@
 ﻿@inherits LayoutComponentBase
 @inject AppController appController
 @inject NavigationManager NavigationManager
+@inject GameLoggingService gameLoggingService
+@inject BeforeStageActionDialogService beforeStageActionDialogService
 
 <ItemInfoDisplayDialog />
 <BeforeStageActionDialog />
@@ -43,14 +45,16 @@ else
     private SavingErrorDialog savingErrorDialog;
     public void LoadSavedGame()
     {
-        GameFlowController game = SavingController.LoadSavedGame();
-        if (game is null)
+        if (appController.TryLoadGameFromFile(gameLoggingService, beforeStageActionDialogService.ShowDialog))
+        {
+            StateHasChanged();
+        }
+        else
         {
             savingErrorDialog.Open("Game save is corrupted and cannot be opened");
             return;
         }
-        appController.SetCurrentGame(game);
-        StateHasChanged();
+
     }
     public void StartNewGame()
     {

@@ -22,7 +22,7 @@
 
     private void DifficultyChosen(Difficulty difficulty, bool cheatsEnebled)
     {
-        allGameController.InitializeNewGame(difficulty, gameLoggingService, beforeStageActionDialogService, cheatsEnebled);
+        allGameController.InitializeNewGame(difficulty, gameLoggingService, beforeStageActionDialogService.ShowDialog, cheatsEnebled);
         currentStageIsDifficlutyChoosing = false;
         StateHasChanged();
     }

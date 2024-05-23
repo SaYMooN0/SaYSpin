@@ -7,11 +7,11 @@ namespace SaYSpin.src.gameplay_parts.inventory_related
 {
     public class Inventory
     {
-        public Inventory(List<TileItem> startingItems, List<Relic> startingRelics, TokensCollection tokens, int diamondsCount)
+        public Inventory(List<TileItem> tileItems, List<Relic> relics, TokensCollection tokens, int diamondsCount)
         {
             Tokens = tokens;
-            Relics = startingRelics;
-            TileItems = startingItems;
+            Relics = relics;
+            TileItems = tileItems;
             DiamondsCount = diamondsCount;
         }
         public int DiamondsCount { get; private set; }

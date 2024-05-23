@@ -30,31 +30,27 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
         public ShopController Shop { get; init; }
         public bool AreCheatsEnabled { get; init; }
         private BeforeNewStageDialogDelegate ShowBeforeStageDialog { get; init; }
-        public GameFlowController(
-            StatsTracker stats,
-            Difficulty difficulty,
-            Dictionary<string, Func<TileItem>> accessibleTileItems,
-            Dictionary<string, Func<Relic>> accessibleRelics,
-            ISpecialMerchant[] possibleSpecialMerchants,
-            BeforeNewStageDialogDelegate beforeStageDialogShowingDelegate,
-            bool areCheatsEnabled)
+
+        internal GameFlowController(
+            Dictionary<string, Func<TileItem>> allTileItemsConstructors, Dictionary<string, Func<Relic>> allRelicsConstructors,
+            Difficulty difficulty, SlotMachine slotMachine, Inventory inventory, short spinsLeft, int currentStage, int coinsCount, int coinsNeededToCompleteTheStage, RunProgressController runProgressController, StatsTracker statsTracker, ShopController shop, bool areCheatsEnabled, BeforeNewStageDialogDelegate showBeforeStageDialog)
         {
-
-            AreCheatsEnabled = areCheatsEnabled;
+            this.allTileItemsConstructors = new ReadOnlyDictionary<string, Func<TileItem>>(allTileItemsConstructors);
+            AllTileItemsCollection = allTileItemsConstructors.Select(ti => ti.Value()).ToArray();
+            this.allRelicsConstructors = new ReadOnlyDictionary<string, Func<Relic>>(allRelicsConstructors);
+            AllRelicsCollection = allRelicsConstructors.Select(relic => relic.Value()).ToArray();
             Difficulty = difficulty;
-
-
-            allTileItemsConstructors = new ReadOnlyDictionary<string, Func<TileItem>>(accessibleTileItems);
-            AllTileItemsCollection = accessibleTileItems.Select(ti => ti.Value()).ToArray();
-
-            allRelicsConstructors = new ReadOnlyDictionary<string, Func<Relic>>(accessibleRelics);
-            AllRelicsCollection = accessibleRelics.Select(r => r.Value()).ToArray();
-
-            RunProgressController = new(difficulty);
-            StatsTracker = stats;
-            Shop = new(possibleSpecialMerchants);
-
-            ShowBeforeStageDialog = beforeStageDialogShowingDelegate;
+            SlotMachine = slotMachine;
+            Inventory = inventory;
+            SpinsLeft = spinsLeft;
+            CurrentStage = currentStage;
+            CoinsCount = coinsCount;
+            CoinsNeededToCompleteTheStage = coinsNeededToCompleteTheStage;
+            RunProgressController = runProgressController;
+            StatsTracker = statsTracker;
+            Shop = shop;
+            AreCheatsEnabled = areCheatsEnabled;
+            ShowBeforeStageDialog = showBeforeStageDialog;
             this.OnInventoryItemAdded += (item) =>
             {
                 OnInventoryChanged?.Invoke();
@@ -67,9 +63,28 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
                 if (item.IsUnique)
                     SetPossibleInventoryItemsReinitNeeded(item);
             };
-            
-
         }
+        internal GameFlowController(
+          StatsTracker stats,
+          Difficulty difficulty,
+          Dictionary<string, Func<TileItem>> accessibleTileItems,
+          Dictionary<string, Func<Relic>> accessibleRelics,
+          ISpecialMerchant[] possibleSpecialMerchants,
+          BeforeNewStageDialogDelegate beforeStageDialogShowingDelegate,
+          bool areCheatsEnabled
+            ) : this(
+              accessibleTileItems, accessibleRelics,
+              difficulty,
+              null, null, 0, 0, 0, 0, 
+              new RunProgressController(difficulty),
+              stats,
+              new ShopController(possibleSpecialMerchants),
+              areCheatsEnabled,
+              beforeStageDialogShowingDelegate
+
+              )
+        { }
+
         internal void Start(GameStarterKit chosenStarterKit)
         {
             Inventory = new(chosenStarterKit.TileItems, chosenStarterKit.Relics, chosenStarterKit.TokensCollection, chosenStarterKit.DiamondsCount);
@@ -180,6 +195,7 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
             else if (item.Item is TileItem ti)
                 AddTileItemToInventory(ti);
         }
+
 
         public event Action<int> OnNewStageStarted;
 

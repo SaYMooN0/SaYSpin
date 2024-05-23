@@ -14,10 +14,11 @@ namespace SaYSpin.src.inventory_items.tile_items
             int initialCoinValue,
             string[] tags,
             bool isSpecial,
-            bool isUnique
+            bool isUnique,
+            int startingCounterValue
             ) : base(name, description, rarity, initialCoinValue, tags, new(), null, isSpecial, isUnique) // null because it will be set in the constructor.
         {
-            _counter = 0;
+            _counter = startingCounterValue;
             base.CalculateIncome = CalculateIncomeWithCounter;
         }
         public int Counter => _counter;
@@ -44,11 +45,18 @@ namespace SaYSpin.src.inventory_items.tile_items
             return this;
         }
 
-        public static TileItemWithCounter New(string name, string description, Rarity rarity, int initialCoinValue, string[] tags, bool isSpecial = false, bool isUnique = false)
-        {
-            var tileItemWithCounter = new TileItemWithCounter(name, description, rarity, initialCoinValue, tags, isSpecial, isUnique);
-            return tileItemWithCounter;
-        }
+        public static TileItemWithCounter New(
+            string name,
+            string description,
+            Rarity rarity,
+            int initialCoinValue,
+            string[] tags,
+            bool isSpecial = false,
+            bool isUnique = false,
+            int startingCounterValue = 0
+            ) => new TileItemWithCounter(name, description, rarity, initialCoinValue, tags, isSpecial, isUnique, startingCounterValue);
+        public static TileItemWithCounter WithCounterValue(TileItemWithCounter baseObj, int value) =>
+            new(baseObj.Name, baseObj.Description, baseObj.Rarity, baseObj.InitialCoinValue, baseObj.Tags, baseObj.IsSpecial, baseObj.IsUnique, value);
     }
 }
 

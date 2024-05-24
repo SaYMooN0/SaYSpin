@@ -1,8 +1,4 @@
-﻿using SaYSpin.src.enums;
-using SaYSpin.src.inventory_items.relics.relic_effects;
-using SaYSpin.src.inventory_items.tile_items;
-using SaYSpin.src.secondary_classes;
-using SaYSpin.src.tile_item_effects;
+﻿using SaYSpin.src.inventory_items.tile_items;
 using System.Text;
 
 namespace SaYSpin.src.gameplay_parts

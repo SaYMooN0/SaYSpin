@@ -6,10 +6,23 @@ namespace SaYSpin.src.game_saving.dtos
 {
     internal class GameFlowControllerDTO
     {
-        public GameFlowControllerDTO(string[] allTileItemsCollection,
+        public string[] AllTileItemsCollection { get; init; }
+        public string[] AllRelicsCollection { get; init; }
+        public Difficulty Difficulty { get; init; }
+        public SlotMachineDTO SlotMachine { get; init; }
+        public InventoryDTO Inventory { get; init; }
+        public short SpinsLeft { get; init; }
+        public int CurrentStage { get; init; }
+        public int CoinsCount { get; init; }
+        public int CoinsNeededToCompleteTheStage { get; init; }
+        public RunProgressController RunProgressController { get; init; }
+        public StatsTracker StatsTracker { get; init; }
+        public ShopController Shop { get; init; }
+        public bool AreCheatsEnabled { get; init; }
+        internal GameFlowControllerDTO(string[] allTileItemsCollection,
             string[] allRelicsCollection,
             Difficulty difficulty,
-            SlotMachine slotMachine,
+            SlotMachineDTO slotMachine,
             InventoryDTO inventory,
             short spinsLeft,
             int currentStage,
@@ -34,19 +47,5 @@ namespace SaYSpin.src.game_saving.dtos
             Shop = shop;
             AreCheatsEnabled = areCheatsEnabled;
         }
-
-        public string[] AllTileItemsCollection { get; init; }
-        public string[] AllRelicsCollection { get; init; }
-        public Difficulty Difficulty { get; init; }
-        public SlotMachine SlotMachine { get; init; }
-        public InventoryDTO Inventory { get; init; }
-        public short SpinsLeft { get; init; }
-        public int CurrentStage { get; init; }
-        public int CoinsCount { get; init; }
-        public int CoinsNeededToCompleteTheStage { get; init; }
-        public RunProgressController RunProgressController { get; init; }
-        public StatsTracker StatsTracker { get; init; }
-        public ShopController Shop { get; init; }
-        public bool AreCheatsEnabled { get; init; }
     }
 }

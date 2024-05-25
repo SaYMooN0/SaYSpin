@@ -8,20 +8,20 @@ namespace SaYSpin.src.game_saving.dtos
     public class InventoryDTO
     {
         public int DiamondsCount { get; set; }
-        internal List<TileItemDTO> TileItems { get; set; }
-        internal List<RelicDTO> Relics { get; set; }
-        internal int ShopRefreshTokensCount { get; set; }
-        internal int TileItemRemovalTokensCount { get; set; }
-        internal int NewStageItemsRefreshTokensCount { get; set; }
-        internal static InventoryDTO FromInventory(Inventory inventory)
+        public List<InventoryItemDTO> TileItems { get; set; } = new();
+        public List<InventoryItemDTO> Relics { get; set; } = new();
+        public int ShopRefreshTokensCount { get; set; }
+        public int TileItemRemovalTokensCount { get; set; }
+        public int NewStageItemsRefreshTokensCount { get; set; }
+        public static InventoryDTO FromInventory(Inventory inventory)
         {
             return new InventoryDTO
             {
                 TileItems = inventory.TileItems
-                    .Select(TileItemDTO.FromTileItem)
+                    .Select(InventoryItemDTO.FromItem)
                     .ToList(),
                 Relics = inventory.Relics
-                    .Select(RelicDTO.FromRelic)
+                    .Select(InventoryItemDTO.FromItem)
                     .ToList(),
                 NewStageItemsRefreshTokensCount = inventory.Tokens.Count(TokenType.NewStageItemsRefresh),
                 ShopRefreshTokensCount = inventory.Tokens.Count(TokenType.ShopRefresh),
@@ -31,16 +31,16 @@ namespace SaYSpin.src.game_saving.dtos
         }
 
         internal Inventory ToInventory(
-            IDictionary<string, Func<TileItem>> tileItemConstructors,
-            IDictionary<string, Func<Relic>> relicConstructors)
+          IDictionary<string, Func<TileItem>> tileItemConstructors,
+          IDictionary<string, Func<Relic>> relicConstructors)
         {
             var tokens = new TokensCollection(
                 newStageItemsRefreshTokensCount: NewStageItemsRefreshTokensCount,
                 shopRefreshTokensCount: ShopRefreshTokensCount,
                 tileItemRemovalTokensCount: TileItemRemovalTokensCount);
 
-            var tileItems = TileItems.Select(dto => dto.ToTileItem(tileItemConstructors)).ToList();
-            var relics = Relics.Select(dto => dto.ToRelic(relicConstructors)).ToList();
+            List<TileItem> tileItems = TileItems.Select(dto => dto.ToItem(tileItemConstructors)).ToList();
+            List<Relic> relics = Relics.Select(dto => dto.ToItem(relicConstructors)).ToList();
 
             return new Inventory(tileItems, relics, tokens, DiamondsCount);
         }

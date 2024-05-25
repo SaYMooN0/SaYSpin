@@ -22,7 +22,7 @@ namespace SaYSpin.src.game_saving
         }
         internal static void SaveGame(GameFlowController game)
         {
-            GameFlowControllerDTO dtoToSave = DTOExtensions.GameFlowControllerToDTO(game);
+            GameFlowControllerDTO dtoToSave = GameFlowControllerDTO.FromGameFlowController(game);
             string serialized = JsonSerializer.Serialize(dtoToSave);
             File.WriteAllText(FileToSaveRun, serialized);
         }
@@ -37,8 +37,7 @@ namespace SaYSpin.src.game_saving
                 string serialized = File.ReadAllText(FileToSaveRun);
                 GameFlowControllerDTO? dto = JsonSerializer.Deserialize<GameFlowControllerDTO>(serialized);
                 return dto is null ?
-                    null :
-                    DTOExtensions.GameFlowControllerFromDTO(dto, beforeStageActionDialog, tileItemsConstructors, relicConstructors);
+                    null : dto.ToGameFlowController(beforeStageActionDialog, tileItemsConstructors, relicConstructors);
             }
             catch
             {
@@ -48,7 +47,7 @@ namespace SaYSpin.src.game_saving
         internal static void DeleteSavedGame() => File.Delete(FileToSaveRun);
         public static bool AnySavedGameExists()
         {
-            if(! File.Exists(FileToSaveRun))
+            if (!File.Exists(FileToSaveRun))
                 return false;
             string serialized = File.ReadAllText(FileToSaveRun);
             try
@@ -60,7 +59,7 @@ namespace SaYSpin.src.game_saving
             {
                 return false;
             }
-       
+
         }
     }
 }

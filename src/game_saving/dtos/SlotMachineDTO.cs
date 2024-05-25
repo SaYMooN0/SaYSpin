@@ -1,4 +1,5 @@
 ﻿using SaYSpin.src.gameplay_parts;
+using SaYSpin.src.inventory_items;
 using SaYSpin.src.inventory_items.tile_items;
 
 namespace SaYSpin.src.game_saving.dtos
@@ -7,7 +8,7 @@ namespace SaYSpin.src.game_saving.dtos
     {
         public int RowsCount { get; set; }
         public int ColumnsCount { get; set; }
-        public List<TileItemDTO?> TileItems { get; set; } = new List<TileItemDTO?>();
+        public List<InventoryItemDTO?> TileItems { get; set; } = new();
 
         public static SlotMachineDTO FromSlotMachine(SlotMachine slotMachine)
         {
@@ -22,7 +23,10 @@ namespace SaYSpin.src.game_saving.dtos
                 for (int col = 0; col < slotMachine.ColumnsCount; col++)
                 {
                     var tileItem = slotMachine.TileItems[row, col];
-                    dto.TileItems.Add(tileItem != null ? new TileItemDTO { Name = tileItem.Name, Counter = tileItem is TileItemWithCounter tiWithCounter ? tiWithCounter.Counter : (int?)null } : null);
+                    dto.TileItems.Add(
+                        tileItem is not null ?
+                        new InventoryItemDTO { Name = tileItem.Name, Counter = tileItem is IWithCounter withCounter ? withCounter.Counter : null }
+                        : null);
                 }
             }
 
@@ -34,8 +38,8 @@ namespace SaYSpin.src.game_saving.dtos
             var tileItems = new List<TileItem>();
             foreach (var dto in TileItems)
             {
-                if (dto is TileItemDTO tiDto)
-                    tileItems.Add(tiDto.ToTileItem(tileItemConstructors));
+                if (dto is InventoryItemDTO tiDto)
+                    tileItems.Add(tiDto.ToItem(tileItemConstructors));
                 else
                     tileItems.Add(null);
             }

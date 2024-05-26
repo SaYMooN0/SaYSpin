@@ -1,15 +1,26 @@
 ﻿
 using SaYSpin.src.enums;
 using SaYSpin.src.inventory_items.relics.relic_effects;
+using System.Text.Json.Serialization;
 
 namespace SaYSpin.src.gameplay_parts
 {
     public class StatsTracker
     {
-        private readonly Dictionary<GameStat, double> initialValues;
+
         public Dictionary<GameStat, double> Values { get; private set; }
+
+        [JsonInclude]
+        private readonly Dictionary<GameStat, double> initialValues;
+
         public bool Changed { get; private set; } = true;
 
+        [JsonConstructor]
+        public StatsTracker(Dictionary<GameStat, double> initialValues)
+        {
+            this.initialValues = initialValues;
+            SetChanged();
+        }
         public StatsTracker(
             double initLuck,
             int initNewStageTileItemsForChoiceCount,
@@ -34,7 +45,6 @@ namespace SaYSpin.src.gameplay_parts
                 { GameStat.RelicsInShopCount, initRelicsInShopCount },
                 { GameStat.CoinsNeededToCompleteStage, initCoinsNeededToCompleteStage }
             };
-            Values = new Dictionary<GameStat, double>(initialValues);
         }
 
         public double Luck => Values[GameStat.Luck];
@@ -65,7 +75,7 @@ namespace SaYSpin.src.gameplay_parts
         private void ResetGameStats()
         {
             Changed = false;
-            foreach (var gameStat in Values.Keys)
+            foreach (var gameStat in initialValues.Keys)
                 Values[gameStat] = initialValues[gameStat];
         }
     }

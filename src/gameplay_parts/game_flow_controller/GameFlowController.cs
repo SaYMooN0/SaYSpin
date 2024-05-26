@@ -33,7 +33,9 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
 
         internal GameFlowController(
             Dictionary<string, Func<TileItem>> allTileItemsConstructors, Dictionary<string, Func<Relic>> allRelicsConstructors,
-            Difficulty difficulty, SlotMachine slotMachine, Inventory inventory, short spinsLeft, int currentStage, int coinsCount, int coinsNeededToCompleteTheStage, RunProgressController runProgressController, StatsTracker statsTracker, ShopController shop, bool areCheatsEnabled, BeforeNewStageDialogDelegate showBeforeStageDialog)
+            Difficulty difficulty, SlotMachine slotMachine, Inventory inventory, 
+            short spinsLeft, int currentStage, int coinsCount, int coinsNeededToCompleteTheStage, 
+            RunProgressController runProgressController, StatsTracker statsTracker, ShopController shop, bool areCheatsEnabled, BeforeNewStageDialogDelegate showBeforeStageDialog)
         {
             this.allTileItemsConstructors = new ReadOnlyDictionary<string, Func<TileItem>>(allTileItemsConstructors);
             AllTileItemsCollection = allTileItemsConstructors.Select(ti => ti.Value()).ToArray();
@@ -76,7 +78,7 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
               accessibleTileItems, accessibleRelics,
               difficulty,
               null, null, 0, 0, 0, 0, 
-              new RunProgressController(difficulty),
+              RunProgressController.FromDifficulty(difficulty),
               stats,
               new ShopController(possibleSpecialMerchants),
               areCheatsEnabled,

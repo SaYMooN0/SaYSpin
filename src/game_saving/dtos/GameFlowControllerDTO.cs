@@ -19,9 +19,9 @@ namespace SaYSpin.src.game_saving.dtos
         public int CurrentStage { get; init; }
         public int CoinsCount { get; init; }
         public int CoinsNeededToCompleteTheStage { get; init; }
-        public RunProgressController RunProgressController { get; init; }
+        public RunProgressControllerDTO RunProgressController { get; init; }
         public StatsTracker StatsTracker { get; init; }
-        public ShopController Shop { get; init; }
+        public ShopDTO Shop { get; init; }
         public bool AreCheatsEnabled { get; init; }
         public static GameFlowControllerDTO FromGameFlowController(GameFlowController gameFlowController) => new()
         {
@@ -34,9 +34,9 @@ namespace SaYSpin.src.game_saving.dtos
             CurrentStage = gameFlowController.CurrentStage,
             CoinsCount = gameFlowController.CoinsCount,
             CoinsNeededToCompleteTheStage = gameFlowController.CoinsNeededToCompleteTheStage,
-            RunProgressController = gameFlowController.RunProgressController,
+            RunProgressController = RunProgressControllerDTO.FromRunProgressController(gameFlowController.RunProgressController),
             StatsTracker = gameFlowController.StatsTracker,
-            Shop = gameFlowController.Shop,
+            Shop = ShopDTO.FromShopController(gameFlowController.Shop),
             AreCheatsEnabled = gameFlowController.AreCheatsEnabled
         };
 
@@ -57,9 +57,9 @@ namespace SaYSpin.src.game_saving.dtos
                 CurrentStage,
                 CoinsCount,
                 CoinsNeededToCompleteTheStage,
-                RunProgressController,
+                RunProgressController.ToRunProgressController(),
                 StatsTracker,
-                Shop,
+                Shop.ToShopController(tileItemConstructors, relicConstructors, new Dictionary<string, Func<ISpecialMerchant>>()),
                 AreCheatsEnabled,
                 ShowBeforeStageDialog
             );

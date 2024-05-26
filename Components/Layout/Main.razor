@@ -25,7 +25,7 @@ else
         <div class="starting-screen-links-container">
             @if (SavingController.AnySavedGameExists())
             {
-                <div class="starting-screen-link continue-link">
+                <div class="starting-screen-link continue-link" @onclick="LoadSavedGame" >
                     Continue
                 </div>
             }
@@ -46,9 +46,7 @@ else
     public void LoadSavedGame()
     {
         if (appController.TryLoadGameFromFile(gameLoggingService, beforeStageActionDialogService.ShowDialog))
-        {
             StateHasChanged();
-        }
         else
         {
             savingErrorDialog.Open("Game save is corrupted and cannot be opened");

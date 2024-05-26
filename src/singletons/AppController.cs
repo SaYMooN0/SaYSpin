@@ -46,6 +46,7 @@ namespace SaYSpin.src.singletons
 
             loadedGame.OnTileItemDestruction += logger.LogItemDestroyed;
             loadedGame.OnTokenUsed += logger.LogTokenUsed;
+            this.Game = loadedGame;
             return true;
         }
         public void InitializeNewGame(Difficulty difficulty, GameLoggingService logger, BeforeNewStageDialogDelegate newStageDialogDelegate, bool areCheatsEnabled)

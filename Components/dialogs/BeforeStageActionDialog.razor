@@ -55,9 +55,6 @@
     private BeforeStageActionType? currentActionToShow => actionsToShow is not null && actionsToShow.Count > 0 ? actionsToShow[0] : null;
     public async Task Open(BeforeStageActionsGroup actionsGroup)
     {
-        var g = ((BeforeStageActionType[])Enum.GetValues(typeof(BeforeStageActionType))).ToList();
-        g.Remove(BeforeStageActionType.OneOfActionsChoosing);
-        actionsGroup=new BeforeStageActionsGroup(g.ToArray(), BeforeStageActionGroupType.OneOf ); 
         switch (actionsGroup.ActionType)
         {
             case BeforeStageActionGroupType.None:

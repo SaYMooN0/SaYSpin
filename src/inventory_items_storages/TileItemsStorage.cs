@@ -3,6 +3,7 @@ using SaYSpin.src.extension_classes;
 using SaYSpin.src.extension_classes.factories;
 using SaYSpin.src.gameplay_parts;
 using SaYSpin.src.inventory_items.tile_items;
+using SaYSpin.src.secondary_classes;
 using SaYSpin.src.static_classes;
 
 
@@ -32,7 +33,7 @@ namespace SaYSpin.src.inventory_items_storages
                 ["Pigeon"] = Pigeon,
                 ["Owl"] = Owl,
                 ["Magic Ball"] = MagicBall,
-                ["Wizard"] = () => TileItem.Ordinary("Wizard", Rarity.Rare, 15, ["human"]),
+                ["Wizard"] = Wizard,
                 ["Carrot"] = () => TileItem.Ordinary("Carrot", Rarity.Common, 5, ["vegetable"]),
                 ["Golden Carrot"] = () => TileItem.Ordinary("Golden Carrot", Rarity.Epic, 15, ["vegetable", "gold"]),
                 ["Sweet Tooth"] = SweetTooth,
@@ -60,7 +61,9 @@ namespace SaYSpin.src.inventory_items_storages
                 ["Green And Yellow Sour Worm"] = GreenAndYellowSourWorm,
                 ["King"] = King,
                 ["Farmer"] = Farmer,
-                ["Raccoon"] = Raccoon
+                ["Raccoon"] = Raccoon,
+                ["Archmage"] = Archmage,
+                ["Spell Scroll"] = () => TileItem.Ordinary("Spell Scroll", Rarity.Epic, 10, ["magical"]),
             };
             //_avaliableTileItems = InitAvailable();
             _avaliableTileItems = [.. _storedItems.Keys];
@@ -163,17 +166,17 @@ namespace SaYSpin.src.inventory_items_storages
         }
         private TileItem Owl()
         {
-            const double adjacentWizardMultiplier = 1.6;
+            const double adjacentMagesMultiplier = 1.6;
             return TileItem.Ordinary("Owl", Rarity.Rare, 5, ["bird"])
-                .WithTileItemsEnhancingTileItemEffect($"Adjacent wizards give extra {adjacentWizardMultiplier}× coins", SlotMachineArea.Adjacent, ModifierType.Multiply, adjacentWizardMultiplier, (ti) => ti.IdIs("wizard"));
+                .WithTileItemsEnhancingTileItemEffect($"Adjacent mages give extra {adjacentMagesMultiplier}× coins", SlotMachineArea.Adjacent, ModifierType.Multiply, adjacentMagesMultiplier, (ti) => ti.HasTag("mage"));
         }
         private TileItem MagicBall()
         {
-            const double adjacentAllMultiplier = 1.5;
-            const double adjacentWizardMultiplier = 2;
-            return TileItem.Ordinary("Magic Ball", Rarity.Epic, 5, ["magical"])
+            const double adjacentAllMultiplier = 1.2;
+            const double adjacentMagesMultiplier = 2;
+            return TileItem.Ordinary("Magic Ball", Rarity.Rare, 2, ["magical"])
                 .WithTileItemsEnhancingTileItemEffect($"All adjacent items give {adjacentAllMultiplier}× coins", SlotMachineArea.Adjacent, ModifierType.Multiply, adjacentAllMultiplier, (ti) => true)
-                .WithTileItemsEnhancingTileItemEffect($"Adjacent wizards give extra {adjacentWizardMultiplier} coins", SlotMachineArea.Adjacent, ModifierType.Multiply, adjacentWizardMultiplier, (ti) => ti.IdIs("wizard"));
+                .WithTileItemsEnhancingTileItemEffect($"Adjacent mages give extra {adjacentMagesMultiplier}× coins", SlotMachineArea.Adjacent, ModifierType.Multiply, adjacentMagesMultiplier, (ti) => ti.HasTag("mage"));
         }
         private TileItem Capybara()
         {
@@ -255,7 +258,10 @@ namespace SaYSpin.src.inventory_items_storages
         {
             var tileItem = TileItem.Special("Waffle", Rarity.Rare, 5, ["sweet"]);
             tileItem = tileItem
-                .WithAreaScanningTileItemEffect("If there are two adjacent apples, absorbs them", SlotMachineArea.Adjacent, (ti) => ti.IdIs("apple"), (game, tiWithCoords) =>
+                .WithAreaScanningTileItemEffect("If there are two adjacent apples, absorbs them",
+                SlotMachineArea.Adjacent,
+                (ti) => ti.IdIs("apple"),
+                (game, tiWithCoords) =>
                     {
                         var tileItems = tiWithCoords.Where(ti => !ti.TileItem.Markers.Contains(Markers.WillBeDestroyed)).Take(2).ToArray();
                         if (tileItems.Length >= 2)
@@ -477,6 +483,43 @@ namespace SaYSpin.src.inventory_items_storages
                 tiToAbsorb => tiToAbsorb.IdIsOneOf("apple", "banana", "carrot"),
                 (game, absorbedTI) => newTI.IncrementCounter(3));
             return newTI;
+        }
+        private TileItem Wizard()
+        {
+            const double magicalBonus = 1.5;
+            var newTi = TileItem.Ordinary("Wizard", Rarity.Rare, 15, ["human", "mage"])
+                .WithTileItemsEnhancingTileItemEffect(
+                    $"All magical tile items give extra {2}× coins",
+                    SlotMachineArea.AllTiles, ModifierType.Multiply, magicalBonus, (ti) => ti.HasTag("magical"));
+            newTi = newTi
+                .WithAreaScanningTileItemEffect(
+                    "If there any adjacent Spell Scroll absorbs it transforming into Archmage",
+                    SlotMachineArea.Adjacent,
+                    (ti) => ti.IdIs("spell_scroll"),
+                    (game, tiWithCoords) =>
+                    {
+                        TileItemWithCoordinates? tileItem = tiWithCoords
+                            .Where(ti => !ti.TileItem.Markers
+                            .Contains(Markers.WillBeDestroyed))
+                            .FirstOrDefault(defaultValue: null);
+                        if (tileItem is not null)
+                        {
+                            tileItem.TileItem.AddMarker(Markers.WillBeDestroyed);
+                            game.DestroyTileItem(tileItem.TileItem, tileItem.Row, tileItem.Column);
+                            newTi.AddMarker(Markers.ReadyToTransform);
+                        }
+                    })
+               .WithTransformationEffect(string.Empty, (_) => newTi.Markers.Contains(Markers.ReadyToTransform), Archmage());  
+            return newTi;
+        }
+        private TileItem Archmage()
+        {
+            const int tileItemsBonus = 2;
+            const double magicalBonus = 2.5;
+            var newTi = TileItem.Special("Archmage", Rarity.Legendary, 20, ["human", "mage"])
+                .WithTileItemsEnhancingTileItemEffect($"All tile items give +{2} coins", SlotMachineArea.AllTiles, ModifierType.Plus, tileItemsBonus, (ti) => true)
+                .WithTileItemsEnhancingTileItemEffect($"All magical tile items give extra {2}× coins", SlotMachineArea.AllTiles, ModifierType.Multiply, magicalBonus, (ti) => ti.HasTag("magical"));
+            return newTi;
         }
     }
 }

@@ -33,7 +33,7 @@ namespace SaYSpin.src.gameplay_parts.inventory_related.tokens
             _tokens[tokenType]++;
             TokensCountChanged?.Invoke();
         }
-          
+
         static public TokenType RandomTokenType()
         {
             var tokenTypes = Enum.GetValues(typeof(TokenType));
@@ -49,6 +49,8 @@ namespace SaYSpin.src.gameplay_parts.inventory_related.tokens
         }
         public static IEnumerable<TokenType> AllTokenTypes =>
             (TokenType[])Enum.GetValues(typeof(TokenType));
+        internal void Clear() =>
+            _tokens = _tokens.ToDictionary(kvp => kvp.Key, kvp => 0);
         public event Action TokensCountChanged;
     }
 

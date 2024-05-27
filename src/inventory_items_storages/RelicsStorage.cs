@@ -484,8 +484,14 @@ namespace SaYSpin.src.inventory_items_storages
         }
         private Relic CollectorsMonocle()
         {
-            Relic monocle = new("Collector's monocle", Rarity.Legendary, isUnique: true);
-            return monocle;
+            const int coinsPerItem = 12;
+            return new Relic("Collector's monocle", Rarity.Legendary, isUnique: true)
+                .WithOnStageStartedRelicEffect($"On the start of each stage receive {coinsPerItem} coins for each unique or special tile item in the inventory",
+                    (game) =>
+                    {
+                        int coins = game.Inventory.TileItems.Count(ti => ti.IsUnique || ti.IsSpecial) * coinsPerItem;
+                        game.AddCoins(coins);
+                    });
         }
     }
 }

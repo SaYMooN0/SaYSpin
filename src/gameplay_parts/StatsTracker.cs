@@ -74,6 +74,8 @@ namespace SaYSpin.src.gameplay_parts
         }
         private void ResetGameStats()
         {
+            if (Values is null)
+                Values = new();
             Changed = false;
             foreach (var gameStat in initialValues.Keys)
                 Values[gameStat] = initialValues[gameStat];

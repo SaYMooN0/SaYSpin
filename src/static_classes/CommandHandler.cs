@@ -4,6 +4,7 @@ using SaYSpin.src.inventory_items.relics;
 using SaYSpin.src.inventory_items.tile_items;
 using SaYSpin.src.gameplay_parts.game_flow_controller;
 using SaYSpin.src.gameplay_parts.inventory_related.tokens;
+using SaYSpin.src.game_saving;
 
 namespace SaYSpin.src.static_classes
 {
@@ -27,7 +28,12 @@ namespace SaYSpin.src.static_classes
               ["stats"] = (args, game) => HandleGetStats(game),
               ["refreshShop"] = (args, game) => HandleRefreshShop(game),
               ["addT"] = HandleAddToken,
+              ["save"] = (args, game) => HandleSave(game),
+              ["addRow"] = (args, game) => HandleAddRow(game),
+              ["addColumn"] = (args, game) => HandleAddColumn(game),
           };
+
+    
 
         private static readonly HashSet<string> cheatRequiredCommands = [
             "addI",
@@ -40,7 +46,9 @@ namespace SaYSpin.src.static_classes
             "setCoins",
             "setDiamonds",
             "refreshShop",
-            "addT"
+            "addT",
+            "addRow",
+            "addColumn"
         ];
 
         public static GameLogModel HandleCommand(string command, GameFlowController game)
@@ -177,6 +185,7 @@ namespace SaYSpin.src.static_classes
         {
             game.Inventory.TileItems.Clear();
             game.Inventory.Relics.Clear();
+            game.Inventory.Tokens.Clear();
             return GameLogModel.CommandSuccess("Inventory cleared");
         }
         private static GameLogModel HandleSetCurrentCoins(string[] args, GameFlowController game)
@@ -224,6 +233,21 @@ namespace SaYSpin.src.static_classes
 
             game.Inventory.Tokens.AddToken((TokenType)type);
             return GameLogModel.CommandSuccess($"Successfully added {type} token");
+        }
+        private static GameLogModel HandleSave(GameFlowController game)
+        {
+            SavingController.SaveGame(game);
+            return GameLogModel.CommandSuccess("Game saved");
+        }
+        private static GameLogModel HandleAddRow(GameFlowController game)
+        {
+            game.SlotMachine.IncreaseRowsCount();
+            return GameLogModel.CommandSuccess("Row added");
+        }
+        private static GameLogModel HandleAddColumn(GameFlowController game)
+        {
+            game.SlotMachine.IncreaseColumnsCount();
+            return GameLogModel.CommandSuccess("Column added");
         }
     }
 

@@ -1,0 +1,12 @@
+﻿<h3>InventoryItemsContainerComponent</h3>
+
+@code {
+    [Parameter]
+    public string label { get; set; }
+
+    [Parameter]
+    public IEnumerable<BaseInventoryItem> grouped { get; set; }
+
+    [Parameter]
+    public IEnumerable<BaseInventoryItem> nonGrouped { get; set; }
+}

@@ -13,22 +13,44 @@
 
         <LabelWithDiamonds text="Relics" />
         <div class="inventory-items-container">
-            @foreach (var i in relics)
+            @foreach (var displayItem in groupedRelics)
             {
-                <div>
-                    <InventoryItemWithRarityComponent itemToDisplay="i" />
+                <div class="inventory-item-wrapper">
+                    <InventoryItemWithRarityComponent itemToDisplay="displayItem.Item" />
+                    @if (displayItem.Count > 1)
+                    {
+                        <span class="item-count">@displayItem.Count</span>
+                    }
+                </div>
+            }
+            @foreach (var displayItem in nonGroupedRelics)
+            {
+                <div class="inventory-item-wrapper">
+                    <InventoryItemWithRarityComponent itemToDisplay="displayItem.Item" />
                 </div>
             }
         </div>
+
         <LabelWithDiamonds text="TileItems" />
         <div class="inventory-items-container">
-            @foreach (var i in tileItems)
+            @foreach (var displayItem in groupedTileItems)
             {
-                <div>
-                    <InventoryItemWithRarityComponent itemToDisplay="i" />
+                <div class="inventory-item-wrapper">
+                    <InventoryItemWithRarityComponent itemToDisplay="displayItem.Item" />
+                    @if (displayItem.Count > 1)
+                    {
+                        <span class="item-count">@displayItem.Count</span>
+                    }
+                </div>
+            }
+            @foreach (var displayItem in nonGroupedTileItems)
+            {
+                <div class="inventory-item-wrapper">
+                    <InventoryItemWithRarityComponent itemToDisplay="displayItem.Item" />
                 </div>
             }
         </div>
+
 
         <button class="delete-item-button" @onclick="DeleteItem">
             <label>
@@ -43,14 +65,31 @@
 @code {
     [Parameter]
     public Inventory inventory { get; set; }
+    private IEnumerable<InventoryItemDisplay> groupedRelics;
+    private IEnumerable<InventoryItemDisplay> nonGroupedRelics;
+    private IEnumerable<InventoryItemDisplay> groupedTileItems;
+    private IEnumerable<InventoryItemDisplay> nonGroupedTileItems;
 
-    private List<TileItem> tileItems;
-    private IEnumerable<Relic> relics;
+    protected override void OnInitialized()
+    {
+
+    }
 
     protected override void OnParametersSet()
     {
-        tileItems = inventory.TileItems ?? new();
-        relics = inventory.Relics ?? new();
+        groupedRelics = inventory.Relics.Where(r => !(r is IWithCounter))
+                                .GroupBy(r => r.Name)
+                                .Select(g => new InventoryItemDisplay(g.First(), g.Count()));
+
+        nonGroupedRelics = inventory.Relics.Where(r => r is IWithCounter)
+                                 .Select(r => new InventoryItemDisplay(r, 1));
+
+        groupedTileItems = inventory.TileItems.Where(ti => !(ti is IWithCounter))
+                                    .GroupBy(ti => ti.Name)
+                                    .Select(g => new InventoryItemDisplay(g.First(), g.Count()));
+
+        nonGroupedTileItems = inventory.TileItems.Where(ti => ti is IWithCounter)
+                                       .Select(ti => new InventoryItemDisplay(ti, 1));
 
     }
 
@@ -60,4 +99,7 @@
     }
     public void Refresh() =>
         StateHasChanged();
+    private record class InventoryItemDisplay(
+        BaseInventoryItem Item,
+        int Count);
 }

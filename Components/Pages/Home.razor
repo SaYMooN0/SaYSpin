@@ -39,12 +39,19 @@
         <div class="bottom-content">
             @if (gameFlowController.SpinsLeft > 0)
             {
-
                 <SpinButton spinsLeft="@gameFlowController.SpinsLeft" onSpin="SpinSlotMachine" />
             }
             else
             {
-                <label>No spins left</label>
+                <label class="out-of-spins-label unselectable">
+                    <span class="no-spins-left">No spins left</span>
+                    @if (gameFlowController.CoinsEnoughToCompleteTheStage())
+                    {
+                        <span class="finish-run-label">Finish run</span>
+                    }
+
+                </label>
+
             }
         </div>
 

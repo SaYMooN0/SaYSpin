@@ -37,24 +37,29 @@
 .basic-info-container {
     width: 100%;
     display: grid;
-    grid-template-rows: 1fr 1fr 1fr;
+    
     gap: 6px;
 }
+.ti-basic-info {
+    grid-template-rows: 1fr auto 1fr 1fr 1fr;
+}
+.rel-basic-info {
+    grid-template-rows: 1fr 1fr 1fr;
+}
 
-    .basic-info-container label {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        padding: 0px 40px;
-        gap: 10px;
-        box-sizing: border-box;
-        font-family: "Montserrat";
-        font-size: 18px;
-        font-weight: bold;
-        display: flex;
-        align-items: center;
-
-    }
+.basic-info-container label {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 40px;
+    gap: 10px;
+    box-sizing: border-box;
+    font-family: "Montserrat";
+    font-size: 18px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
 
 
 

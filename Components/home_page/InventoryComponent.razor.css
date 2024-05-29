@@ -28,65 +28,55 @@
     box-sizing: border-box;
 }
 
-.inventory-items-container {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    overflow-y: auto;
-    max-height: 100%;
-    height: fit-content;
-}
-
-    .inventory-items-container div {
-        flex: 0 1 auto;
-        aspect-ratio: 1/1;
-        height: 86px;
-        position: relative;
-        display: inline-block;
-        transition: all 0.23s ease;
-    }
-        .inventory-items-container div:hover .item-count {
-            opacity:0.1;
-        }
-.item-count {
-    z-index: 10;
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: #d0d0e1;
-    color: black;
-    font-weight: bold;
-    font-family: Montserrat;
-    border-radius: 50%;
-    padding: 1px 6px;
-    font-size: 15px;
-    transition: inherit;
-    opacity:0.87;
-}
 
 
-
-.delete-item-button {
+.remove-item-button {
     justify-self: right;
-    margin: 0 20px 20px 0;
     width: fit-content;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    padding: 10px;
+    margin: 0 20px 20px 0;
+    padding: 4px 12px;
+    border-radius: 10px;
+    background-color: #ce1e1e;
+    color: #FBFBFB;
+    font-size: 22px;
+    font-family: 'Montserrat';
+    font-weight: bold;
+    transition:all 0.2s ease-in;
+    cursor:pointer;
 }
 
-    .delete-item-button img {
+    .remove-item-button img {
         height: 50px;
         aspect-ratio: 1/1;
     }
+
+    .remove-item-button:hover {
+        transform:scale(1.02);
+        background-color: #c11414;
+    }
+
+.remove-item-disabled:hover {
+    transform:none;
+    background-color: #312d2d !important;
+}
 
 @media (max-width: 1100px), (max-height:800px) {
     .inventory-top-div {
         height: 56px;
     }
+
+    .remove-item-button {
+        margin: 0 16px 16px 0;
+        padding: 4px 11px;
+        font-size: 20px;
+    }
+
+        .remove-item-button img {
+            height: 46px;
+        }
 }
 
 @media (max-width: 850px), (max-height:600px) {

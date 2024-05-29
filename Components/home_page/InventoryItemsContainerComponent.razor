@@ -1,11 +1,30 @@
-﻿<h3>InventoryItemsContainerComponent</h3>
+﻿@using static SaYSpin.Components.home_page.InventoryComponent
 
+<LabelWithDiamonds text="@label" />
+<div class="inventory-items-container">
+    @foreach (var displayItem in grouped)
+    {
+        <div class="inventory-item-wrapper">
+            <InventoryItemWithRarityComponent itemToDisplay="displayItem.Item" />
+            @if (displayItem.Count > 1)
+            {
+                <span class="item-count">@displayItem.Count</span>
+            }
+        </div>
+    }
+    @foreach (var item in nonGrouped)
+    {
+        <div class="inventory-item-wrapper">
+            <InventoryItemWithRarityComponent itemToDisplay="item" />
+        </div>
+    }
+</div>
 @code {
     [Parameter]
     public string label { get; set; }
 
     [Parameter]
-    public IEnumerable<BaseInventoryItem> grouped { get; set; }
+    public IEnumerable<InventoryItemDisplay> grouped { get; set; }
 
     [Parameter]
     public IEnumerable<BaseInventoryItem> nonGrouped { get; set; }

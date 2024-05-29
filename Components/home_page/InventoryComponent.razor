@@ -9,67 +9,26 @@
             }
             <DiamondsCountDisplayComponent count="@inventory.DiamondsCount" />
         </div>
-        @* with sorting *@
-
-        <LabelWithDiamonds text="Relics" />
-        <div class="inventory-items-container">
-            @foreach (var displayItem in groupedRelics)
-            {
-                <div class="inventory-item-wrapper">
-                    <InventoryItemWithRarityComponent itemToDisplay="displayItem.Item" />
-                    @if (displayItem.Count > 1)
-                    {
-                        <span class="item-count">@displayItem.Count</span>
-                    }
-                </div>
-            }
-            @foreach (var displayItem in nonGroupedRelics)
-            {
-                <div class="inventory-item-wrapper">
-                    <InventoryItemWithRarityComponent itemToDisplay="displayItem.Item" />
-                </div>
-            }
-        </div>
-
-        <LabelWithDiamonds text="TileItems" />
-        <div class="inventory-items-container">
-            @foreach (var displayItem in groupedTileItems)
-            {
-                <div class="inventory-item-wrapper">
-                    <InventoryItemWithRarityComponent itemToDisplay="displayItem.Item" />
-                    @if (displayItem.Count > 1)
-                    {
-                        <span class="item-count">@displayItem.Count</span>
-                    }
-                </div>
-            }
-            @foreach (var displayItem in nonGroupedTileItems)
-            {
-                <div class="inventory-item-wrapper">
-                    <InventoryItemWithRarityComponent itemToDisplay="displayItem.Item" />
-                </div>
-            }
-        </div>
-
-
-        <button class="delete-item-button" @onclick="DeleteItem">
-            <label>
-                Delete item
-            </label>
+        <InventoryItemsContainerComponent label="Relics" grouped="groupedRelics" nonGrouped="nonGroupedRelics" />
+        <InventoryItemsContainerComponent label="TileItems" grouped="groupedTileItems" nonGrouped="nonGroupedTileItems" />
+        <div class='remove-item-button @(RemovalTokensCount == 0 ? "remove-item-disabled" : "")'
+             @onclick="()=> {if (RemovalTokensCount > 0) itemRemovingDialog.Open();}">
+            Remove item
             <img src="@TokenType.InventoryItemRemoval.GetFullImagePath()" />
-        </button>
+        </div>
     </div>
-
 </div>
-
+<ItemRemovingDialog @ref="itemRemovingDialog" />
 @code {
     [Parameter]
     public Inventory inventory { get; set; }
-    private IEnumerable<InventoryItemDisplay> groupedRelics;
-    private IEnumerable<InventoryItemDisplay> nonGroupedRelics;
-    private IEnumerable<InventoryItemDisplay> groupedTileItems;
-    private IEnumerable<InventoryItemDisplay> nonGroupedTileItems;
 
+    private IEnumerable<InventoryItemDisplay> groupedRelics;
+    private IEnumerable<BaseInventoryItem> nonGroupedRelics;
+    private IEnumerable<InventoryItemDisplay> groupedTileItems;
+    private IEnumerable<BaseInventoryItem> nonGroupedTileItems;
+
+    private ItemRemovingDialog itemRemovingDialog;
     protected override void OnInitialized()
     {
 
@@ -81,25 +40,20 @@
                                 .GroupBy(r => r.Name)
                                 .Select(g => new InventoryItemDisplay(g.First(), g.Count()));
 
-        nonGroupedRelics = inventory.Relics.Where(r => r is IWithCounter)
-                                 .Select(r => new InventoryItemDisplay(r, 1));
+        nonGroupedRelics = inventory.Relics.Where(r => r is IWithCounter);
 
         groupedTileItems = inventory.TileItems.Where(ti => !(ti is IWithCounter))
                                     .GroupBy(ti => ti.Name)
                                     .Select(g => new InventoryItemDisplay(g.First(), g.Count()));
 
-        nonGroupedTileItems = inventory.TileItems.Where(ti => ti is IWithCounter)
-                                       .Select(ti => new InventoryItemDisplay(ti, 1));
+        nonGroupedTileItems = inventory.TileItems.Where(ti => ti is IWithCounter);
 
     }
-
-    private void DeleteItem()
-    {
-
-    }
+    private int RemovalTokensCount =>
+        inventory.Tokens.Count(TokenType.InventoryItemRemoval);
     public void Refresh() =>
         StateHasChanged();
-    private record class InventoryItemDisplay(
+    public record class InventoryItemDisplay(
         BaseInventoryItem Item,
         int Count);
 }

@@ -1,22 +1,79 @@
-﻿@inject IJSRuntime JSRuntime
+﻿@using static SaYSpin.Components.home_page.InventoryComponent
 @inject AppController appController
+@inject IJSRuntime JSRuntime
 
 <dialog id="itemRemovingDialog" class="unselectable">
     <div class="dialog-content">
         <label class="choose-label">Choose items to remove</label>
-
-        <DialogCloseButton closeAction="()=>Close()" />
+        <RemovingDialogItemsContainer label="Relics" items="inventoryRelics" />
+        <DialogCloseButton closeAction="()=>{Close();}" />
     </div>
-</dialog>
 
+    @if (showError)
+    {
+        <div class="error-popup unselectable">You must have a token</div>
+    }
+
+</dialog>
 @code {
+    private bool showError = false;
+
+    private IEnumerable<InventoryItemWithCount> inventoryRelics = [];
+    private IEnumerable<InventoryItemWithCount> inventoryTileItems = [];
+
+    private void RemoveItem(BaseInventoryItem item)
+    {
+        if (appController.Game.UseToken(TokenType.InventoryItemRemoval))
+        {
+            if (item is Relic rel)
+                appController.Game.RemoveRelicFromInventory(rel);
+            else if (item is TileItem ti)
+                appController.Game.RemoveTileItemFromInventory(ti);
+            else throw new ArgumentException("Incorrect item type");
+
+            StateHasChanged();
+        }
+        else
+        {
+            ShowError();
+            return;
+        }
+
+    }
+    private async Task ShowError()
+    {
+        showError = true;
+        StateHasChanged();
+        await Task.Delay(2000);
+        showError = false;
+        StateHasChanged();
+
+    }
     public async Task Open()
     {
         StateHasChanged();
         await JSRuntime.InvokeVoidAsync("blazorDialogFunctions.openDialog", "itemRemovingDialog");
+        inventoryRelics = appController.Game.Inventory.Relics
+            .Where(r => !(r is IWithCounter))
+            .GroupBy(r => r.Name)
+            .Select(g => new InventoryItemWithCount(g.First(), g.Count()))
+            .Concat(appController.Game.Inventory.Relics
+                .Where(r => r is IWithCounter)
+                .Select(r => new InventoryItemWithCount(r, 1))
+            );
+
+        inventoryTileItems = appController.Game.Inventory.TileItems
+            .Where(ti => !(ti is IWithCounter))
+            .GroupBy(ti => ti.Name)
+            .Select(g => new InventoryItemWithCount(g.First(), g.Count()))
+            .Concat(appController.Game.Inventory.TileItems
+                .Where(ti => ti is IWithCounter)
+                .Select(ti => new InventoryItemWithCount(ti, 1))
+            );
     }
 
     private async Task Close() =>
         await JSRuntime.InvokeVoidAsync("blazorDialogFunctions.closeDialog", "itemRemovingDialog");
+
 }
- 
+

@@ -229,7 +229,7 @@ namespace SaYSpin.src.static_classes
                 _ => null
             };
             if (type is null)
-                return GameLogModel.CommandError($"Unknown token type {args[0]}");
+                return GameLogModel.CommandError($"Unknown token type {args[0]}. Available: shop_r, new_stage_r, inv_rem");
 
             game.Inventory.Tokens.AddToken((TokenType)type);
             return GameLogModel.CommandSuccess($"Successfully added {type} token");

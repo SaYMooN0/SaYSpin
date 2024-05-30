@@ -1,0 +1,21 @@
+﻿<div class="item-card">
+    @if (count > 1)
+    {
+        <label class="count-label">
+            @count
+        </label>
+    }
+    <InventoryItemWithRarityComponent itemToDisplay="item" />
+    <div class="remove-button" @onclick:stopPropagation="true" @onclick="RemoveAction">
+        -
+    </div>
+
+</div>
+@code {
+    [Parameter]
+    public Action RemoveAction { get; set; }
+    [Parameter]
+    public BaseInventoryItem item { get; set; }
+    [Parameter]
+    public int count { get; set; } = 1;
+}

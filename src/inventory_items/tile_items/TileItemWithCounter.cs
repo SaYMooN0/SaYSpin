@@ -55,8 +55,15 @@ namespace SaYSpin.src.inventory_items.tile_items
             bool isUnique = false,
             int startingCounterValue = 0
             ) => new TileItemWithCounter(name, description, rarity, initialCoinValue, tags, isSpecial, isUnique, startingCounterValue);
-        public static TileItemWithCounter WithCounterValue(TileItemWithCounter baseObj, int value) =>
-            new(baseObj.Name, baseObj.Description, baseObj.Rarity, baseObj.InitialCoinValue, baseObj.Tags, baseObj.IsSpecial, baseObj.IsUnique, value);
+        public static TileItemWithCounter WithCounterValue(TileItemWithCounter baseObj, int value)
+        {
+            TileItemWithCounter newTi = new(baseObj.Name, baseObj.Description, baseObj.Rarity, baseObj.InitialCoinValue, baseObj.Tags, baseObj.IsSpecial, baseObj.IsUnique, value);
+            foreach (var effect in baseObj.Effects)
+                newTi.WithEffect(effect);
+
+            return newTi;
+        }
+           
     }
 }
 

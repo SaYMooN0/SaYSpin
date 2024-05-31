@@ -102,7 +102,7 @@ namespace SaYSpin.src.inventory_items_storages
             TileItemWithCounter t = TileItemWithCounter
                 .New("Sweet Tooth", "Gives coins equal to the value of the counter", Rarity.Epic, 0, ["human"])
                 .SetBaseIncomeCalculationFunc(ti => ti.Counter);
-            t = t.WithAbsorbingTileItemEffect(
+            t.WithAbsorbingTileItemEffect(
                 "Eats adjacent sweets and increases the counter depending on the rarity of the eaten sweet",
                 t => t.HasTag("sweet"),
                 (game, absorbedTI) => t.IncrementCounter((int)absorbedTI.Rarity + 1));
@@ -117,7 +117,7 @@ namespace SaYSpin.src.inventory_items_storages
             TileItemWithCounter t = TileItemWithCounter
                 .New("Pirate", $"Gives ({baseIncome} + value of counter) coins ", Rarity.Legendary, 7, ["human"])
                 .SetBaseIncomeCalculationFunc(t => t.Counter + baseIncome);
-            t = t.WithAbsorbingTileItemEffect(
+            t.WithAbsorbingTileItemEffect(
                 $"Absorbs adjacent chests and golden tile items giving {absorbedIncomeMultiplier}× coins of their basic income and increases counter by 1",
                 tiToAbsorb => tiToAbsorb.IsConsumableByPirate(),
                 (game, absorbedTI) =>
@@ -257,8 +257,7 @@ namespace SaYSpin.src.inventory_items_storages
         private TileItem Waffle()
         {
             var tileItem = TileItem.Special("Waffle", Rarity.Rare, 5, ["sweet"]);
-            tileItem = tileItem
-                .WithAreaScanningTileItemEffect("If there are two adjacent apples, absorbs them",
+            tileItem.WithAreaScanningTileItemEffect("If there are two adjacent apples, absorbs them",
                 SlotMachineArea.Adjacent,
                 (ti) => ti.IdIs("apple"),
                 (game, tiWithCoords) =>
@@ -290,7 +289,7 @@ namespace SaYSpin.src.inventory_items_storages
             TileItemWithCounter t = TileItemWithCounter
                 .New("Zookeeper", "Gives coins equal to the value of the counter", Rarity.Legendary, 0, ["human"])
                 .SetBaseIncomeCalculationFunc(ti => ti.Counter);
-            t = t.WithAreaScanningTileItemEffect(
+            t.WithAreaScanningTileItemEffect(
                 "Each spin increases the counter by the number of adjacent animals and birds",
                 SlotMachineArea.Adjacent,
                 (ti) => ti.HasTag("animal") || ti.HasTag("bird"),
@@ -304,8 +303,7 @@ namespace SaYSpin.src.inventory_items_storages
             const int adjacentAnimalBonus = 2;
 
             var newTI = TileItem.Ordinary("Tiger", Rarity.Epic, 8, ["animal"]);
-            newTI = newTI
-                .WithAreaScanningTileItemEffect(
+            newTI.WithAreaScanningTileItemEffect(
                     $"If there any adjacent zookeeper increases income of adjacent animal tiles by {adjacentAnimalBonus} coins",
                     SlotMachineArea.Adjacent,
                     (ti) => ti.IdIs("zookeeper"),
@@ -331,7 +329,7 @@ namespace SaYSpin.src.inventory_items_storages
                     SlotMachineArea.Adjacent,
                     ModifierType.Multiply, adjacentHumansMultiplier,
                     (ti) => ti.IdIs("human"));
-            newTI = newTI.WithAreaScanningTileItemEffect(
+            newTI.WithAreaScanningTileItemEffect(
                         $"If there two more third place medals in adjacent tiles combine into one second place medal",
                         SlotMachineArea.Adjacent, (ti) => ti.IdIs("third_place_medal"),
                         (game, tiWithCoords) =>
@@ -348,7 +346,7 @@ namespace SaYSpin.src.inventory_items_storages
                             newTI.AddMarker(Markers.ReadyToTransform);
                         }
                     );
-            newTI = newTI.WithTransformationEffect(string.Empty, (_) => newTI.Markers.Contains(Markers.ReadyToTransform), SecondPlaceMedal());
+            newTI.WithTransformationEffect(string.Empty, (_) => newTI.Markers.Contains(Markers.ReadyToTransform), SecondPlaceMedal());
             return newTI;
         }
 
@@ -361,7 +359,7 @@ namespace SaYSpin.src.inventory_items_storages
                     SlotMachineArea.Adjacent,
                     ModifierType.Multiply, adjacentHumansMultiplier,
                     (ti) => ti.IdIs("human"));
-            newTI = newTI.WithAreaScanningTileItemEffect(
+            newTI.WithAreaScanningTileItemEffect(
                        $"If there two more second place medals in adjacent tiles combine into one first place medal",
                        SlotMachineArea.Adjacent, (ti) => ti.IdIs("second_place_medal"),
                        (game, tiWithCoords) =>
@@ -378,7 +376,7 @@ namespace SaYSpin.src.inventory_items_storages
                            newTI.AddMarker(Markers.ReadyToTransform);
                        }
                    );
-            newTI = newTI.WithTransformationEffect(string.Empty, (_) => newTI.Markers.Contains(Markers.ReadyToTransform), FirstPlaceMedal());
+            newTI.WithTransformationEffect(string.Empty, (_) => newTI.Markers.Contains(Markers.ReadyToTransform), FirstPlaceMedal());
             return newTI;
         }
         private TileItem FirstPlaceMedal()
@@ -441,7 +439,7 @@ namespace SaYSpin.src.inventory_items_storages
             TileItemWithCounter newTI = TileItemWithCounter
                 .New("King", "Gives 7 coins per every 3 counter", Rarity.Mythic, 0, ["human"], isUnique: true)
                 .SetBaseIncomeCalculationFunc(ti => ti.Counter / 3 * 7);
-            newTI = newTI.WithAreaScanningTileItemEffect(
+            newTI.WithAreaScanningTileItemEffect(
                 $"Reduces counter of adjacent humans with counters (except pirate) by {baseTax}+{taxPercent}% of counter and adds this value to its counter",
                 SlotMachineArea.Adjacent,
                 (ti) => ti.HasTag("human") && !ti.IdIs("pirate"),
@@ -462,7 +460,7 @@ namespace SaYSpin.src.inventory_items_storages
             TileItemWithCounter newTI = TileItemWithCounter
                 .New("Farmer", "Gives 1 coin per counter", Rarity.Epic, 0, ["human"])
                 .SetBaseIncomeCalculationFunc(ti => ti.Counter);
-            newTI = newTI.WithAbsorbingTileItemEffect(
+            newTI.WithAbsorbingTileItemEffect(
                 $"Absorbs adjacent fruits, berries and vegetables giving {fruitSaleCoefficient}× coins of their basic income and increases counter by 1",
                 tiToAbsorb => tiToAbsorb.HasOneOfTags("fruit", "vegetable", "berry"),
                 (game, absorbedTI) =>
@@ -478,7 +476,7 @@ namespace SaYSpin.src.inventory_items_storages
             TileItemWithCounter newTI = TileItemWithCounter
                 .New("Raccoon", "Gives 4 + 6 coin per every 5 counter", Rarity.Epic, 0, ["animal"])
                 .SetBaseIncomeCalculationFunc(newTI => newTI.Counter / 5 * 6 + baseIncome);
-            newTI = newTI.WithAbsorbingTileItemEffect(
+            newTI.WithAbsorbingTileItemEffect(
                 $"Absorbs adjacent apples, bananas and carrots increasing counter by 3",
                 tiToAbsorb => tiToAbsorb.IdIsOneOf("apple", "banana", "carrot"),
                 (game, absorbedTI) => newTI.IncrementCounter(3));
@@ -491,8 +489,7 @@ namespace SaYSpin.src.inventory_items_storages
                 .WithTileItemsEnhancingTileItemEffect(
                     $"All magical tile items give extra {2}× coins",
                     SlotMachineArea.AllTiles, ModifierType.Multiply, magicalBonus, (ti) => ti.HasTag("magical"));
-            newTi = newTi
-                .WithAreaScanningTileItemEffect(
+            newTi.WithAreaScanningTileItemEffect(
                     "If there any adjacent Spell Scroll absorbs it transforming into Archmage",
                     SlotMachineArea.Adjacent,
                     (ti) => ti.IdIs("spell_scroll"),
@@ -509,7 +506,7 @@ namespace SaYSpin.src.inventory_items_storages
                             newTi.AddMarker(Markers.ReadyToTransform);
                         }
                     })
-               .WithTransformationEffect(string.Empty, (_) => newTi.Markers.Contains(Markers.ReadyToTransform), Archmage());  
+               .WithTransformationEffect(string.Empty, (_) => newTi.Markers.Contains(Markers.ReadyToTransform), Archmage());
             return newTi;
         }
         private TileItem Archmage()

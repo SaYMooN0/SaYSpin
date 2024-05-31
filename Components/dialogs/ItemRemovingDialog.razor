@@ -3,10 +3,18 @@
 @inject IJSRuntime JSRuntime
 
 <dialog id="itemRemovingDialog" class="unselectable">
+    <DialogCloseButton closeAction="()=>{Close();}" />
     <div class="dialog-content">
         <label class="choose-label">Choose items to remove</label>
-        <RemovingDialogItemsContainer label="Relics" items="inventoryRelics" />
-        <DialogCloseButton closeAction="()=>{Close();}" />
+        <LabelWithDiamonds text="Relics" />
+        <RemovingDialogItemsContainer label="Relics" items="inventoryRelics" removeAction="RemoveItem" />
+
+        <LabelWithDiamonds text="Tile Items" />
+        <RemovingDialogItemsContainer label="TileItems" items="inventoryTileItems" removeAction="RemoveItem" />
+
+        <label class="tokens-left unselectable">
+            @appController.Game.Inventory.Tokens.Count(TokenType.InventoryItemRemoval) Tokens left
+        </label>
     </div>
 
     @if (showError)
@@ -51,7 +59,6 @@
     }
     public async Task Open()
     {
-        StateHasChanged();
         await JSRuntime.InvokeVoidAsync("blazorDialogFunctions.openDialog", "itemRemovingDialog");
         inventoryRelics = appController.Game.Inventory.Relics
             .Where(r => !(r is IWithCounter))
@@ -70,6 +77,7 @@
                 .Where(ti => ti is IWithCounter)
                 .Select(ti => new InventoryItemWithCount(ti, 1))
             );
+        StateHasChanged();
     }
 
     private async Task Close() =>

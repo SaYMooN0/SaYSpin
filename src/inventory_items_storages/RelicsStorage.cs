@@ -134,10 +134,10 @@ namespace SaYSpin.src.inventory_items_storages
             RelicWithCounter appleTreeSapling = new RelicWithCounter("Apple Tree Sapling", Rarity.Rare, startingCounterValue: 0, isUnique: true)
                 .WithCoinsCalculationRelicEffect($"Apple tile item gives +{appleBonus} coin", ModifierType.Plus, appleBonus, i => i.Id == "apple") as RelicWithCounter;
 
-            appleTreeSapling = appleTreeSapling.WithAfterSpinRelicEffect($"After each spin increase counter by 1", (_) => appleTreeSapling.IncrementCounter(1)) as RelicWithCounter;
-            appleTreeSapling = appleTreeSapling.WithTransformationRelicEffect(
+            appleTreeSapling.WithAfterSpinRelicEffect($"After each spin increase counter by 1", (_) => appleTreeSapling.IncrementCounter(1));
+            appleTreeSapling.WithTransformationRelicEffect(
                 $"When counter value reach {counterValueToTransform} transforms into apple tree",
-                (_) => appleTreeSapling.Counter >= counterValueToTransform, AppleTree()) as RelicWithCounter;
+                (_) => appleTreeSapling.Counter >= counterValueToTransform, AppleTree());
 
             return appleTreeSapling;
         }
@@ -317,7 +317,7 @@ namespace SaYSpin.src.inventory_items_storages
         {
             const int startingCounter = 7;
             RelicWithCounter sourWorms = new("Bag Of Sour Worms", Rarity.Legendary, startingCounterValue: startingCounter);
-            sourWorms = sourWorms
+            sourWorms
                 .WithAfterSpinRelicEffect("Every spin if counter is more than 0 decreases counter by 1 and adds 1 sour worm",
                 (game) =>
                 {
@@ -331,8 +331,8 @@ namespace SaYSpin.src.inventory_items_storages
                     }
                     sourWorms.IncrementCounter(-1);
                 }
-                ) as RelicWithCounter;
-            sourWorms = sourWorms.WithTransformationRelicEffect("After counter reaches 0 disappears", (_) => sourWorms.Counter == 0, null) as RelicWithCounter;
+                );
+            sourWorms.WithTransformationRelicEffect("After counter reaches 0 disappears", (_) => sourWorms.Counter == 0, null);
             return sourWorms;
         }
         private Relic OlympicFlag()
@@ -405,7 +405,7 @@ namespace SaYSpin.src.inventory_items_storages
         {
             const int maxValue = 20;
             RelicWithCounter safe = new("Safe", Rarity.Mythic, isUnique: true);
-            safe = safe.WithAfterStageRewardRelicEffect(
+            safe.WithAfterStageRewardRelicEffect(
                 $"After each stage increase counter by count of remaining spins (up to {maxValue})",
                 (stageNumber, game) =>
                 {
@@ -415,19 +415,19 @@ namespace SaYSpin.src.inventory_items_storages
                         game.StatsTracker.SetChanged();
                     }
                     return [];
-                }) as RelicWithCounter;
+                });
 
-            safe = safe.WithNonConstantGameStatRelicEffect(
-                "For every two counter values, reduces the number of coins needed to complete the stage by 1%",
-                GameStat.CoinsNeededToCompleteStage,
-                (game) => new Tuple<ModifierType, double>(ModifierType.Multiply, 1 - ((double)safe.Counter / 200))) as RelicWithCounter;
+            safe.WithNonConstantGameStatRelicEffect(
+               "For every two counter values, reduces the number of coins needed to complete the stage by 1%",
+               GameStat.CoinsNeededToCompleteStage,
+               (game) => new Tuple<ModifierType, double>(ModifierType.Multiply, 1 - ((double)safe.Counter / 200)));
             return safe;
         }
         private Relic Compass()
         {
             const int maxValue = 15;
             RelicWithCounter compass = new("Compass", Rarity.Legendary, isUnique: true);
-            compass = compass.WithAfterStageRewardRelicEffect(
+            compass.WithAfterStageRewardRelicEffect(
                 $"If you complete stage with 0 spins remain, increase counter by 1 (up to {maxValue})",
                 (stageNumber, game) =>
                 {
@@ -437,11 +437,11 @@ namespace SaYSpin.src.inventory_items_storages
                         game.StatsTracker.SetChanged();
                     }
                     return [];
-                }) as RelicWithCounter;
-            compass = compass.WithNonConstantGameStatRelicEffect(
+                });
+            compass.WithNonConstantGameStatRelicEffect(
                 "Reduces the prices in the store based on the counter value",
                 GameStat.ShopPriceCoefficient,
-                (game) => new(ModifierType.Multiply, 1 - ((double)compass.Counter / 100))) as RelicWithCounter;
+                (game) => new(ModifierType.Multiply, 1 - ((double)compass.Counter / 100)));
             return compass;
         }
 
@@ -449,14 +449,14 @@ namespace SaYSpin.src.inventory_items_storages
         {
             const double luckForEveryCarrot = 1.25;
             RelicWithCounter carrotCake = new("Carrot Cake", Rarity.Legendary, startingCounterValue: 0, isUnique: true);
-            carrotCake = carrotCake.WithTileItemAddingIntersectionRelicEffect(
+            carrotCake.WithTileItemAddingIntersectionRelicEffect(
                 "Collects all carrots, adding +1 to the counter for each carrot",
                 (game, tiToAdd) => { carrotCake.IncrementCounter(1); game.StatsTracker.SetChanged(); return null; },
-                (tiToAdd) => tiToAdd.IdIs("carrot")) as RelicWithCounter;
-            carrotCake = carrotCake.WithNonConstantGameStatRelicEffect(
-                $"For every counter value gives +{luckForEveryCarrot} to luck parameter",
-                GameStat.Luck,
-                (game) => new(ModifierType.Plus, luckForEveryCarrot * carrotCake.Counter)) as RelicWithCounter;
+                (tiToAdd) => tiToAdd.IdIs("carrot"));
+            carrotCake.WithNonConstantGameStatRelicEffect(
+               $"For every counter value gives +{luckForEveryCarrot} to luck parameter",
+               GameStat.Luck,
+               (game) => new(ModifierType.Plus, luckForEveryCarrot * carrotCake.Counter));
             return carrotCake;
         }
         private Relic ApplePie()
@@ -465,7 +465,7 @@ namespace SaYSpin.src.inventory_items_storages
             int applesCollected = 0;
             const int maxApples = 15;
             RelicWithCounter applePie = new("Apple Pie", Rarity.Legendary, startingCounterValue: 0, isUnique: true);
-            applePie = applePie.WithTileItemAddingIntersectionRelicEffect(
+            applePie.WithTileItemAddingIntersectionRelicEffect(
                 $"Collects all apples, adding +1 to the counter for each apple. Can collect not more than {maxApples} apples",
                 (game, tiToAdd) =>
                 {
@@ -475,11 +475,11 @@ namespace SaYSpin.src.inventory_items_storages
                     return null;
                 },
                 (tiToAdd) => applesCollected < maxApples && tiToAdd.IdIs("apple")
-                ) as RelicWithCounter;
-            applePie = applePie.WithNonConstantCalculationRelicEffect(
-                $"For every counter value gives all humans give +{incomeBonusForEveryApple}% coins",
-                (game) => new Tuple<ModifierType, double>(ModifierType.Multiply,1+ incomeBonusForEveryApple * applePie.Counter*0.01),
-                (ti) => ti.HasTag("human")) as RelicWithCounter;
+                );
+            applePie.WithNonConstantCalculationRelicEffect(
+               $"For every counter value gives all humans give +{incomeBonusForEveryApple}% coins",
+               (game) => new Tuple<ModifierType, double>(ModifierType.Multiply, 1 + incomeBonusForEveryApple * applePie.Counter * 0.01),
+               (ti) => ti.HasTag("human"));
             return applePie;
         }
         private Relic CollectorsMonocle()

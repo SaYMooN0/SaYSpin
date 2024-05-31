@@ -1,10 +1,11 @@
 ﻿@using static SaYSpin.Components.home_page.InventoryComponent
 
-<LabelWithDiamonds text="@label" />
+
+
 <div class="inventory-items-container">
     @foreach (var i in items)
     {
-        <RemovingDialogItemCard item="i.Item" count="i.Count" RemoveAction="()=>{}" />
+        <RemovingDialogItemCard item="i.Item" count="i.Count" removeAction="removeAction" />
     }
 </div>
 @code {
@@ -13,4 +14,7 @@
 
     [Parameter]
     public IEnumerable<InventoryItemWithCount> items { get; set; }
+
+    [Parameter]
+    public Action<BaseInventoryItem> removeAction { get; set; }
 }

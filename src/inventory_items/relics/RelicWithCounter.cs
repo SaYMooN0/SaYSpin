@@ -17,8 +17,12 @@ namespace SaYSpin.src.inventory_items.relics
 
         public void ResetCounter() =>
             _counter = 0;
-        public static RelicWithCounter WithCounterValue(RelicWithCounter baseObj, int value) =>
-          new(baseObj.Name, baseObj.Rarity, baseObj.IsSpecial, baseObj.IsUnique, value);
-
+        public static RelicWithCounter WithCounterValue(RelicWithCounter baseObj, int value)
+        {
+            RelicWithCounter newR = new(baseObj.Name, baseObj.Rarity, baseObj.IsSpecial, baseObj.IsUnique, value);
+            foreach (var effect in baseObj.Effects)
+                newR.WithEffect(effect);
+            return newR;
+        }
     }
 }

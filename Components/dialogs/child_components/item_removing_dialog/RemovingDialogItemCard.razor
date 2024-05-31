@@ -6,14 +6,14 @@
         </label>
     }
     <InventoryItemWithRarityComponent itemToDisplay="item" />
-    <div class="remove-button" @onclick:stopPropagation="true" @onclick="RemoveAction">
-        -
-    </div>
+    <svg viewBox="0 0 448 512" class="remove-button" @onclick:stopPropagation="true" @onclick="()=>removeAction(item)">
+        <path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z" />
+    </svg>
 
 </div>
 @code {
     [Parameter]
-    public Action RemoveAction { get; set; }
+    public Action<BaseInventoryItem> removeAction { get; set; }
     [Parameter]
     public BaseInventoryItem item { get; set; }
     [Parameter]

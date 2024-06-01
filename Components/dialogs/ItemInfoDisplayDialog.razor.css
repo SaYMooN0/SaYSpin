@@ -6,43 +6,48 @@
 
     #itemInfoDisplayDialog .dialog-content {
         width: min-content;
+        box-sizing: border-box;
+        padding:14px 0;
         display: grid;
         grid-template-rows: 360px auto auto 1fr;
         justify-content: center;
         position: relative;
     }
 
-#itemInfoDisplayDialog .item-img {
-    margin: 0 120px;
-    height: 100%;
-    aspect-ratio: 1/1;
-    justify-self: center;
+    #itemInfoDisplayDialog .item-img {
+        margin: 0 120px;
+        height: 100%;
+        aspect-ratio: 1/1;
+        justify-self: center;
+        box-sizing: border-box;
+    }
+
+    #itemInfoDisplayDialog .item-name {
+        width: 100%;
+        text-align: center;
+        font-family: "Montserrat";
+        font-size: 34px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+.property-name {
+    display: flex;
+    flex-direction: row;
+    gap: 6px;
+    align-items: center;
 }
 
-#itemInfoDisplayDialog .item-name {
-    width: 100%;
-    text-align: center;
-    font-family: "Montserrat";
-    font-size: 34px;
-    font-weight: bold;
-    margin-bottom: 20px;
-}
-
-.property-name{
-    display:flex;
-    flex-direction:row;
-    gap:6px;
-    align-items:center;
-}
 .basic-info-container {
     width: 100%;
     display: grid;
-    
     gap: 6px;
 }
+
 .ti-basic-info {
     grid-template-rows: 1fr auto 1fr 1fr 1fr;
 }
+
 .rel-basic-info {
     grid-template-rows: 1fr 1fr 1fr;
 }
@@ -105,9 +110,11 @@
         #itemInfoDisplayDialog .dialog-content {
             grid-template-rows: 280px auto auto 1fr;
         }
+
         #itemInfoDisplayDialog .item-img {
             margin: 0 80px;
         }
+
         #itemInfoDisplayDialog .item-name {
             font-size: 30px;
             margin-bottom: 18px;
@@ -130,9 +137,11 @@
         #itemInfoDisplayDialog .dialog-content {
             grid-template-rows: 240px auto auto 1fr;
         }
+
         #itemInfoDisplayDialog .item-img {
             margin: 0 60px;
         }
+
         #itemInfoDisplayDialog .item-name {
             font-size: 28px;
             margin-bottom: 16px;

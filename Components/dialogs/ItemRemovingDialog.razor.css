@@ -1,12 +1,12 @@
 #itemRemovingDialog {
     border: none;
     outline: none;
-    border-radius: 32px;
+    border-radius: 26px;
 }
 
 .dialog-content {
     width: calc(200px + 60vw);
-    height: calc(90vh - 40px);
+    height: calc(94vh - 100px);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -15,23 +15,22 @@
     padding-bottom: 40px;
 }
 
-.choose-label {
-    font-family: "Montserrat";
-    font-size: 24px;
+.dialog-label {
+    display: flex;
+    align-items: center;
+    font-size: 28px;
     font-weight: bold;
+    font-family: Montserrat;
+    border-bottom: black solid 5px;
 }
 
-.tokens-left {
+.tokens-left-label {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
     bottom: 0;
     height: 40px;
     box-sizing: border-box;
-    padding: 8px 20px;
-    display: flex;
-    align-items: center;
-    background-color: wheat;
 }
 
 .error-popup {
@@ -47,6 +46,19 @@
     left: 50%;
     z-index: 1000;
     animation: fadeIn 0.5s forwards, fadeOut 0.4s 1.8s forwards;
+}
+
+
+
+@media (max-width: 850px), (max-height:600px) {
+    .dialog-label {
+        font-size: 20px;
+        border-bottom: black solid 3px;
+    }
+    .dialog-content {
+        width: calc(80px + 76vw);
+        height: calc(92vh - 60px);
+    }
 }
 
 @keyframes fadeIn {

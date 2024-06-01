@@ -5,14 +5,14 @@
 <dialog id="itemRemovingDialog" class="unselectable">
     <DialogCloseButton closeAction="()=>{Close();}" />
     <div class="dialog-content">
-        <label class="choose-label">Choose items to remove</label>
+        <label class="dialog-label">Choose items to remove</label>
         <LabelWithDiamonds text="Relics" />
         <RemovingDialogItemsContainer label="Relics" items="inventoryRelics" removeAction="RemoveItem" />
 
         <LabelWithDiamonds text="Tile Items" />
         <RemovingDialogItemsContainer label="TileItems" items="inventoryTileItems" removeAction="RemoveItem" />
 
-        <label class="tokens-left unselectable">
+        <label class="dialog-label tokens-left-label">
             @appController.Game.Inventory.Tokens.Count(TokenType.InventoryItemRemoval) Tokens left
         </label>
     </div>
@@ -67,7 +67,8 @@
             .Concat(appController.Game.Inventory.Relics
                 .Where(r => r is IWithCounter)
                 .Select(r => new InventoryItemWithCount(r, 1))
-            );
+            )
+            .OrderBy(rel => rel.Item.Name);
 
         inventoryTileItems = appController.Game.Inventory.TileItems
             .Where(ti => !(ti is IWithCounter))
@@ -76,7 +77,8 @@
             .Concat(appController.Game.Inventory.TileItems
                 .Where(ti => ti is IWithCounter)
                 .Select(ti => new InventoryItemWithCount(ti, 1))
-            );
+            )
+            .OrderBy(i => i.Item.Name);
         StateHasChanged();
     }
 

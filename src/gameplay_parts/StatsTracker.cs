@@ -1,5 +1,4 @@
-﻿
-using SaYSpin.src.enums;
+﻿using SaYSpin.src.enums;
 using SaYSpin.src.inventory_items.relics.relic_effects;
 using System.Text.Json.Serialization;
 
@@ -7,17 +6,16 @@ namespace SaYSpin.src.gameplay_parts
 {
     public class StatsTracker
     {
-
+        [JsonInclude]
         public Dictionary<GameStat, double> Values { get; private set; }
-
         [JsonInclude]
         private readonly Dictionary<GameStat, double> initialValues;
 
         public bool Changed { get; private set; } = true;
-
         [JsonConstructor]
-        public StatsTracker(Dictionary<GameStat, double> initialValues)
+        public StatsTracker(Dictionary<GameStat, double> initialValues, Dictionary<GameStat, double> values)
         {
+            this.Values = values;
             this.initialValues = initialValues;
             SetChanged();
         }

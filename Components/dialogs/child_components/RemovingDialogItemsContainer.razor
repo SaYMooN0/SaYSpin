@@ -1,0 +1,29 @@
+﻿@using static SaYSpin.Components.home_page.InventoryComponent
+<div class="inventory-items-container">
+    @foreach (var i in items)
+    {
+        <div class="item-card">
+            @if (i.Count > 1)
+            {
+                <label class="count-label">
+                    @i.Count
+                </label>
+            }
+            <InventoryItemWithRarityComponent itemToDisplay="i.Item" />
+            <svg viewBox="0 0 448 512" class="remove-button" @onclick:stopPropagation="true" @onclick="()=>removeAction(i.Item)">
+                <path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z" />
+            </svg>
+
+        </div>
+    }
+</div>
+@code {
+    [Parameter]
+    public string label { get; set; }
+
+    [Parameter]
+    public IEnumerable<InventoryItemWithCount> items { get; set; }
+
+    [Parameter]
+    public Action<BaseInventoryItem> removeAction { get; set; }
+}

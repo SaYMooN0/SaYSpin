@@ -1,0 +1,133 @@
+.inventory-items-container {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    overflow-y: auto;
+    height: fit-content;
+}
+
+.item-card {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 96px;
+    padding: 4px;
+}
+
+.count-label {
+    z-index: 10;
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    background-color: #ffffff;
+    color: black;
+    font-weight: bold;
+    font-family: Overload;
+    border-radius: 50%;
+    padding: 1px 6px;
+    font-size: 22px;
+}
+
+.remove-button {
+    z-index: 10;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    background-color: #a8a8a8;
+    fill: #000;
+    font-weight: bolder;
+    font-size: 24px;
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+    width: 18px;
+    padding: 2px;
+    box-sizing: content-box;
+    cursor: pointer;
+    transition: all 0.08s ease-in;
+}
+
+    .remove-button:hover {
+        background-color: #a0a0a0;
+        transform: scale(1.12);
+    }
+
+
+.item-card {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 96px;
+    padding: 4px;
+}
+
+.count-label {
+    z-index: 10;
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    background-color: #ffffff;
+    color: black;
+    font-weight: bold;
+    font-family: Overload;
+    border-radius: 50%;
+    padding: 1px 6px;
+    font-size: 22px;
+}
+
+.remove-button {
+    z-index: 10;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    background-color: #a8a8a8;
+    fill: #000;
+    font-weight: bolder;
+    font-size: 24px;
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+    width: 18px;
+    padding: 2px;
+    box-sizing: content-box;
+    cursor: pointer;
+    transition: all 0.08s ease-in;
+}
+
+
+@media (max-width: 1100px), (max-height: 900px) {
+    .item-card {
+        height: 86px;
+        padding: 3px;
+    }
+
+    .count-label {
+        top: 5px;
+        left: 5px;
+        font-size: 20px;
+    }
+
+    .remove-button {
+        right: 4px;
+        top: 4px;
+        font-size: 21px;
+        width: 17px;
+    }
+
+}
+
+@media (max-width: 750px), (max-height:600px) {
+    .item-card {
+        height: 78px;
+    }
+
+    .count-label {
+        font-size: 18px;
+    }
+
+    .remove-button {
+        font-size: 20px;
+        width: 16px;
+    }
+}

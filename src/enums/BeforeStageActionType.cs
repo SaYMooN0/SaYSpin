@@ -34,9 +34,9 @@
             BeforeStageActionType.TileItemChoosing => "Choose a tile item",
             BeforeStageActionType.RelicChoosing => "Choose a relic",
             BeforeStageActionType.TokenChoosing => "Choose a token",
-            BeforeStageActionType.StatChoosing => "Choose stat to improve",
+            BeforeStageActionType.StatChoosing => "Import a stat",
             BeforeStageActionType.OneOfActionsChoosing => "Choose one of actions",
-            BeforeStageActionType.CloneItem => "Clone one inventory item",
+            BeforeStageActionType.CloneItem => "Clone an inventory item",
             _ => throw new ArgumentException("Unsupported action type"),
         };
     }

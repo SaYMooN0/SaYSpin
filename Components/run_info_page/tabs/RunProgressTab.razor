@@ -1,22 +1,43 @@
 ﻿@inject AppController allGameController
 <div class="content">
-    <label class="stage-number-label">Stage @allGameController.Game.CurrentStage</label>
-</div>
-<div class="roadmap-section">
-    <div class="roadmap-line" style="height:@(allGameController.Game.RunProgressController.BeforeStageActionsRoadMap.Count*50)px"></div>
-    @for (int i = 1; i < allGameController.Game.RunProgressController.BeforeStageActionsRoadMap.Count; i++)
-    {
-        <div class="roadmap-stage @(i == allGameController.Game.CurrentStage ? "current-stage" : "")" style="top:@((i-1)*50)px">
-            <div class="stage-number">@i</div>
-            <div class="actions">
-                @foreach (var action in allGameController.Game.RunProgressController.BeforeStageActionsRoadMap[i].Actions)
+    <div class="map-legend">
+        <label>Action Types:</label>
+        @foreach (var actionType in mapLegendBeforeActionTypes)
+        {
+            <div class="map-legend-item">
+                <span class="map-legend-action-type @actionType.ActionId()">
+                </span>
+                <label class="map-legend-label">@actionType.Name()</label>
+            </div>
+        }
+    </div>
+    <div>
+        <label class="stage-number-label">Run Roadmap</label>
+        <div class="roadmap-section unselectable">
+            <div class="roadmap-line"> </div>
+            <div class="stages">
+                @for (int i = 1; i < allGameController.Game.RunProgressController.BeforeStageActionsRoadMap.Count; i++)
                 {
-                    <div class="action @action.ActionId()"></div>
+                    <div class="roadmap-stage @(i == allGameController.Game.CurrentStage ? "current-stage" : "")">
+                        <div class="stage-number">@i</div>
+                        <div class="actions">
+                            @foreach (var action in allGameController.Game.RunProgressController.BeforeStageActionsRoadMap[i].Actions)
+                            {
+                                <div class="action @action.ActionId()"></div>
+                            }
+                        </div>
+                    </div>
                 }
             </div>
         </div>
-    }
+    </div>
 </div>
 
+
 @code {
+    private IEnumerable<BeforeStageActionType> mapLegendBeforeActionTypes =>
+                    Enum.GetValues(typeof(BeforeStageActionType))
+                      .Cast<BeforeStageActionType>()
+                      .Where(action => action != BeforeStageActionType.OneOfActionsChoosing);
+
 }

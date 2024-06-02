@@ -1,47 +1,94 @@
-.roadmap-section{
-    height:600px;
-    overflow-y:auto;
+.content {
+    display: grid;
+    grid-template-columns: auto 1fr;
 }
+
+.map-legend {
+    display:flex;
+    flex-direction:column;
+    width: 200px;
+}
+.map-legend-item{
+    height:50px;
+    display:grid;
+    grid-template-columns: 50px 1fr;
+}
+.map-legend-action-type{
+
+}
+.map-legend-label{
+    font-family:Montserrat;
+}
+
+.roadmap-section {
+    display: grid;
+    grid-template-columns: 30px 1fr;
+    justify-content: center;
+    height: calc(96vh - 60px);
+    overflow-y: auto;
+}
+
 .roadmap-line {
-    width: 30px;
-    background-color: #4a90e2;
-    position:relative;
+    margin-left: 10px;
+    grid-column: 1 / 2;
+    grid-row: 1 / -1;
+    min-height: 100%;
+    width: 26px;
+    height: auto;
+    background-color: #4882fa;
+    border-radius: 20px;
+    z-index: 0;
 }
-.roadmap-stage {
-    position: absolute;
+
+.stages {
+    grid-column: 1 / 2;
+    grid-row: 1 / -1;
     display: flex;
-    flex-direction:row;
-    background-color:firebrick;
-    gap: 20px; 
+    flex-direction: column;
+    gap: 14px;
+}
+
+.roadmap-stage {
+    display: flex;
+    flex-direction: row;
 }
 
 .stage-number {
-/*    background-color: #4a90e2;
+    background-image: linear-gradient(to right bottom, #598efb, #568cfb, #538afb, #4f87fa, #4c85fa, #4983fa, #4782fb, #4480fb, #417efc, #3e7dfd, #3c7bfe, #3979ff);
+    box-sizing: border-box;
     color: white;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    height: 46px;
     display: flex;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
     justify-content: center;
     align-items: center;
-    font-size: 20px;
-    z-index: 1;*/
+    font-size: 16px;
+    font-family: Montserrat;
+    font-weight: bold;
+    z-index: 1;
 }
-.current-stage {
-    background-color: #3165f3 !important;
+
+.current-stage .stage-number {
+    background-color: #3147f3 !important;
+    border: none;
 }
-/*.actions {
+
+.actions {
+    margin-left: 10px;
     display: flex;
+    flex-direction: row;
+    align-items: center;
     gap: 10px;
-    margin-left: 20px;
 }
 
 .action {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-}*/
-.tile-item {
+}
+
+.tile_item_choosing {
     background-color: #ffc813;
 }
 
@@ -49,15 +96,15 @@
     background-color: #a714f5;
 }
 
-.add-row {
+.add_row {
     background-color: #ed2ad1;
 }
 
-.add-column {
+.add_column {
     background-color: #4a90e2;
 }
 
-.clone-item {
+.clone_item {
     background-color: #11fbed;
 }
 

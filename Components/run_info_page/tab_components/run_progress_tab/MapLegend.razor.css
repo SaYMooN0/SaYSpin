@@ -1,0 +1,36 @@
+.map-legend {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 460px;
+    padding: 10px 20px;
+    height: fit-content;
+    background-color: white;
+    border-radius: 30px;
+    align-self: end;
+}
+
+.map-legend-main-label {
+    align-self: center;
+    width: fit-content;
+}
+
+.map-legend-item {
+    height: 50px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 10px;
+}
+
+.map-legend-action-type {
+    border-radius: 50%;
+    height: 40%;
+    aspect-ratio: 1/1;
+}
+
+.map-legend-label {
+    font-size: 20px;
+    font-family: Montserrat;
+    font-weight: bold;
+}

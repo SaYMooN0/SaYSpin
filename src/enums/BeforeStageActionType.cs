@@ -34,10 +34,21 @@
             BeforeStageActionType.TileItemChoosing => "Choose a tile item",
             BeforeStageActionType.RelicChoosing => "Choose a relic",
             BeforeStageActionType.TokenChoosing => "Choose a token",
-            BeforeStageActionType.StatChoosing => "Import a stat",
+            BeforeStageActionType.StatChoosing => "Improve a stat",
             BeforeStageActionType.OneOfActionsChoosing => "Choose one of actions",
             BeforeStageActionType.CloneItem => "Clone an inventory item",
             _ => throw new ArgumentException("Unsupported action type"),
+        };
+        public static string HexColor(this BeforeStageActionType action) => action switch
+        {
+            BeforeStageActionType.AddColumn => "#4a90e2",
+            BeforeStageActionType.AddRow => "#ed2ad1",
+            BeforeStageActionType.TileItemChoosing => "#ffc813",
+            BeforeStageActionType.RelicChoosing => "#a714f5",
+            BeforeStageActionType.TokenChoosing => "#27dc4c",
+            BeforeStageActionType.StatChoosing => "#00e88b",
+            BeforeStageActionType.CloneItem => "#11fbed",
+            _ => "#ffffff", 
         };
     }
 }

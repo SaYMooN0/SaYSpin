@@ -1,0 +1,50 @@
+.roadmap-stage {
+    display: flex;
+    flex-direction: row;
+}
+
+.stage-number {
+    background-image: linear-gradient(to right bottom, #598efb, #568cfb, #538afb, #4f87fa, #4c85fa, #4983fa, #4782fb, #4480fb, #417efc, #3e7dfd, #3c7bfe, #3979ff);
+    box-sizing: border-box;
+    color: white;
+    height: 46px;
+    display: flex;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    font-family: Montserrat;
+    font-weight: bold;
+    z-index: 1;
+}
+
+.current-stage .stage-number {
+    background-color: #3147f3 !important;
+    border: none;
+}
+
+.actions {
+    margin-left: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    background-color: white;
+    margin: 4px;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 100px;
+}
+
+.action {
+    aspect-ratio: 1/1;
+    height: 100%;
+    border-radius: 50%;
+}
+.actions label {
+    font-size: 16px;
+    font-family: Montserrat;
+    font-weight: bold;
+    white-space: nowrap;
+}

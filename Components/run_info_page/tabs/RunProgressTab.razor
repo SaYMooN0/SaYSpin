@@ -1,43 +1,19 @@
 ﻿@inject AppController allGameController
 <div class="content">
-    <div class="map-legend">
-        <label>Action Types:</label>
-        @foreach (var actionType in mapLegendBeforeActionTypes)
-        {
-            <div class="map-legend-item">
-                <span class="map-legend-action-type @actionType.ActionId()">
-                </span>
-                <label class="map-legend-label">@actionType.Name()</label>
-            </div>
-        }
-    </div>
-    <div>
-        <label class="stage-number-label">Run Roadmap</label>
+
+    <MapLegend/>
+
+    <div class="roadmap-container">
+        <LabelWithDiamonds text="Run Progress" />
         <div class="roadmap-section unselectable">
             <div class="roadmap-line"> </div>
             <div class="stages">
                 @for (int i = 1; i < allGameController.Game.RunProgressController.BeforeStageActionsRoadMap.Count; i++)
                 {
-                    <div class="roadmap-stage @(i == allGameController.Game.CurrentStage ? "current-stage" : "")">
-                        <div class="stage-number">@i</div>
-                        <div class="actions">
-                            @foreach (var action in allGameController.Game.RunProgressController.BeforeStageActionsRoadMap[i].Actions)
-                            {
-                                <div class="action @action.ActionId()"></div>
-                            }
-                        </div>
-                    </div>
+                    <RoadmapStage index="i" />
                 }
             </div>
         </div>
     </div>
 </div>
 
-
-@code {
-    private IEnumerable<BeforeStageActionType> mapLegendBeforeActionTypes =>
-                    Enum.GetValues(typeof(BeforeStageActionType))
-                      .Cast<BeforeStageActionType>()
-                      .Where(action => action != BeforeStageActionType.OneOfActionsChoosing);
-
-}

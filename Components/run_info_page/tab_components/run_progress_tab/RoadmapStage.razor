@@ -1,0 +1,26 @@
+﻿@inject AppController allGameController
+<div class="roadmap-stage @(index == allGameController.Game.CurrentStage ? "current-stage" : "")">
+    <div class="stage-number">@index</div>
+    <div class='actions'>
+        @if (BeforeStageActionsGroupById(index).ActionType == BeforeStageActionGroupType.OneOf)
+        {
+            <label>One of:</label>
+        }
+        else if (BeforeStageActionsGroupById(index).ActionType == BeforeStageActionGroupType.None)
+        {
+            <label>None</label>
+        }
+        @foreach (var action in BeforeStageActionsGroupById(index).Actions)
+        {
+            <div class="action" style="background-color:@action.HexColor()"></div>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int index { get; set; }
+
+    private BeforeStageActionsGroup BeforeStageActionsGroupById(int id) =>
+        allGameController.Game.RunProgressController.BeforeStageActionsRoadMap[id];
+}

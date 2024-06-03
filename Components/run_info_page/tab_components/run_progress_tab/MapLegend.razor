@@ -1,0 +1,17 @@
+﻿<div class="map-legend">
+    <label class="map-legend-main-label">Action Types:</label>
+    @foreach (var actionType in mapLegendBeforeActionTypes)
+    {
+        <div class="map-legend-item">
+            <span class="map-legend-action-type" style="background-color:@actionType.HexColor()"></span>
+            <label class="map-legend-label">@actionType.Name()</label>
+        </div>
+    }
+</div>
+
+@code {
+    private IEnumerable<BeforeStageActionType> mapLegendBeforeActionTypes =>
+        Enum.GetValues(typeof(BeforeStageActionType))
+            .Cast<BeforeStageActionType>()
+            .Where(action => action != BeforeStageActionType.OneOfActionsChoosing);
+}

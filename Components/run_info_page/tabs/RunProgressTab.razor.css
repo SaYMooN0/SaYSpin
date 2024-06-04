@@ -3,18 +3,21 @@
     grid-template-columns: auto 1fr;
     gap: 40px;
 }
-.roadmap-container{
-    gap:10px;
-    display:flex;
-    flex-direction:column;
-    box-sizing:border-box;
+
+.roadmap-container {
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
 }
+
 .roadmap-section {
     display: grid;
     grid-template-columns: 30px 1fr;
     justify-content: center;
     height: calc(95vh - 80px);
     overflow-y: auto;
+    padding-left:10px;
 }
 
 .roadmap-line {
@@ -35,4 +38,22 @@
     display: flex;
     flex-direction: column;
     gap: 14px;
+}
+@media (max-width: 1100px), (max-height:700px) {
+    .roadmap-line {
+        margin-left: 9px;
+        width: 24px;
+    }
+
+    .stage-number {
+        height: 42px;
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 920px) {
+    .roadmap-line {
+        margin-left: 8px;
+        width: 20px;
+    }
 }

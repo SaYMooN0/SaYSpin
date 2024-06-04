@@ -26,24 +26,36 @@
         aspect-ratio: 1/1;
         fill:white;
     }
-@media (max-width: 1100px), (max-height:800px) {
+@media (max-width: 1400px), {
     .run-info-link-button {
         gap: 18px;
+        padding: 5px 8px;
     }
 
         .run-info-link-button label {
             font-size: 24px;
         }
 }
+@media (max-width: 1100px), (max-height:700px) {
+    .run-info-link-button {
+        gap: 12px;
+        grid-template-columns: 36px 1fr;
+    }
 
-@media (max-width: 850px), (max-height:600px) {
+        .run-info-link-button label {
+            font-size: 20px;
+        }
+}
+
+@media (max-width: 920px) {
     .run-info-link-button {
         grid-template-columns: 32px 1fr;
-        gap: 12px;
+        gap: 8px;
+        padding: 3px 6px;
         border-radius: 8px;
     }
 
         .run-info-link-button label {
-            font-size: 22px;
+            font-size: 16px;
         }
 }

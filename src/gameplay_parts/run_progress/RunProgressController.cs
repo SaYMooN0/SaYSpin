@@ -29,16 +29,30 @@ namespace SaYSpin.src.gameplay_parts.run_progress
             List<BeforeStageActionsGroup> map = [emptyGroup, emptyGroup];
             map.AddRange(Enumerable.Repeat(itemsAndRelicsGroup, 50));
 
-            for (int i = 1; i < 5; i++)
+
+            for (int i = 1; i < 6; i++)
             {
-                map[i * 10] = new BeforeStageActionsGroup([i % 2 == 0 ? BeforeStageActionType.AddRow : BeforeStageActionType.AddColumn], BeforeStageActionGroupType.All);
+                map[i+1] = new BeforeStageActionsGroup([
+                    BeforeStageActionType.RelicChoosing,
+                    BeforeStageActionType.CloneItem], BeforeStageActionGroupType.OneOf);
+            }
+
+            for (int i = 1; i < 6; i++)
+            {
+                map[i * 3 + 20] = new BeforeStageActionsGroup([
+                    BeforeStageActionType.RelicChoosing,
+                    BeforeStageActionType.CloneItem], BeforeStageActionGroupType.OneOf);
             }
             for (int i = 1; i < 3; i++)
             {
                 map[i * 13] = new BeforeStageActionsGroup([
-                    BeforeStageActionType.RelicChoosing,
                     BeforeStageActionType.CloneItem ,
-                    BeforeStageActionType.StatChoosing], BeforeStageActionGroupType.OneOf);
+                    BeforeStageActionType.StatChoosing], BeforeStageActionGroupType.All);
+            }
+
+            for (int i = 1; i < 5; i++)
+            {
+                map[i * 10] = new BeforeStageActionsGroup([i % 2 == 0 ? BeforeStageActionType.AddRow : BeforeStageActionType.AddColumn], BeforeStageActionGroupType.All);
             }
             return map;
         }

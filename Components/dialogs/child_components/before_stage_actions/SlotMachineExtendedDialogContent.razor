@@ -1,4 +1,5 @@
-﻿<div class="machine-extended-content-container unselectable">
+﻿@inject AppController appController
+<div class="machine-extended-content-container unselectable">
     <label class="message-label">
         @(actionType switch
         {
@@ -34,10 +35,20 @@
             }
         </div>
     </div>
-    <div class="ok-button" @onclick="OnOkClicked">Ok</div>
+    <div class="ok-button" @onclick="ExtendSlotMachine">Ok</div>
 </div>
 
 @code {
+    private void ExtendSlotMachine()
+    {
+        if (actionType == BeforeStageActionType.AddRow)
+            appController.Game.SlotMachine.IncreaseRowsCount();
+        else if (actionType == BeforeStageActionType.AddColumn)
+            appController.Game.SlotMachine.IncreaseColumnsCount();
+        else throw new NotImplementedException("Impossible action type");
+        moveToNextBeforeStageAction();
+    }
+
     [Parameter]
     public int currentColumnCount { get; set; }
     [Parameter]
@@ -45,5 +56,5 @@
     [Parameter]
     public BeforeStageActionType? actionType { get; set; }
     [Parameter]
-    public Action OnOkClicked { get; set; }
+    public Action moveToNextBeforeStageAction { get; set; }
 }

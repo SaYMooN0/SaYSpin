@@ -1,0 +1,28 @@
+.dialog-content {
+    display: flex;
+    flex-direction: column;
+}
+
+    .dialog-content .options-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        overflow-y: auto;
+        height: fit-content;
+        gap: 10px;
+        max-width: 1000px;
+    }
+
+.item-card {
+    display: grid;
+    grid-auto-rows: 90px auto;
+    padding: 32px;
+    border-radius: 20px;
+    background: #fffdf8;
+}
+
+.clone-button {
+    padding: 8px 14px;
+    background-image: linear-gradient(to right bottom, #64d4fb, #51cbfa, #3fc2fa, #2bb8f9, #18aef7, #00a6fa, #009efb, #0095fc, #008bff, #1f80ff, #3b73ff, #5564ff);
+    color: white;
+}

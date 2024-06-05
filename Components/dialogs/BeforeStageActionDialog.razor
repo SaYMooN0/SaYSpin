@@ -9,7 +9,7 @@
                 break;
             case BeforeStageActionType.OneOfActionsChoosing:
                 <OneOfActionsChoosingDialogContent actions="actionsToShow[1..]"
-                                                      onActionSelected="(action)=>{
+                                                   onActionSelected="(action)=>{
                                                         actionsToShow.Clear();
                                                         actionsToShow.Add(action);
                                                         actionsToShow.Add(action);
@@ -17,30 +17,28 @@
                                                       }" />
                 break;
             case BeforeStageActionType.TileItemChoosing:
-                ItemsToChooseFromInChoosingActions = appController.Game.GenerateTileItemsForNewStageChoosing();
-                <ItemChoosingDialogContent ItemsToChooseFrom="ItemsToChooseFromInChoosingActions"
-                                              itemChosenAction="(item)=>{appController.Game.AddTileItemToInventory(item as TileItem);MoveToNextBeforeStageAction();}"
-                                              refreshItemsAction="RefreshTileItems"
-                                              skipAction="OnSkipPressed"
-                                              tokensCount="appController.Game.Inventory.Tokens.Count(TokenType.NewStageItemsRefresh)" />
+                <ItemChoosingDialogContent generateItemsToChooseFrom="appController.Game.GenerateTileItemsForNewStageChoosing"
+                                           moveToNextBeforeStageAction="MoveToNextBeforeStageAction" />
                 break;
             case BeforeStageActionType.RelicChoosing:
-                ItemsToChooseFromInChoosingActions = appController.Game.GenerateRelicsForNewStageChoosing();
-                <ItemChoosingDialogContent ItemsToChooseFrom="ItemsToChooseFromInChoosingActions"
-                                              itemChosenAction="(item)=>{appController.Game.AddRelicToInventory(item as Relic);MoveToNextBeforeStageAction();}"
-                                              refreshItemsAction="RefreshRelics"
-                                              skipAction="OnSkipPressed"
-                                              tokensCount="appController.Game.Inventory.Tokens.Count(TokenType.NewStageItemsRefresh)" />
+                <ItemChoosingDialogContent generateItemsToChooseFrom="appController.Game.GenerateRelicsForNewStageChoosing"
+                                           moveToNextBeforeStageAction="MoveToNextBeforeStageAction" />
                 break;
             case BeforeStageActionType.AddRow:
             case BeforeStageActionType.AddColumn:
                 <SlotMachineExtendedDialogContent actionType="currentActionToShow"
-                                                     currentRowCount="appController.Game.SlotMachine.RowsCount"
-                                                     currentColumnCount="appController.Game.SlotMachine.ColumnsCount"
-                                                     OnOkClicked="()=>{ExtendSlotMachine(currentActionToShow); MoveToNextBeforeStageAction();}" />
+                                                  currentRowCount="appController.Game.SlotMachine.RowsCount"
+                                                  currentColumnCount="appController.Game.SlotMachine.ColumnsCount"
+                                                  moveToNextBeforeStageAction="MoveToNextBeforeStageAction" />
                 break;
             case BeforeStageActionType.TokenChoosing:
                 <TokenChoosingDialogContent onTokenSelected="(token)=>{appController.Game.Inventory.Tokens.AddToken(token); MoveToNextBeforeStageAction();}" />
+                break;
+            case BeforeStageActionType.CloneItem:
+                <ItemCloningDialogContent moveToNextBeforeStageAction="MoveToNextBeforeStageAction" />
+                break;
+            case BeforeStageActionType.StatChoosing:
+                <h1>Not implemented</h1>
                 break;
             default:
                 <h1>Not implemented type: @currentActionToShow</h1>
@@ -79,32 +77,8 @@
         await JSRuntime.InvokeVoidAsync("blazorDialogFunctions.closeDialog", "beforeStageAction");
 
 
-    private void OnSkipPressed()
-    {
-        appController.Game.TriggerOnNewStageChoosingSkippedEffects();
-        MoveToNextBeforeStageAction();
-
-    }
-    private void RefreshTileItems()
-    {
-        if (appController.Game.UseToken(TokenType.NewStageItemsRefresh))
-            ItemsToChooseFromInChoosingActions = appController.Game.GenerateTileItemsForNewStageChoosing();
-    }
 
 
-    private void RefreshRelics()
-    {
-        if (appController.Game.UseToken(TokenType.NewStageItemsRefresh))
-            ItemsToChooseFromInChoosingActions = appController.Game.GenerateRelicsForNewStageChoosing();
-    }
-    public void ExtendSlotMachine(BeforeStageActionType? actionType)
-    {
-        if (actionType == BeforeStageActionType.AddRow)
-            appController.Game.SlotMachine.IncreaseRowsCount();
-        else if (actionType == BeforeStageActionType.AddColumn)
-            appController.Game.SlotMachine.IncreaseColumnsCount();
-        else throw new NotImplementedException("Impossible action type");
-    }
     private void MoveToNextBeforeStageAction()
     {
         if (actionsToShow.Count > 1)

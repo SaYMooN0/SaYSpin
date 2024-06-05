@@ -1,4 +1,5 @@
-﻿using SaYSpin.src.inventory_items.relics;
+﻿using SaYSpin.src.inventory_items;
+using SaYSpin.src.inventory_items.relics;
 using SaYSpin.src.inventory_items.relics.relic_effects;
 using SaYSpin.src.inventory_items.tile_items;
 using SaYSpin.src.inventory_items.tile_items.tile_item_effects;
@@ -16,6 +17,14 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
             }
             Inventory.TileItems.Remove(tileItemToDestroy);
             SlotMachine.SetTileItemNull(row, col);
+        }
+        internal void AddBaseInventoryItemToInventory(BaseInventoryItem item)
+        {
+            if (item is Relic relic)
+                AddRelicToInventory(relic);
+            else if (item is TileItem tileItem)
+                AddTileItemToInventory(tileItem);
+            else   throw new System.ArgumentException("Incorrect item type");
         }
         internal void AddTileItemToInventory(TileItem item)
         {

@@ -89,15 +89,7 @@
 
         foreach (var item in rewards.ItemRewards)
         {
-            switch (item)
-            {
-                case Relic relic:
-                    gameFlowController.AddRelicToInventory(relic);
-                    break;
-                case TileItem tileItem:
-                    gameFlowController.AddTileItemToInventory(tileItem);
-                    break;
-            }
+            gameFlowController.AddBaseInventoryItemToInventory(item);
         }
 
         gameFlowController.StartNewStage();

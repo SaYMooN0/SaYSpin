@@ -1,4 +1,5 @@
-﻿<div class="dialog-content">
+﻿@inject AppController appController
+<div class="dialog-content">
     <label class="choose-label unselectable">Choose one item</label>
     <div class="options-container">
         @foreach (BaseInventoryItem item in ItemsToChooseFrom)
@@ -8,26 +9,43 @@
                     <InventoryItemWithRarityComponent itemToDisplay="item" />
                 </span>
 
-                <button @onclick="()=>itemChosenAction(item)">Choose</button>
+                <button @onclick="()=>ItemChosenAction(item)">
+                    Choose
+                </button>
             </div>
         }
     </div>
-    <ItemsChoosingDialogBottomButtons onRefresh="refreshItemsAction" onSkip="skipAction" tokensCount="tokensCount" />
+    <ItemsChoosingDialogBottomButtons onRefresh="Refresh"
+                                      onSkip="SkipPressed"
+                                      tokensCount="appController.Game.Inventory.Tokens.Count(TokenType.NewStageItemsRefresh)" />
 </div>
 
 @code {
-    [Parameter]
-    public Action refreshItemsAction { get; set; }
+    private void SkipPressed()
+    {
+        appController.Game.TriggerOnNewStageChoosingSkippedEffects();
+        moveToNextBeforeStageAction();
 
-    [Parameter]
-    public Action skipAction { get; set; }
+    }
+    private void Refresh()
+    {
+        if (appController.Game.UseToken(TokenType.NewStageItemsRefresh))
+            ItemsToChooseFrom = generateItemsToChooseFrom();
+    }
+    private void ItemChosenAction(BaseInventoryItem item)
+    {
+        appController.Game.AddBaseInventoryItemToInventory(item);
+        moveToNextBeforeStageAction();
+    }
 
-    [Parameter]
-    public Action<BaseInventoryItem> itemChosenAction { get; set; }
+    private BaseInventoryItem[] ItemsToChooseFrom { get; set; }
+    protected override void OnParametersSet()
+    {
+        ItemsToChooseFrom = generateItemsToChooseFrom();
 
+    }
     [Parameter]
-    public BaseInventoryItem[] ItemsToChooseFrom { get; set; }
-
+    public Func<BaseInventoryItem[]> generateItemsToChooseFrom { get; set; }
     [Parameter]
-    public int tokensCount { get; set; }
+    public Action moveToNextBeforeStageAction { get; set; }
 }

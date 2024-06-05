@@ -33,8 +33,8 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
 
         internal GameFlowController(
             Dictionary<string, Func<TileItem>> allTileItemsConstructors, Dictionary<string, Func<Relic>> allRelicsConstructors,
-            Difficulty difficulty, SlotMachine slotMachine, Inventory inventory, 
-            short spinsLeft, int currentStage, int coinsCount, int coinsNeededToCompleteTheStage, 
+            Difficulty difficulty, SlotMachine slotMachine, Inventory inventory,
+            short spinsLeft, int currentStage, int coinsCount, int coinsNeededToCompleteTheStage,
             RunProgressController runProgressController, StatsTracker statsTracker, ShopController shop, bool areCheatsEnabled, BeforeNewStageDialogDelegate showBeforeStageDialog)
         {
             this.allTileItemsConstructors = new ReadOnlyDictionary<string, Func<TileItem>>(allTileItemsConstructors);
@@ -77,7 +77,7 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
             ) : this(
               accessibleTileItems, accessibleRelics,
               difficulty,
-              null, null, 0, 0, 0, 0, 
+              null, null, 0, 0, 0, 0,
               RunProgressController.FromDifficulty(difficulty),
               stats,
               new ShopController(possibleSpecialMerchants),
@@ -192,10 +192,7 @@ namespace SaYSpin.src.gameplay_parts.game_flow_controller
         {
             Inventory.ChangeDiamondsCount(d => d - item.Price);
             Shop.ItemBought(item);
-            if (item.Item is Relic r)
-                AddRelicToInventory(r);
-            else if (item.Item is TileItem ti)
-                AddTileItemToInventory(ti);
+            AddBaseInventoryItemToInventory(item.Item);
         }
 
 

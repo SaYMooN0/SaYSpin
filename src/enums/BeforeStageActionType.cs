@@ -46,7 +46,7 @@
             BeforeStageActionType.TileItemChoosing => "#ffc813",
             BeforeStageActionType.RelicChoosing => "#a714f5",
             BeforeStageActionType.TokenChoosing => "#27dc4c",
-            BeforeStageActionType.StatChoosing => "#00e88b",
+            BeforeStageActionType.StatChoosing => "#FF913C",
             BeforeStageActionType.CloneItem => "#11fbed",
             _ => "#ffffff", 
         };

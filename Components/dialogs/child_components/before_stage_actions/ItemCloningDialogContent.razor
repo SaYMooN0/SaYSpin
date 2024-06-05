@@ -1,26 +1,46 @@
 ﻿@inject AppController appController
 <div class="dialog-content">
-    <label class="choose-label unselectable">Choose one item to clone</label>
+    <LabelWithDiamonds text="Choose one item to clone" />
     <div class="options-container">
-        <div class="ti-section">
-            <label class="section-label unselectable">Tile Items</label>
-            @foreach (BaseInventoryItem item in appController.Game.Inventory.TileItems)
-            {
-                <div class="option-item" @onclick="()=>cloneItem(item)">
+        @foreach (var item in ItemsToChooseFrom())
+        {
+            <div class="item-card">
+                <InventoryItemWithRarityComponent itemToDisplay="item" />
+                <div class="clone-button" @onclick="()=>cloneItem(item)">
+                    Clone
                 </div>
-            }
-        </div>
-        <div class="relics-section">
-            <label class="section-label unselectable">Relics</label>
-            @foreach (BaseInventoryItem item in appController.Game.Inventory.Relics)
-            {
-                <div class="option-item" @onclick="()=>cloneItem(item)">
-                </div>
-            }
-        </div>
+            </div>
+        }
     </div>
 </div>
 @code {
+    private BaseInventoryItem[] ItemsToChooseFrom()
+    {
+        var items = new List<BaseInventoryItem>();
+        var takenNames = new HashSet<string>();
+
+        var tileItems = appController.Game.Inventory.TileItems
+            .OrderBy(x => Guid.NewGuid())
+            .Where(item => takenNames.Add(item.Name))
+            .Take(Randomizer.Int(7, 12));
+
+        items.AddRange(tileItems);
+
+        var relics = appController.Game.Inventory.Relics
+            .OrderBy(x => Guid.NewGuid())
+            .Where(item => takenNames.Add(item.Name)) 
+            .Take(Randomizer.Int(5, 10));
+
+        items.AddRange(relics);
+
+        return items.ToArray();
+    }
+
+    private void cloneItem(BaseInventoryItem item)
+    {
+        appController.Game.AddBaseInventoryItemToInventory(item);
+        moveToNextBeforeStageAction();
+    }
     [Parameter]
-    public Action<BaseInventoryItem> cloneItem { get; set; }
- }
+    public Action moveToNextBeforeStageAction { get; set; }
+}
